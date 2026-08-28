@@ -1,111 +1,172 @@
-:root {
-  --text: #6b6375;
-  --text-h: #08060d;
-  --bg: #fff;
-  --border: #e5e4e7;
-  --code-bg: #f4f3ec;
-  --accent: #aa3bff;
-  --accent-bg: rgba(170, 59, 255, 0.1);
-  --accent-border: rgba(170, 59, 255, 0.5);
-  --social-bg: rgba(244, 243, 236, 0.5);
-  --shadow:
-    rgba(0, 0, 0, 0.1) 0 10px 15px -3px, rgba(0, 0, 0, 0.05) 0 4px 6px -2px;
+@import url("https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap");
+@import "tailwindcss";
 
-  --sans: system-ui, 'Segoe UI', Roboto, sans-serif;
-  --heading: system-ui, 'Segoe UI', Roboto, sans-serif;
-  --mono: ui-monospace, Consolas, monospace;
+/*
+  DESIGN TOKENS — SkyGuard AI operations console
+  --------------------------------------------------
+  Base: near-black, cool slate void (not pure black — keeps depth).
+  Signal: a single confident blue used for brand + "live" state, so it
+  reads as instrumentation rather than a marketing accent.
+  Status colors are functional (station/severity state), kept separate
+  from the brand signal so they always mean the same thing everywhere.
+*/
+@theme {
+  --color-void: #0a0d12;
+  --color-void-raised: #0e1218;
+  --color-panel: #10151d;
+  --color-border-soft: rgba(148, 163, 184, 0.14);
+  --color-border-strong: rgba(148, 163, 184, 0.28);
 
-  font: 18px/145% var(--sans);
-  letter-spacing: 0.18px;
-  color-scheme: light dark;
-  color: var(--text);
-  background: var(--bg);
-  font-synthesis: none;
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+  --color-ink: #e7ecf3;
+  --color-ink-muted: #8d96a6;
+  --color-ink-faint: #5b6473;
 
-  @media (max-width: 1024px) {
-    font-size: 16px;
-  }
+  --color-signal: #4f8dfd;
+  --color-signal-glow: #8ab4ff;
+
+  --color-status-normal: #34d399;
+  --color-status-degrading: #f5a524;
+  --color-status-fault: #f87171;
+  --color-status-offline: #64748b;
+
+  --color-severity-low: #7c8aa0;
+  --color-severity-medium: #f5a524;
+  --color-severity-high: #f87171;
+
+  --font-display: "Space Grotesk", "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, "SF Mono", monospace;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --text: #9ca3af;
-    --text-h: #f3f4f6;
-    --bg: #16171d;
-    --border: #2e303a;
-    --code-bg: #1f2028;
-    --accent: #c084fc;
-    --accent-bg: rgba(192, 132, 252, 0.15);
-    --accent-border: rgba(192, 132, 252, 0.5);
-    --social-bg: rgba(47, 48, 58, 0.5);
-    --shadow:
-      rgba(0, 0, 0, 0.4) 0 10px 15px -3px, rgba(0, 0, 0, 0.25) 0 4px 6px -2px;
-  }
-
-  #social .button-icon {
-    filter: invert(1) brightness(2);
-  }
-}
-
+html,
+body,
 #root {
-  width: 1126px;
-  max-width: 100%;
-  margin: 0 auto;
-  text-align: center;
-  border-inline: 1px solid var(--border);
-  min-height: 100svh;
-  display: flex;
-  flex-direction: column;
-  box-sizing: border-box;
+  height: 100%;
 }
 
 body {
-  margin: 0;
+  background-color: var(--color-void);
+  color: var(--color-ink);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
 }
 
-h1,
-h2 {
-  font-family: var(--heading);
-  font-weight: 500;
-  color: var(--text-h);
+/* Subtle radial vignette so panels have somewhere to sit — avoids flat black. */
+body {
+  background-image:
+    radial-gradient(ellipse 1200px 600px at 20% -10%, rgba(79, 141, 253, 0.07), transparent),
+    radial-gradient(ellipse 900px 500px at 100% 0%, rgba(52, 211, 153, 0.04), transparent);
+  background-attachment: fixed;
 }
 
-h1 {
-  font-size: 56px;
-  letter-spacing: -1.68px;
-  margin: 32px 0;
-  @media (max-width: 1024px) {
-    font-size: 36px;
-    margin: 20px 0;
-  }
-}
-h2 {
-  font-size: 24px;
-  line-height: 118%;
-  letter-spacing: -0.24px;
-  margin: 0 0 8px;
-  @media (max-width: 1024px) {
-    font-size: 20px;
-  }
-}
-p {
-  margin: 0;
-}
-
-code,
-.counter {
-  font-family: var(--mono);
-  display: inline-flex;
+/* Visible keyboard focus everywhere — accessibility floor, not optional. */
+:focus-visible {
+  outline: 2px solid var(--color-signal);
+  outline-offset: 2px;
   border-radius: 4px;
-  color: var(--text-h);
 }
 
-code {
-  font-size: 15px;
-  line-height: 135%;
-  padding: 4px 8px;
-  background: var(--code-bg);
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: var(--color-border-strong);
+  border-radius: 999px;
+}
+
+@layer utilities {
+  .glass-panel {
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.035), rgba(255, 255, 255, 0.015));
+    border: 1px solid var(--color-border-soft);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+  }
+
+  .glass-panel-raised {
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.02));
+    border: 1px solid var(--color-border-strong);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+  }
+
+  .font-display {
+    font-family: var(--font-display);
+    letter-spacing: -0.01em;
+  }
+
+  .font-mono-data {
+    font-family: var(--font-mono);
+    font-variant-numeric: tabular-nums;
+  }
+}
+
+/* Signature element: a slow radar-style sweep under the top bar, standing
+   in for "the network is being continuously scanned". One deliberate
+   animated moment; everything else in the UI stays still. */
+@keyframes sg-sweep {
+  0% {
+    transform: translateX(-40%);
+    opacity: 0;
+  }
+  10% {
+    opacity: 1;
+  }
+  90% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateX(140%);
+    opacity: 0;
+  }
+}
+
+.sg-sweep-line {
+  animation: sg-sweep 6s ease-in-out infinite;
+}
+
+@keyframes sg-pulse-ring {
+  0% {
+    box-shadow: 0 0 0 0 rgba(52, 211, 153, 0.55);
+  }
+  100% {
+    box-shadow: 0 0 0 8px rgba(52, 211, 153, 0);
+  }
+}
+
+.sg-live-dot {
+  animation: sg-pulse-ring 2s ease-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sg-sweep-line,
+  .sg-live-dot {
+    animation: none;
+  }
+}
+
+/* Leaflet overrides so the map fits the console aesthetic instead of
+   looking like a stock embedded widget. */
+.leaflet-container {
+  background: var(--color-void-raised);
+  font-family: var(--font-sans);
+}
+.leaflet-popup-content-wrapper {
+  background: var(--color-panel);
+  color: var(--color-ink);
+  border: 1px solid var(--color-border-soft);
+  border-radius: 10px;
+}
+.leaflet-popup-tip {
+  background: var(--color-panel);
+}
+.leaflet-popup-content-wrapper,
+.leaflet-popup-content {
+  margin: 10px 12px;
+}
+.leaflet-container a.leaflet-popup-close-button {
+  color: var(--color-ink-muted);
 }
