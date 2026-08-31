@@ -1,0 +1,47 @@
+=================================================================
+SKYGUARD.AI - IMD MAITRI DATASET PROFILING REPORT
+=================================================================
+Generated At: 2026-08-29T21:48:13.520630
+CSV Source: C:\SkyguardAI\data\raw\imd_maitri.csv
+NetCDF Source: C:\SkyguardAI\data\raw\imd_maitri.nc
+
+--- CSV PROFILE ---
+Rows: 155170
+Columns: 6
+Exact Duplicate Rows: 0
+Timestamp Duplicates: 0
+Date Range: 1985-01-01 00:00:00 to 2016-12-19 12:00:00
+
+Column Data Types & -999 Value Frequencies:
+  Col 0 (dtype: str): 0 missing / -999 values (0.00%)
+  Col 1 (dtype: float64): 8297 missing / -999 values (5.35%)
+  Col 2 (dtype: float64): 8297 missing / -999 values (5.35%)
+  Col 3 (dtype: float64): 8297 missing / -999 values (5.35%)
+  Col 4 (dtype: int64): 138656 missing / -999 values (89.36%)
+  Col 5 (dtype: int64): 138656 missing / -999 values (89.36%)
+
+--- NETCDF PROFILE ---
+Dimensions: {'obstime': 16514}
+Attributes: None (empty metadata dictionary)
+Variables: ['tempr', 'rh', 'ws', 'wd', 'ap']
+  Var 'tempr': shape=[16514], dims=['obstime'], dtype=float32
+  Var 'rh': shape=[16514], dims=['obstime'], dtype=float32
+  Var 'ws': shape=[16514], dims=['obstime'], dtype=float32
+  Var 'wd': shape=[16514], dims=['obstime'], dtype=float32
+  Var 'ap': shape=[16514], dims=['obstime'], dtype=float32
+
+--- CSV VS NETCDF COLUMN MAPPING & VERIFICATION ---
+Direct row-by-row comparison over the 2015-2016 observation window confirms:
+  * Col 0 (Timestamp) -> Matches NetCDF 'obstime' coordinate exactly
+  * Col 1 (Temperature) -> Matches NetCDF 'tempr' (in-situ air temperature, °C)
+  * Col 2 (Pressure) -> Matches NetCDF 'rh' values (~970 hPa atmospheric pressure; note IMD raw variable name inversion)
+  * Col 3 (Wind Speed) -> Matches NetCDF 'ws' (wind speed)
+  * Col 4 (Wind Direction) -> Matches NetCDF 'wd' (wind direction degrees, populated 2015-2016)
+  * Col 5 (Humidity) -> Matches NetCDF 'ap' values (~50% relative humidity; note IMD raw variable name inversion)
+
+Note on Variable Naming:
+In the raw NetCDF data, variables 'rh' and 'ap' exhibit swapped numerical ranges:
+  - 'rh' column contains barometric pressure (values ~880 - 1058 hPa)
+  - 'ap' column contains relative humidity (values ~20 - 100 %)
+Verified column alignment in the pipeline corrects this to standardized physical parameter names.
+=================================================================

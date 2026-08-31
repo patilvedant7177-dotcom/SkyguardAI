@@ -1,0 +1,26 @@
+{
+  "features": [
+    "temperature",
+    "pressure",
+    "humidity"
+  ],
+  "seq_len": 24,
+  "hidden_dim": 32,
+  "latent_dim": 16,
+  "threshold": 0.6762336492538452,
+  "feature_thresholds": {
+    "temperature": 0.5418877601623535,
+    "pressure": 1.586276888847351,
+    "humidity": 0.6737131476402283
+  },
+  "scaler_mean": [
+    -8.499394428744449,
+    965.4633992733144,
+    52.47961243439645
+  ],
+  "scaler_scale": [
+    6.988801501241525,
+    8.719469946493726,
+    18.45087992194956
+  ]
+}

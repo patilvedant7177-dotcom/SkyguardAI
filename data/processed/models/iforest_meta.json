@@ -1,0 +1,12 @@
+{
+  "features": [
+    "temperature",
+    "pressure",
+    "humidity",
+    "pressure_diff_1h"
+  ],
+  "n_estimators": 100,
+  "contamination": 0.02,
+  "score_min": -0.20532111699910727,
+  "score_max": 0.13973447634792913
+}
