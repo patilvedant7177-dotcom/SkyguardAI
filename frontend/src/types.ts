@@ -91,6 +91,7 @@ export interface NeighborCorroborationItem {
 
 export interface Explanation {
   alert_id: number;
+  confidence?: number;
   top_features: TopFeature[];
   narrative: string;
   contributing_factors?: ContributingFactor[];

@@ -2,7 +2,8 @@ import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { createAlertEventSource, acknowledgeAlert, fetchAlerts } from "../api";
 import type { Alert } from "../types";
-import { Radio, CheckCircle2, Search, ArrowRight, ShieldAlert, Cpu, Sparkles } from "lucide-react";
+import { ConfidenceGauge } from "../components/ConfidenceGauge";
+import { Radio, CheckCircle2, Search, ArrowRight, ShieldAlert, Cpu, Clock } from "lucide-react";
 
 const LiveAlerts: React.FC = () => {
   const [alerts, setAlerts] = useState<Alert[]>([]);
@@ -121,8 +122,8 @@ const LiveAlerts: React.FC = () => {
               <button
                 key={sev}
                 onClick={() => setSeverityFilter(sev)}
-                className={severityFilter === sev ? "btn-primary" : "btn-secondary"}
-                style={{ textTransform: "capitalize", fontSize: "0.75rem", padding: "5px 10px" }}
+                className={severityFilter === sev ? "btn-primary btn-pill" : "btn-secondary btn-pill"}
+                style={{ textTransform: "capitalize", fontSize: "0.75rem", padding: "5px 12px" }}
               >
                 {sev}
               </button>
@@ -142,124 +143,113 @@ const LiveAlerts: React.FC = () => {
         <div style={{ display: "flex", flexDirection: "column", gap: "0.75rem" }}>
           {filteredAlerts.map((alert, index) => {
             const isAcked = alert.status === "acknowledged" || acknowledgedIds.has(alert.id);
+            const isNew = index === 0;
+
             return (
               <div
-                key={`${alert.id}-${index}`}
-                className={`glass-panel ${index === 0 ? "flash-item" : ""}`}
+                key={alert.id}
+                className={`glass-panel ${isNew ? "flash-item" : ""}`}
                 style={{
-                  padding: "1.25rem",
+                  padding: "1rem 1.25rem",
                   display: "flex",
                   justifyContent: "space-between",
                   alignItems: "center",
                   flexWrap: "wrap",
                   gap: "1rem",
-                  borderLeft: `4px solid ${
+                  borderColor:
                     alert.severity === "high"
-                      ? "var(--accent-rose)"
+                      ? "rgba(244, 63, 94, 0.4)"
                       : alert.severity === "medium"
-                      ? "var(--accent-amber)"
-                      : "var(--accent-blue)"
-                  }`,
+                      ? "rgba(245, 158, 11, 0.4)"
+                      : "var(--border-card)",
                 }}
               >
                 {/* Alert Info */}
-                <div style={{ display: "flex", flexDirection: "column", gap: "6px", flex: 1, minWidth: "280px" }}>
+                <div style={{ display: "flex", flexDirection: "column", gap: "6px", flex: 1, minWidth: "300px" }}>
                   <div style={{ display: "flex", alignItems: "center", gap: "8px", flexWrap: "wrap" }}>
                     <span className={`badge badge-${alert.severity}`}>{alert.severity}</span>
-                    <span className="badge badge-low" style={{ textTransform: "none" }}>
-                      {alert.station_name} (ID: #{alert.station_id})
+                    <strong style={{ fontSize: "0.95rem", color: "#f8fafc" }}>
+                      Station #{alert.station_id}
+                    </strong>
+                    <span style={{ fontSize: "0.75rem", color: "var(--text-muted)", display: "flex", alignItems: "center", gap: "4px" }}>
+                      <Clock size={12} />
+                      {new Date(alert.timestamp).toLocaleTimeString()}
                     </span>
-                    <span
-                      style={{
-                        fontSize: "0.75rem",
-                        color: "var(--text-muted)",
-                        marginLeft: "auto",
-                      }}
-                    >
-                      {new Date(alert.timestamp).toLocaleTimeString()} · {new Date(alert.timestamp).toLocaleDateString()}
-                    </span>
+                    {isNew && (
+                      <span className="badge badge-high live-pulse" style={{ fontSize: "0.65rem" }}>
+                        LIVE EVENT
+                      </span>
+                    )}
                   </div>
 
-                  <div style={{ fontSize: "1.05rem", fontWeight: 600, color: "#f8fafc", marginTop: "2px" }}>
-                    {alert.summary}
-                  </div>
+                  <div style={{ fontSize: "0.85rem", color: "#cbd5e1" }}>{alert.summary}</div>
 
-                  {/* Flagged Parameters & Root Cause Tags */}
-                  <div style={{ display: "flex", alignItems: "center", gap: "8px", flexWrap: "wrap", marginTop: "4px" }}>
+                  {/* Flagged Parameters & Confidence */}
+                  <div style={{ display: "flex", alignItems: "center", gap: "8px", flexWrap: "wrap", marginTop: "2px" }}>
                     <div style={{ display: "flex", alignItems: "center", gap: "4px", fontSize: "0.75rem", color: "var(--text-secondary)" }}>
-                      <Cpu size={13} color="var(--accent-cyan)" />
-                      <span>Root Cause:</span>
-                      <strong style={{ color: "#e2e8f0" }}>{alert.root_cause.replace("_", " ")}</strong>
-                    </div>
-
-                    <div style={{ width: "1px", height: "12px", background: "var(--border-card)" }}></div>
-
-                    <div style={{ display: "flex", alignItems: "center", gap: "4px", fontSize: "0.75rem", color: "var(--text-secondary)" }}>
-                      <Sparkles size={13} color="var(--accent-amber)" />
                       <span>Confidence:</span>
                       <strong style={{ color: "#e2e8f0" }}>{(alert.confidence * 100).toFixed(0)}%</strong>
                     </div>
 
                     <div style={{ width: "1px", height: "12px", background: "var(--border-card)" }}></div>
 
-                    <div style={{ display: "flex", gap: "4px" }}>
-                      {alert.parameters_flagged.map((p) => (
-                        <span
-                          key={p}
-                          style={{
-                            fontSize: "0.7rem",
-                            padding: "2px 6px",
-                            borderRadius: "4px",
-                            background: "rgba(255,255,255,0.08)",
-                            color: "#cbd5e1",
-                            textTransform: "capitalize",
-                          }}
-                        >
-                          {p}
-                        </span>
-                      ))}
+                    <div style={{ display: "flex", alignItems: "center", gap: "4px", fontSize: "0.75rem", color: "var(--text-secondary)" }}>
+                      <Cpu size={13} color="var(--accent-cyan)" />
+                      <span>Root Cause:</span>
+                      <strong style={{ color: "#e2e8f0" }}>{alert.root_cause.replace("_", " ")}</strong>
                     </div>
                   </div>
                 </div>
 
-                {/* Actions */}
-                <div style={{ display: "flex", alignItems: "center", gap: "0.75rem" }}>
-                  {!isAcked ? (
-                    <button
-                      onClick={() => handleAcknowledge(alert.id)}
-                      className="btn-secondary"
-                      style={{ fontSize: "0.8rem", padding: "6px 12px" }}
-                    >
-                      <CheckCircle2 size={14} color="var(--accent-emerald)" />
-                      <span>Acknowledge</span>
-                    </button>
-                  ) : (
-                    <span
-                      style={{
-                        fontSize: "0.75rem",
-                        color: "var(--accent-emerald)",
-                        display: "flex",
-                        alignItems: "center",
-                        gap: "4px",
-                        fontWeight: 600,
-                        padding: "6px 10px",
-                        background: "rgba(16, 185, 129, 0.1)",
-                        borderRadius: "6px",
-                      }}
-                    >
-                      <CheckCircle2 size={13} />
-                      Acknowledged
-                    </span>
-                  )}
+                {/* Confidence Gauge & Actions */}
+                <div style={{ display: "flex", alignItems: "center", gap: "1.25rem", flexWrap: "wrap" }}>
+                  <div style={{ display: "flex", alignItems: "center", gap: "6px" }}>
+                    <ConfidenceGauge
+                      value={alert.confidence}
+                      size="sm"
+                      label="Certainty"
+                      showStatusBadge={false}
+                    />
+                  </div>
 
-                  <Link
-                    to={`/why-flagged/${alert.id}`}
-                    className="btn-primary"
-                    style={{ fontSize: "0.8rem", padding: "6px 14px" }}
-                  >
-                    <span>Why Flagged?</span>
-                    <ArrowRight size={14} />
-                  </Link>
+                  <div style={{ display: "flex", alignItems: "center", gap: "0.75rem" }}>
+                    {!isAcked ? (
+                      <button
+                        onClick={() => handleAcknowledge(alert.id)}
+                        className="btn-glass"
+                        style={{ fontSize: "0.8rem", padding: "6px 14px" }}
+                      >
+                        <CheckCircle2 size={14} color="var(--accent-emerald)" />
+                        <span>Acknowledge</span>
+                      </button>
+                    ) : (
+                      <span
+                        style={{
+                          fontSize: "0.75rem",
+                          color: "var(--accent-emerald)",
+                          display: "flex",
+                          alignItems: "center",
+                          gap: "4px",
+                          fontWeight: 600,
+                          padding: "6px 10px",
+                          background: "rgba(16, 185, 129, 0.1)",
+                          borderRadius: "6px",
+                        }}
+                      >
+                        <CheckCircle2 size={13} />
+                        Acknowledged
+                      </span>
+                    )}
+
+                    <Link
+                      to={`/why-flagged/${alert.id}`}
+                      className="btn-primary glow"
+                      style={{ fontSize: "0.8rem", padding: "6px 14px" }}
+                    >
+                      <span>Why Flagged?</span>
+                      <ArrowRight size={14} />
+                    </Link>
+                  </div>
                 </div>
               </div>
             );

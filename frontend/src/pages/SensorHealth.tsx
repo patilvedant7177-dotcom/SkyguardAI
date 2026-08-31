@@ -113,7 +113,7 @@ const SensorHealth: React.FC = () => {
 
           <Link
             to={`/station/${stationId}`}
-            className="btn-primary"
+            className="btn-glow"
             style={{ fontSize: "0.8rem", padding: "6px 14px" }}
           >
             <Activity size={14} />

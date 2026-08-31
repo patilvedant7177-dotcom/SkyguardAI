@@ -349,14 +349,8 @@ export const AddStationModal: React.FC<AddStationModalProps> = ({
           <button
             onClick={onClose}
             disabled={isSubmitting}
-            style={{
-              background: "rgba(255, 255, 255, 0.05)",
-              border: "1px solid var(--border-card)",
-              borderRadius: "8px",
-              padding: "6px",
-              cursor: isSubmitting ? "not-allowed" : "pointer",
-              color: "#94a3b8",
-            }}
+            className="btn-icon"
+            title="Close modal"
           >
             <X size={18} />
           </button>
@@ -452,7 +446,7 @@ export const AddStationModal: React.FC<AddStationModalProps> = ({
               <button
                 type="button"
                 onClick={handleReset}
-                className="btn-secondary"
+                className="btn-glass"
                 style={{ padding: "8px 16px" }}
               >
                 Upload Another Station
@@ -463,8 +457,8 @@ export const AddStationModal: React.FC<AddStationModalProps> = ({
                   onClose();
                   navigate(`/station/${result.station.id}`);
                 }}
-                className="btn-primary"
-                style={{ padding: "8px 18px", display: "flex", alignItems: "center", gap: "8px" }}
+                className="btn-glow btn-shimmer"
+                style={{ padding: "8px 20px" }}
               >
                 <span>View Telemetry Details</span>
                 <ArrowRight size={16} />
@@ -486,23 +480,10 @@ export const AddStationModal: React.FC<AddStationModalProps> = ({
                     key={preset.name}
                     type="button"
                     onClick={() => handlePresetSelect(preset)}
+                    className="btn-glass btn-pill"
                     style={{
-                      background: "rgba(255, 255, 255, 0.04)",
-                      border: "1px solid rgba(255, 255, 255, 0.1)",
-                      borderRadius: "6px",
-                      padding: "3px 8px",
+                      padding: "4px 10px",
                       fontSize: "0.72rem",
-                      color: "#cbd5e1",
-                      cursor: "pointer",
-                      transition: "all 0.15s ease",
-                    }}
-                    onMouseEnter={(e) => {
-                      e.currentTarget.style.borderColor = "var(--accent-cyan)";
-                      e.currentTarget.style.color = "#fff";
-                    }}
-                    onMouseLeave={(e) => {
-                      e.currentTarget.style.borderColor = "rgba(255, 255, 255, 0.1)";
-                      e.currentTarget.style.color = "#cbd5e1";
                     }}
                   >
                     {preset.name}
@@ -900,20 +881,17 @@ export const AddStationModal: React.FC<AddStationModalProps> = ({
                 type="button"
                 onClick={onClose}
                 disabled={isSubmitting}
-                className="btn-secondary"
-                style={{ padding: "7px 14px" }}
+                className="btn-glass"
+                style={{ padding: "8px 16px" }}
               >
                 Cancel
               </button>
               <button
                 type="submit"
                 disabled={isSubmitting}
-                className="btn-primary"
+                className="btn-glow btn-shimmer"
                 style={{
-                  padding: "7px 18px",
-                  display: "flex",
-                  alignItems: "center",
-                  gap: "8px",
+                  padding: "8px 20px",
                   opacity: isSubmitting ? 0.7 : 1,
                 }}
               >

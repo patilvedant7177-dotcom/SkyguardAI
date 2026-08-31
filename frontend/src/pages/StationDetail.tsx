@@ -187,7 +187,7 @@ const StationDetail: React.FC = () => {
                 type="button"
                 onClick={() => setShowDeleteConfirm(false)}
                 disabled={isDeleting}
-                className="btn-secondary"
+                className="btn-glass"
                 style={{ padding: "6px 14px", fontSize: "0.8rem" }}
               >
                 Cancel
@@ -196,19 +196,10 @@ const StationDetail: React.FC = () => {
                 type="button"
                 onClick={handleDeleteStation}
                 disabled={isDeleting}
+                className="btn-danger"
                 style={{
                   padding: "6px 16px",
                   fontSize: "0.8rem",
-                  background: "#f43f5e",
-                  border: "1px solid rgba(244, 63, 94, 0.5)",
-                  borderRadius: "6px",
-                  color: "#fff",
-                  fontWeight: 600,
-                  cursor: isDeleting ? "not-allowed" : "pointer",
-                  display: "flex",
-                  alignItems: "center",
-                  gap: "6px",
-                  boxShadow: "0 0 12px rgba(244, 63, 94, 0.4)",
                 }}
               >
                 <Trash2 size={14} />
@@ -268,13 +259,13 @@ const StationDetail: React.FC = () => {
           )}
 
           {/* Time range selector */}
-          <div style={{ display: "flex", gap: "2px" }}>
+          <div style={{ display: "flex", gap: "4px" }}>
             {[24, 48, 72].map((h) => (
               <button
                 key={h}
                 onClick={() => setHours(h)}
-                className={hours === h ? "btn-primary" : "btn-secondary"}
-                style={{ fontSize: "0.75rem", padding: "5px 10px" }}
+                className={hours === h ? "btn-primary btn-pill" : "btn-secondary btn-pill"}
+                style={{ fontSize: "0.75rem", padding: "5px 12px" }}
               >
                 {h}h
               </button>
@@ -283,8 +274,8 @@ const StationDetail: React.FC = () => {
 
           <Link
             to={`/health/${stationId}`}
-            className="btn-secondary"
-            style={{ fontSize: "0.8rem", padding: "6px 12px" }}
+            className="btn-glass"
+            style={{ fontSize: "0.8rem", padding: "6px 14px" }}
           >
             <ShieldCheck size={14} color="var(--accent-emerald)" />
             <span>Health Profile</span>
@@ -293,19 +284,14 @@ const StationDetail: React.FC = () => {
           {/* Remove Station Button */}
           <button
             onClick={() => setShowDeleteConfirm(true)}
-            className="btn-secondary"
+            className="btn-danger"
             title="Remove this AWS station from network"
             style={{
               fontSize: "0.8rem",
-              padding: "6px 12px",
-              color: "#fb7185",
-              borderColor: "rgba(244, 63, 94, 0.3)",
-              display: "flex",
-              alignItems: "center",
-              gap: "6px",
+              padding: "6px 14px",
             }}
           >
-            <Trash2 size={14} color="#f43f5e" />
+            <Trash2 size={14} />
             <span>Remove Station</span>
           </button>
         </div>
@@ -397,7 +383,7 @@ const StationDetail: React.FC = () => {
           </div>
 
           {/* Parameter Toggles */}
-          <div style={{ display: "flex", gap: "4px" }}>
+          <div style={{ display: "flex", gap: "6px", flexWrap: "wrap" }}>
             {[
               { id: "all", label: "All Parameters" },
               { id: "temperature", label: "Temp (°C)" },
@@ -407,8 +393,8 @@ const StationDetail: React.FC = () => {
               <button
                 key={p.id}
                 onClick={() => setActiveParam(p.id as any)}
-                className={activeParam === p.id ? "btn-primary" : "btn-secondary"}
-                style={{ fontSize: "0.75rem", padding: "4px 10px" }}
+                className={activeParam === p.id ? "btn-primary btn-pill" : "btn-secondary btn-pill"}
+                style={{ fontSize: "0.75rem", padding: "5px 12px" }}
               >
                 {p.label}
               </button>

@@ -157,9 +157,6 @@ const NetworkOverview: React.FC = () => {
           <h1 style={{ fontSize: "1.75rem", fontWeight: 700, letterSpacing: "-0.02em" }}>
             Network Overview
           </h1>
-          <p style={{ color: "var(--text-secondary)", fontSize: "0.9rem", marginTop: "4px" }}>
-            Global geospatial telemetry and atmospheric monitoring array
-          </p>
         </div>
 
         <div style={{ display: "flex", alignItems: "center", gap: "0.75rem", flexWrap: "wrap" }}>
@@ -169,17 +166,18 @@ const NetworkOverview: React.FC = () => {
               <button
                 key={status}
                 onClick={() => setSelectedStatus(status)}
-                className={selectedStatus === status ? "btn-primary" : "btn-secondary"}
+                className={selectedStatus === status ? "btn-primary btn-pill" : "btn-secondary btn-pill"}
                 style={{ textTransform: "capitalize", fontSize: "0.8rem", padding: "5px 12px" }}
               >
                 {status === "all" ? "All Stations" : status}
                 <span
                   style={{
-                    fontSize: "0.75rem",
+                    fontSize: "0.72rem",
                     background: "rgba(255,255,255,0.15)",
                     borderRadius: "9999px",
                     padding: "1px 6px",
                     marginLeft: "4px",
+                    fontFamily: "var(--font-mono)",
                   }}
                 >
                   {status === "all"
@@ -193,16 +191,10 @@ const NetworkOverview: React.FC = () => {
           {/* Add AWS Station Button */}
           <button
             onClick={() => setIsAddModalOpen(true)}
-            className="btn-primary"
+            className="btn-glow btn-shimmer"
             style={{
-              display: "flex",
-              alignItems: "center",
-              gap: "6px",
-              padding: "7px 14px",
+              padding: "7px 16px",
               fontSize: "0.85rem",
-              background: "linear-gradient(135deg, #0284c7, #6366f1)",
-              border: "1px solid rgba(56, 189, 248, 0.4)",
-              boxShadow: "0 0 15px rgba(56, 189, 248, 0.25)",
             }}
           >
             <Plus size={16} />
@@ -233,14 +225,10 @@ const NetworkOverview: React.FC = () => {
           </div>
           <button
             onClick={() => setFitAllTrigger((prev) => prev + 1)}
+            className="btn-glass btn-pill"
             style={{
-              background: "rgba(255, 255, 255, 0.1)",
-              border: "1px solid var(--border-card)",
-              borderRadius: "6px",
-              padding: "4px 10px",
+              padding: "4px 12px",
               fontSize: "0.75rem",
-              color: "#f8fafc",
-              cursor: "pointer",
             }}
           >
             Fit Global View

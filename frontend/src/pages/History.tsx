@@ -71,7 +71,7 @@ const History: React.FC = () => {
             <button
               key={tab.id}
               onClick={() => setActiveTab(tab.id as any)}
-              className={activeTab === tab.id ? "btn-primary" : "btn-secondary"}
+              className={activeTab === tab.id ? "btn-primary btn-pill" : "btn-secondary btn-pill"}
               style={{ fontSize: "0.8rem", padding: "6px 14px" }}
             >
               {tab.label}
@@ -119,8 +119,8 @@ const History: React.FC = () => {
               <button
                 key={s}
                 onClick={() => setSeverityFilter(s)}
-                className={severityFilter === s ? "btn-primary" : "btn-secondary"}
-                style={{ fontSize: "0.75rem", padding: "4px 8px", textTransform: "capitalize" }}
+                className={severityFilter === s ? "btn-primary btn-pill" : "btn-secondary btn-pill"}
+                style={{ fontSize: "0.75rem", padding: "4px 10px", textTransform: "capitalize" }}
               >
                 {s}
               </button>
@@ -240,8 +240,8 @@ const History: React.FC = () => {
                   <td style={{ padding: "12px 16px", border: "none", textAlign: "right" }}>
                     <Link
                       to={`/why-flagged/${alert.id}`}
-                      className="btn-secondary"
-                      style={{ fontSize: "0.75rem", padding: "4px 8px" }}
+                      className="btn-glass btn-pill"
+                      style={{ fontSize: "0.75rem", padding: "4px 10px" }}
                     >
                       <span>Explain</span>
                       <ArrowRight size={12} />
