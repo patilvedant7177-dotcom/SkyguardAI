@@ -96,7 +96,7 @@
       "id": 101,
       "station_id": 1,
       "station_name": "Mumbai Colaba (South Coastal Observatory)",
-      "timestamp": "2026-08-31T03:30:00+00:00Z",
+      "timestamp": "2026-08-31T04:30:00+00:00Z",
       "confidence": 0.91,
       "severity": "high",
       "root_cause": "sensor_fault",
@@ -106,13 +106,13 @@
       ],
       "status": "active",
       "event_type": "spike",
-      "magnitude": -3.3477642398494156
+      "magnitude": -3.3407198462058734
     },
     {
       "id": 102,
       "station_id": 1,
       "station_name": "Mumbai Colaba (South Coastal Observatory)",
-      "timestamp": "2026-08-31T11:00:00+00:00Z",
+      "timestamp": "2026-08-31T12:00:00+00:00Z",
       "confidence": 0.94,
       "severity": "high",
       "root_cause": "genuine_event",
@@ -122,13 +122,13 @@
       ],
       "status": "active",
       "event_type": "frozen_sensor",
-      "magnitude": 48.0
+      "magnitude": 52.0
     },
     {
       "id": 103,
       "station_id": 2,
       "station_name": "Mumbai Santacruz (Inland Suburban Hub)",
-      "timestamp": "2026-08-30T18:00:00+00:00Z",
+      "timestamp": "2026-08-30T19:00:00+00:00Z",
       "confidence": 0.91,
       "severity": "high",
       "root_cause": "sensor_fault",
@@ -138,7 +138,7 @@
       ],
       "status": "active",
       "event_type": "spike",
-      "magnitude": 3.412279278329738
+      "magnitude": 3.2380233475551905
     },
     {
       "id": 104,
@@ -160,7 +160,7 @@
       "id": 105,
       "station_id": 4,
       "station_name": "Delhi Palam (Western Plains Station)",
-      "timestamp": "2026-08-29T23:45:00+00:00Z",
+      "timestamp": "2026-08-30T00:45:00+00:00Z",
       "confidence": 0.91,
       "severity": "high",
       "root_cause": "sensor_fault",
@@ -176,7 +176,7 @@
       "id": 106,
       "station_id": 7,
       "station_name": "Chennai Nungambakkam (Central Coastal Base)",
-      "timestamp": "2026-08-27T06:00:00+00:00Z",
+      "timestamp": "2026-08-31T05:15:00+00:00Z",
       "confidence": 0.91,
       "severity": "high",
       "root_cause": "sensor_fault",
@@ -192,7 +192,7 @@
       "id": 107,
       "station_id": 8,
       "station_name": "Chennai Meenambakkam (Airport Plains Hub)",
-      "timestamp": "2026-08-30T15:30:00+00:00Z",
+      "timestamp": "2026-08-30T16:30:00+00:00Z",
       "confidence": 0.91,
       "severity": "high",
       "root_cause": "comms_error",
@@ -213,23 +213,23 @@
       "health_score": 51,
       "trend": "degrading",
       "maintenance_forecast_days": 7,
-      "last_maintenance_at": "2026-08-08T19:46:19Z",
+      "last_maintenance_at": "2026-08-08T20:00:27Z",
       "diagnostics": [
         {
           "name": "RTD Temperature Probe",
-          "metric": "+0.29% (Drift)",
+          "metric": "+0.28% (Drift)",
           "status": "nominal",
           "status_label": "Nominal"
         },
         {
           "name": "Barometric Capsule",
-          "metric": "96.7% Tension",
+          "metric": "96.8% Tension",
           "status": "nominal",
           "status_label": "Nominal"
         },
         {
           "name": "Hygrometer Capacitance",
-          "metric": "+0.42% Capacitance Bias",
+          "metric": "+0.40% Capacitance Bias",
           "status": "warning",
           "status_label": "High Drift"
         },
@@ -243,119 +243,20 @@
     },
     "2": {
       "station_id": 2,
-      "health_score": 52,
+      "health_score": 53,
       "trend": "degrading",
       "maintenance_forecast_days": 7,
-      "last_maintenance_at": "2026-08-05T19:46:19Z",
+      "last_maintenance_at": "2026-08-05T20:00:27Z",
       "diagnostics": [
         {
           "name": "RTD Temperature Probe",
-          "metric": "+0.24% (Drift)",
+          "metric": "+0.22% (Drift)",
           "status": "nominal",
           "status_label": "Nominal"
         },
         {
           "name": "Barometric Capsule",
-          "metric": "96.7% Tension",
-          "status": "nominal",
-          "status_label": "Nominal"
-        },
-        {
-          "name": "Hygrometer Capacitance",
-          "metric": "+0.37% Capacitance Bias",
-          "status": "warning",
-          "status_label": "High Drift"
-        },
-        {
-          "name": "Telemetry Modem",
-          "metric": "100.0% Uplink",
-          "status": "nominal",
-          "status_label": "Nominal"
-        }
-      ]
-    },
-    "3": {
-      "station_id": 3,
-      "health_score": 96,
-      "trend": "stable",
-      "maintenance_forecast_days": null,
-      "last_maintenance_at": "2026-08-02T19:46:19Z",
-      "diagnostics": [
-        {
-          "name": "RTD Temperature Probe",
-          "metric": "+0.02% (Nominal)",
-          "status": "nominal",
-          "status_label": "Nominal"
-        },
-        {
-          "name": "Barometric Capsule",
-          "metric": "97.2% Tension",
-          "status": "nominal",
-          "status_label": "Nominal"
-        },
-        {
-          "name": "Hygrometer Capacitance",
-          "metric": "+0.20% Capacitance Bias",
-          "status": "nominal",
-          "status_label": "Nominal"
-        },
-        {
-          "name": "Telemetry Modem",
-          "metric": "100.0% Uplink",
-          "status": "nominal",
-          "status_label": "Nominal"
-        }
-      ]
-    },
-    "4": {
-      "station_id": 4,
-      "health_score": 44,
-      "trend": "degrading",
-      "maintenance_forecast_days": 6,
-      "last_maintenance_at": "2026-07-30T19:46:19Z",
-      "diagnostics": [
-        {
-          "name": "RTD Temperature Probe",
-          "metric": "+0.02% (Nominal)",
-          "status": "nominal",
-          "status_label": "Nominal"
-        },
-        {
-          "name": "Barometric Capsule",
-          "metric": "97.2% Tension",
-          "status": "nominal",
-          "status_label": "Nominal"
-        },
-        {
-          "name": "Hygrometer Capacitance",
-          "metric": "Nominal",
-          "status": "nominal",
-          "status_label": "Nominal"
-        },
-        {
-          "name": "Telemetry Modem",
-          "metric": "100.0% Uplink",
-          "status": "nominal",
-          "status_label": "Nominal"
-        }
-      ]
-    },
-    "5": {
-      "station_id": 5,
-      "health_score": 98,
-      "trend": "stable",
-      "maintenance_forecast_days": null,
-      "last_maintenance_at": "2026-07-27T19:46:19Z",
-      "diagnostics": [
-        {
-          "name": "RTD Temperature Probe",
-          "metric": "+0.10% (Nominal)",
-          "status": "nominal",
-          "status_label": "Nominal"
-        },
-        {
-          "name": "Barometric Capsule",
-          "metric": "97.4% Tension",
+          "metric": "96.8% Tension",
           "status": "nominal",
           "status_label": "Nominal"
         },
@@ -373,16 +274,16 @@
         }
       ]
     },
-    "6": {
-      "station_id": 6,
+    "3": {
+      "station_id": 3,
       "health_score": 96,
       "trend": "stable",
       "maintenance_forecast_days": null,
-      "last_maintenance_at": "2026-07-24T19:46:19Z",
+      "last_maintenance_at": "2026-08-02T20:00:27Z",
       "diagnostics": [
         {
           "name": "RTD Temperature Probe",
-          "metric": "+0.00% (Nominal)",
+          "metric": "+0.02% (Nominal)",
           "status": "nominal",
           "status_label": "Nominal"
         },
@@ -394,9 +295,108 @@
         },
         {
           "name": "Hygrometer Capacitance",
-          "metric": "+0.31% Capacitance Bias",
-          "status": "warning",
-          "status_label": "High Drift"
+          "metric": "+0.14% Capacitance Bias",
+          "status": "nominal",
+          "status_label": "Nominal"
+        },
+        {
+          "name": "Telemetry Modem",
+          "metric": "100.0% Uplink",
+          "status": "nominal",
+          "status_label": "Nominal"
+        }
+      ]
+    },
+    "4": {
+      "station_id": 4,
+      "health_score": 44,
+      "trend": "degrading",
+      "maintenance_forecast_days": 6,
+      "last_maintenance_at": "2026-07-30T20:00:27Z",
+      "diagnostics": [
+        {
+          "name": "RTD Temperature Probe",
+          "metric": "+0.02% (Nominal)",
+          "status": "nominal",
+          "status_label": "Nominal"
+        },
+        {
+          "name": "Barometric Capsule",
+          "metric": "97.2% Tension",
+          "status": "nominal",
+          "status_label": "Nominal"
+        },
+        {
+          "name": "Hygrometer Capacitance",
+          "metric": "+0.11% Capacitance Bias",
+          "status": "nominal",
+          "status_label": "Nominal"
+        },
+        {
+          "name": "Telemetry Modem",
+          "metric": "100.0% Uplink",
+          "status": "nominal",
+          "status_label": "Nominal"
+        }
+      ]
+    },
+    "5": {
+      "station_id": 5,
+      "health_score": 98,
+      "trend": "stable",
+      "maintenance_forecast_days": null,
+      "last_maintenance_at": "2026-07-27T20:00:28Z",
+      "diagnostics": [
+        {
+          "name": "RTD Temperature Probe",
+          "metric": "+0.08% (Nominal)",
+          "status": "nominal",
+          "status_label": "Nominal"
+        },
+        {
+          "name": "Barometric Capsule",
+          "metric": "97.4% Tension",
+          "status": "nominal",
+          "status_label": "Nominal"
+        },
+        {
+          "name": "Hygrometer Capacitance",
+          "metric": "+0.29% Capacitance Bias",
+          "status": "nominal",
+          "status_label": "Nominal"
+        },
+        {
+          "name": "Telemetry Modem",
+          "metric": "100.0% Uplink",
+          "status": "nominal",
+          "status_label": "Nominal"
+        }
+      ]
+    },
+    "6": {
+      "station_id": 6,
+      "health_score": 96,
+      "trend": "stable",
+      "maintenance_forecast_days": null,
+      "last_maintenance_at": "2026-07-24T20:00:28Z",
+      "diagnostics": [
+        {
+          "name": "RTD Temperature Probe",
+          "metric": "+0.03% (Nominal)",
+          "status": "nominal",
+          "status_label": "Nominal"
+        },
+        {
+          "name": "Barometric Capsule",
+          "metric": "97.3% Tension",
+          "status": "nominal",
+          "status_label": "Nominal"
+        },
+        {
+          "name": "Hygrometer Capacitance",
+          "metric": "+0.26% Capacitance Bias",
+          "status": "nominal",
+          "status_label": "Nominal"
         },
         {
           "name": "Telemetry Modem",
@@ -411,23 +411,23 @@
       "health_score": 45,
       "trend": "degrading",
       "maintenance_forecast_days": 6,
-      "last_maintenance_at": "2026-07-21T19:46:19Z",
+      "last_maintenance_at": "2026-07-21T20:00:28Z",
       "diagnostics": [
         {
           "name": "RTD Temperature Probe",
-          "metric": "+0.15% (Drift)",
+          "metric": "+0.13% (Drift)",
           "status": "nominal",
           "status_label": "Nominal"
         },
         {
           "name": "Barometric Capsule",
-          "metric": "97.4% Tension",
+          "metric": "97.5% Tension",
           "status": "nominal",
           "status_label": "Nominal"
         },
         {
           "name": "Hygrometer Capacitance",
-          "metric": "+0.38% Capacitance Bias",
+          "metric": "+0.33% Capacitance Bias",
           "status": "warning",
           "status_label": "High Drift"
         },
@@ -444,11 +444,11 @@
       "health_score": 23,
       "trend": "degrading",
       "maintenance_forecast_days": 3,
-      "last_maintenance_at": "2026-07-18T19:46:19Z",
+      "last_maintenance_at": "2026-07-18T20:00:28Z",
       "diagnostics": [
         {
           "name": "RTD Temperature Probe",
-          "metric": "+0.18% (Drift)",
+          "metric": "+0.17% (Drift)",
           "status": "nominal",
           "status_label": "Nominal"
         },
@@ -460,7 +460,7 @@
         },
         {
           "name": "Hygrometer Capacitance",
-          "metric": "+0.44% Capacitance Bias",
+          "metric": "+0.42% Capacitance Bias",
           "status": "warning",
           "status_label": "High Drift"
         },
@@ -474,26 +474,26 @@
     },
     "9": {
       "station_id": 9,
-      "health_score": 83,
-      "trend": "degrading",
-      "maintenance_forecast_days": 20,
-      "last_maintenance_at": "2026-08-09T19:46:19Z",
+      "health_score": 97,
+      "trend": "stable",
+      "maintenance_forecast_days": null,
+      "last_maintenance_at": "2026-08-09T20:00:28Z",
       "diagnostics": [
         {
           "name": "RTD Temperature Probe",
-          "metric": "+0.19% (Drift)",
+          "metric": "+0.16% (Drift)",
           "status": "nominal",
           "status_label": "Nominal"
         },
         {
           "name": "Barometric Capsule",
-          "metric": "96.6% Tension",
+          "metric": "96.7% Tension",
           "status": "nominal",
           "status_label": "Nominal"
         },
         {
           "name": "Hygrometer Capacitance",
-          "metric": "+0.49% Capacitance Bias",
+          "metric": "+0.45% Capacitance Bias",
           "status": "warning",
           "status_label": "High Drift"
         },
@@ -507,26 +507,26 @@
     },
     "10": {
       "station_id": 10,
-      "health_score": 84,
-      "trend": "degrading",
-      "maintenance_forecast_days": 21,
-      "last_maintenance_at": "2026-08-06T19:46:19Z",
+      "health_score": 98,
+      "trend": "stable",
+      "maintenance_forecast_days": null,
+      "last_maintenance_at": "2026-08-06T20:00:28Z",
       "diagnostics": [
         {
           "name": "RTD Temperature Probe",
-          "metric": "+0.16% (Drift)",
+          "metric": "+0.13% (Drift)",
           "status": "nominal",
           "status_label": "Nominal"
         },
         {
           "name": "Barometric Capsule",
-          "metric": "96.6% Tension",
+          "metric": "96.7% Tension",
           "status": "nominal",
           "status_label": "Nominal"
         },
         {
           "name": "Hygrometer Capacitance",
-          "metric": "+0.45% Capacitance Bias",
+          "metric": "+0.41% Capacitance Bias",
           "status": "warning",
           "status_label": "High Drift"
         },
@@ -545,7 +545,7 @@
       "top_features": [
         {
           "feature": "pressure",
-          "contribution": 0.4,
+          "contribution": 0.41,
           "direction": "increases_anomaly"
         },
         {
@@ -564,12 +564,12 @@
           "name": "Pressure Deviation",
           "category": "atmospheric_parameter",
           "feature": "pressure",
-          "contribution": 0.4,
+          "contribution": 0.41,
           "direction": "increases_anomaly",
-          "observed_value": "949.0hPa",
+          "observed_value": "950.0hPa",
           "baseline_value": "840.0hPa",
-          "deviation": "+109.0hPa",
-          "description": "Observed 949.0hPa vs historical nominal baseline 840.0hPa (Delta: +109.0hPa)"
+          "deviation": "+110.0hPa",
+          "description": "Observed 950.0hPa vs historical nominal baseline 840.0hPa (Delta: +110.0hPa)"
         },
         {
           "name": "Temperature Deviation",
@@ -577,10 +577,10 @@
           "feature": "temperature",
           "contribution": 0.31,
           "direction": "decreases_anomaly",
-          "observed_value": "16.1\u00b0C",
+          "observed_value": "16.7\u00b0C",
           "baseline_value": "18.0\u00b0C",
-          "deviation": "-1.9\u00b0C",
-          "description": "Observed 16.1\u00b0C vs historical nominal baseline 18.0\u00b0C (Delta: -1.9\u00b0C)"
+          "deviation": "-1.3\u00b0C",
+          "description": "Observed 16.7\u00b0C vs historical nominal baseline 18.0\u00b0C (Delta: -1.3\u00b0C)"
         },
         {
           "name": "Humidity Deviation",
@@ -588,10 +588,10 @@
           "feature": "humidity",
           "contribution": 0.28,
           "direction": "increases_anomaly",
-          "observed_value": "87.9%",
+          "observed_value": "86.2%",
           "baseline_value": "45.0%",
-          "deviation": "+42.9%",
-          "description": "Observed 87.9% vs historical nominal baseline 45.0% (Delta: +42.9%)"
+          "deviation": "+41.2%",
+          "description": "Observed 86.2% vs historical nominal baseline 45.0% (Delta: +41.2%)"
         },
         {
           "name": "Spatial Neighbor Correlation",
@@ -631,7 +631,7 @@
         {
           "step_number": 1,
           "title": "Sensor Variance Trigger",
-          "evidence": "Anomalous unphysical reading on pressure (949.0hPa) triggered single-station STL residual and statistical Z-score detectors (> 3.2 sigma).",
+          "evidence": "Anomalous unphysical reading on pressure (950.0hPa) triggered single-station STL residual and statistical Z-score detectors (> 3.2 sigma).",
           "status": "flagged"
         },
         {
@@ -689,7 +689,7 @@
           "station_name": "Mumbai Santacruz (Inland Suburban Hub)",
           "distance_km": 19.1,
           "reading": "840.3hPa",
-          "expected": "949.0hPa",
+          "expected": "950.0hPa",
           "is_corroborating": false,
           "status": "Normal (Divergent)"
         }
@@ -700,7 +700,7 @@
         "Schedule physical field inspection or transducer replacement if drift exceeds 48 hours.",
         "Temporarily down-weight pressure channel from spatial weather interpolation grid."
       ],
-      "narrative": "Isolated HIGH-severity sensor fault identified at Mumbai Colaba (South Coastal Observatory). The anomaly is heavily driven by unphysical behavior in pressure (40% contribution) with observed value of 949.0hPa, which was not corroborated by any neighboring stations in the network cluster. Field calibration or transducer replacement advised."
+      "narrative": "Isolated HIGH-severity sensor fault identified at Mumbai Colaba (South Coastal Observatory). The anomaly is heavily driven by unphysical behavior in pressure (41% contribution) with observed value of 950.0hPa, which was not corroborated by any neighboring stations in the network cluster. Field calibration or transducer replacement advised."
     },
     "102": {
       "alert_id": 102,
@@ -712,12 +712,12 @@
         },
         {
           "feature": "humidity",
-          "contribution": 0.43,
+          "contribution": 0.41,
           "direction": "increases_anomaly"
         },
         {
           "feature": "temperature",
-          "contribution": 0.15,
+          "contribution": 0.17,
           "direction": "increases_anomaly"
         }
       ],
@@ -728,32 +728,32 @@
           "feature": "pressure",
           "contribution": 0.43,
           "direction": "increases_anomaly",
-          "observed_value": "965.9hPa",
+          "observed_value": "966.0hPa",
           "baseline_value": "840.0hPa",
-          "deviation": "+125.9hPa",
-          "description": "Observed 965.9hPa vs historical nominal baseline 840.0hPa (Delta: +125.9hPa)"
+          "deviation": "+126.0hPa",
+          "description": "Observed 966.0hPa vs historical nominal baseline 840.0hPa (Delta: +126.0hPa)"
         },
         {
           "name": "Humidity Deviation",
           "category": "atmospheric_parameter",
           "feature": "humidity",
-          "contribution": 0.43,
+          "contribution": 0.41,
           "direction": "increases_anomaly",
-          "observed_value": "71.3%",
+          "observed_value": "66.1%",
           "baseline_value": "45.0%",
-          "deviation": "+26.3%",
-          "description": "Observed 71.3% vs historical nominal baseline 45.0% (Delta: +26.3%)"
+          "deviation": "+21.1%",
+          "description": "Observed 66.1% vs historical nominal baseline 45.0% (Delta: +21.1%)"
         },
         {
           "name": "Temperature Deviation",
           "category": "atmospheric_parameter",
           "feature": "temperature",
-          "contribution": 0.15,
+          "contribution": 0.17,
           "direction": "increases_anomaly",
-          "observed_value": "21.7\u00b0C",
+          "observed_value": "23.4\u00b0C",
           "baseline_value": "18.0\u00b0C",
-          "deviation": "+3.7\u00b0C",
-          "description": "Observed 21.7\u00b0C vs historical nominal baseline 18.0\u00b0C (Delta: +3.7\u00b0C)"
+          "deviation": "+5.4\u00b0C",
+          "description": "Observed 23.4\u00b0C vs historical nominal baseline 18.0\u00b0C (Delta: +5.4\u00b0C)"
         },
         {
           "name": "Spatial Neighbor Correlation",
@@ -793,7 +793,7 @@
         {
           "step_number": 1,
           "title": "Primary Atmospheric Detection",
-          "evidence": "Significant meteorological variance detected in pressure (965.9hPa), exceeding baseline statistical thresholds with severity 'high'.",
+          "evidence": "Significant meteorological variance detected in pressure (966.0hPa), exceeding baseline statistical thresholds with severity 'high'.",
           "status": "flagged"
         },
         {
@@ -850,8 +850,8 @@
           "station_id": 2,
           "station_name": "Mumbai Santacruz (Inland Suburban Hub)",
           "distance_km": 19.1,
-          "reading": "965.5hPa",
-          "expected": "965.9hPa",
+          "reading": "965.6hPa",
+          "expected": "966.0hPa",
           "is_corroborating": true,
           "status": "Corroborated"
         }
@@ -861,14 +861,14 @@
         "Retain telemetry data in high-confidence meteorological dataset; do NOT filter or down-weight.",
         "Notify regional meteorological watch desk of observed rapid variance in pressure."
       ],
-      "narrative": "A HIGH-severity regional meteorological front was detected at Mumbai Colaba (South Coastal Observatory). The primary driver is pressure (43% contribution) with observed value of 965.9hPa, coherently corroborated across 2 neighboring stations within the spatial network. Station hardware is operating normally; alert reflects genuine localized atmospheric dynamics."
+      "narrative": "A HIGH-severity regional meteorological front was detected at Mumbai Colaba (South Coastal Observatory). The primary driver is pressure (43% contribution) with observed value of 966.0hPa, coherently corroborated across 2 neighboring stations within the spatial network. Station hardware is operating normally; alert reflects genuine localized atmospheric dynamics."
     },
     "103": {
       "alert_id": 103,
       "top_features": [
         {
           "feature": "temperature",
-          "contribution": 0.45,
+          "contribution": 0.43,
           "direction": "increases_anomaly"
         },
         {
@@ -878,7 +878,7 @@
         },
         {
           "feature": "humidity",
-          "contribution": 0.11,
+          "contribution": 0.14,
           "direction": "increases_anomaly"
         }
       ],
@@ -887,12 +887,12 @@
           "name": "Temperature Deviation",
           "category": "atmospheric_parameter",
           "feature": "temperature",
-          "contribution": 0.45,
+          "contribution": 0.43,
           "direction": "increases_anomaly",
-          "observed_value": "30.3\u00b0C",
+          "observed_value": "28.5\u00b0C",
           "baseline_value": "18.0\u00b0C",
-          "deviation": "+12.3\u00b0C",
-          "description": "Observed 30.3\u00b0C vs historical nominal baseline 18.0\u00b0C (Delta: +12.3\u00b0C)"
+          "deviation": "+10.5\u00b0C",
+          "description": "Observed 28.5\u00b0C vs historical nominal baseline 18.0\u00b0C (Delta: +10.5\u00b0C)"
         },
         {
           "name": "Pressure Deviation",
@@ -900,21 +900,21 @@
           "feature": "pressure",
           "contribution": 0.43,
           "direction": "increases_anomaly",
-          "observed_value": "954.8hPa",
+          "observed_value": "953.6hPa",
           "baseline_value": "840.0hPa",
-          "deviation": "+114.8hPa",
-          "description": "Observed 954.8hPa vs historical nominal baseline 840.0hPa (Delta: +114.8hPa)"
+          "deviation": "+113.6hPa",
+          "description": "Observed 953.6hPa vs historical nominal baseline 840.0hPa (Delta: +113.6hPa)"
         },
         {
           "name": "Humidity Deviation",
           "category": "atmospheric_parameter",
           "feature": "humidity",
-          "contribution": 0.11,
+          "contribution": 0.14,
           "direction": "increases_anomaly",
-          "observed_value": "46.2%",
+          "observed_value": "51.4%",
           "baseline_value": "45.0%",
-          "deviation": "+1.2%",
-          "description": "Observed 46.2% vs historical nominal baseline 45.0% (Delta: +1.2%)"
+          "deviation": "+6.4%",
+          "description": "Observed 51.4% vs historical nominal baseline 45.0% (Delta: +6.4%)"
         },
         {
           "name": "Spatial Neighbor Correlation",
@@ -954,7 +954,7 @@
         {
           "step_number": 1,
           "title": "Sensor Variance Trigger",
-          "evidence": "Anomalous unphysical reading on temperature (30.3\u00b0C) triggered single-station STL residual and statistical Z-score detectors (> 3.2 sigma).",
+          "evidence": "Anomalous unphysical reading on temperature (28.5\u00b0C) triggered single-station STL residual and statistical Z-score detectors (> 3.2 sigma).",
           "status": "flagged"
         },
         {
@@ -979,28 +979,28 @@
       "detector_breakdown": [
         {
           "detector_name": "Statistical STL & Z-Score Filter",
-          "score": 0.97,
+          "score": 0.95,
           "threshold": 0.6,
           "flagged": true,
           "description": "Monitors robust median seasonal-trend decomposition residuals and rolling 3-sigma limits."
         },
         {
           "detector_name": "LSTM Autoencoder Temporal Reconstruction",
-          "score": 0.88,
+          "score": 0.9,
           "threshold": 0.55,
           "flagged": true,
           "description": "Deep sequence model evaluating temporal dynamics and multi-step prediction error."
         },
         {
           "detector_name": "Isolation Forest Multivariate Anomaly",
-          "score": 0.89,
+          "score": 0.87,
           "threshold": 0.5,
           "flagged": true,
           "description": "Non-parametric tree ensemble isolating multivariate out-of-distribution feature spaces."
         },
         {
           "detector_name": "Spatial & Mahalanobis Consistency Engine",
-          "score": 0.93,
+          "score": 0.95,
           "threshold": 0.5,
           "flagged": true,
           "description": "Gaussian kernel spatial interpolation and covariance matrix cross-validation across neighboring stations."
@@ -1012,7 +1012,7 @@
           "station_name": "Mumbai Colaba (South Coastal Observatory)",
           "distance_km": 19.1,
           "reading": "18.3\u00b0C",
-          "expected": "30.3\u00b0C",
+          "expected": "28.5\u00b0C",
           "is_corroborating": false,
           "status": "Normal (Divergent)"
         }
@@ -1023,19 +1023,19 @@
         "Schedule physical field inspection or transducer replacement if drift exceeds 48 hours.",
         "Temporarily down-weight temperature channel from spatial weather interpolation grid."
       ],
-      "narrative": "Isolated HIGH-severity sensor fault identified at Mumbai Santacruz (Inland Suburban Hub). The anomaly is heavily driven by unphysical behavior in temperature (45% contribution) with observed value of 30.3\u00b0C, which was not corroborated by any neighboring stations in the network cluster. Field calibration or transducer replacement advised."
+      "narrative": "Isolated HIGH-severity sensor fault identified at Mumbai Santacruz (Inland Suburban Hub). The anomaly is heavily driven by unphysical behavior in temperature (43% contribution) with observed value of 28.5\u00b0C, which was not corroborated by any neighboring stations in the network cluster. Field calibration or transducer replacement advised."
     },
     "104": {
       "alert_id": 104,
       "top_features": [
         {
-          "feature": "pressure",
-          "contribution": 0.43,
+          "feature": "humidity",
+          "contribution": 0.44,
           "direction": "increases_anomaly"
         },
         {
-          "feature": "humidity",
-          "contribution": 0.43,
+          "feature": "pressure",
+          "contribution": 0.42,
           "direction": "increases_anomaly"
         },
         {
@@ -1046,26 +1046,26 @@
       ],
       "contributing_factors": [
         {
-          "name": "Pressure Deviation",
-          "category": "atmospheric_parameter",
-          "feature": "pressure",
-          "contribution": 0.43,
-          "direction": "increases_anomaly",
-          "observed_value": "965.7hPa",
-          "baseline_value": "840.0hPa",
-          "deviation": "+125.7hPa",
-          "description": "Observed 965.7hPa vs historical nominal baseline 840.0hPa (Delta: +125.7hPa)"
-        },
-        {
           "name": "Humidity Deviation",
           "category": "atmospheric_parameter",
           "feature": "humidity",
-          "contribution": 0.43,
+          "contribution": 0.44,
           "direction": "increases_anomaly",
-          "observed_value": "72.7%",
+          "observed_value": "73.6%",
           "baseline_value": "45.0%",
-          "deviation": "+27.7%",
-          "description": "Observed 72.7% vs historical nominal baseline 45.0% (Delta: +27.7%)"
+          "deviation": "+28.6%",
+          "description": "Observed 73.6% vs historical nominal baseline 45.0% (Delta: +28.6%)"
+        },
+        {
+          "name": "Pressure Deviation",
+          "category": "atmospheric_parameter",
+          "feature": "pressure",
+          "contribution": 0.42,
+          "direction": "increases_anomaly",
+          "observed_value": "965.6hPa",
+          "baseline_value": "840.0hPa",
+          "deviation": "+125.6hPa",
+          "description": "Observed 965.6hPa vs historical nominal baseline 840.0hPa (Delta: +125.6hPa)"
         },
         {
           "name": "Temperature Deviation",
@@ -1116,7 +1116,7 @@
         {
           "step_number": 1,
           "title": "Primary Atmospheric Detection",
-          "evidence": "Significant meteorological variance detected in pressure (965.7hPa), exceeding baseline statistical thresholds with severity 'high'.",
+          "evidence": "Significant meteorological variance detected in humidity (73.6%), exceeding baseline statistical thresholds with severity 'high'.",
           "status": "flagged"
         },
         {
@@ -1173,8 +1173,8 @@
           "station_id": 1,
           "station_name": "Mumbai Colaba (South Coastal Observatory)",
           "distance_km": 19.1,
-          "reading": "965.3hPa",
-          "expected": "965.7hPa",
+          "reading": "73.2%",
+          "expected": "73.6%",
           "is_corroborating": true,
           "status": "Corroborated"
         }
@@ -1182,62 +1182,62 @@
       "recommendations": [
         "Confirm synoptic radar and satellite imagery for active mesoscale convective system or regional front.",
         "Retain telemetry data in high-confidence meteorological dataset; do NOT filter or down-weight.",
-        "Notify regional meteorological watch desk of observed rapid variance in pressure."
+        "Notify regional meteorological watch desk of observed rapid variance in humidity."
       ],
-      "narrative": "A HIGH-severity regional meteorological front was detected at Mumbai Santacruz (Inland Suburban Hub). The primary driver is pressure (43% contribution) with observed value of 965.7hPa, coherently corroborated across 2 neighboring stations within the spatial network. Station hardware is operating normally; alert reflects genuine localized atmospheric dynamics."
+      "narrative": "A HIGH-severity regional meteorological front was detected at Mumbai Santacruz (Inland Suburban Hub). The primary driver is humidity (44% contribution) with observed value of 73.6%, coherently corroborated across 2 neighboring stations within the spatial network. Station hardware is operating normally; alert reflects genuine localized atmospheric dynamics."
     },
     "105": {
       "alert_id": 105,
       "top_features": [
+        {
+          "feature": "humidity",
+          "contribution": 0.44,
+          "direction": "increases_anomaly"
+        },
         {
           "feature": "pressure",
           "contribution": 0.43,
           "direction": "increases_anomaly"
         },
         {
-          "feature": "humidity",
-          "contribution": 0.42,
-          "direction": "increases_anomaly"
-        },
-        {
           "feature": "temperature",
-          "contribution": 0.15,
+          "contribution": 0.13,
           "direction": "increases_anomaly"
         }
       ],
       "contributing_factors": [
+        {
+          "name": "Humidity Deviation",
+          "category": "atmospheric_parameter",
+          "feature": "humidity",
+          "contribution": 0.44,
+          "direction": "increases_anomaly",
+          "observed_value": "74.1%",
+          "baseline_value": "45.0%",
+          "deviation": "+29.1%",
+          "description": "Observed 74.1% vs historical nominal baseline 45.0% (Delta: +29.1%)"
+        },
         {
           "name": "Pressure Deviation",
           "category": "atmospheric_parameter",
           "feature": "pressure",
           "contribution": 0.43,
           "direction": "increases_anomaly",
-          "observed_value": "946.0hPa",
+          "observed_value": "946.1hPa",
           "baseline_value": "840.0hPa",
-          "deviation": "+106.0hPa",
-          "description": "Observed 946.0hPa vs historical nominal baseline 840.0hPa (Delta: +106.0hPa)"
-        },
-        {
-          "name": "Humidity Deviation",
-          "category": "atmospheric_parameter",
-          "feature": "humidity",
-          "contribution": 0.42,
-          "direction": "increases_anomaly",
-          "observed_value": "69.8%",
-          "baseline_value": "45.0%",
-          "deviation": "+24.8%",
-          "description": "Observed 69.8% vs historical nominal baseline 45.0% (Delta: +24.8%)"
+          "deviation": "+106.1hPa",
+          "description": "Observed 946.1hPa vs historical nominal baseline 840.0hPa (Delta: +106.1hPa)"
         },
         {
           "name": "Temperature Deviation",
           "category": "atmospheric_parameter",
           "feature": "temperature",
-          "contribution": 0.15,
+          "contribution": 0.13,
           "direction": "increases_anomaly",
-          "observed_value": "21.4\u00b0C",
+          "observed_value": "20.0\u00b0C",
           "baseline_value": "18.0\u00b0C",
-          "deviation": "+3.4\u00b0C",
-          "description": "Observed 21.4\u00b0C vs historical nominal baseline 18.0\u00b0C (Delta: +3.4\u00b0C)"
+          "deviation": "+2.0\u00b0C",
+          "description": "Observed 20.0\u00b0C vs historical nominal baseline 18.0\u00b0C (Delta: +2.0\u00b0C)"
         },
         {
           "name": "Spatial Neighbor Correlation",
@@ -1277,7 +1277,7 @@
         {
           "step_number": 1,
           "title": "Sensor Variance Trigger",
-          "evidence": "Anomalous unphysical reading on pressure (946.0hPa) triggered single-station STL residual and statistical Z-score detectors (> 3.2 sigma).",
+          "evidence": "Anomalous unphysical reading on humidity (74.1%) triggered single-station STL residual and statistical Z-score detectors (> 3.2 sigma).",
           "status": "flagged"
         },
         {
@@ -1295,7 +1295,7 @@
         {
           "step_number": 4,
           "title": "Ensemble Verdict & Classification",
-          "evidence": "Classified as Isolated Sensor Fault on pressure. Transducer recalibration or hardware probe replacement required.",
+          "evidence": "Classified as Isolated Sensor Fault on humidity. Transducer recalibration or hardware probe replacement required.",
           "status": "verdict"
         }
       ],
@@ -1334,37 +1334,37 @@
           "station_id": 3,
           "station_name": "Delhi Safdarjung (Central Met Observatory)",
           "distance_km": 10.2,
-          "reading": "840.3hPa",
-          "expected": "946.0hPa",
+          "reading": "45.3%",
+          "expected": "74.1%",
           "is_corroborating": false,
           "status": "Normal (Divergent)"
         }
       ],
       "recommendations": [
-        "Execute remote offset zero-calibration routine on pressure sensor probe.",
+        "Execute remote offset zero-calibration routine on humidity sensor probe.",
         "Verify aspirator radiation shield fan operation to prevent solar thermal trapping.",
         "Schedule physical field inspection or transducer replacement if drift exceeds 48 hours.",
-        "Temporarily down-weight pressure channel from spatial weather interpolation grid."
+        "Temporarily down-weight humidity channel from spatial weather interpolation grid."
       ],
-      "narrative": "Isolated HIGH-severity sensor fault identified at Delhi Palam (Western Plains Station). The anomaly is heavily driven by unphysical behavior in pressure (43% contribution) with observed value of 946.0hPa, which was not corroborated by any neighboring stations in the network cluster. Field calibration or transducer replacement advised."
+      "narrative": "Isolated HIGH-severity sensor fault identified at Delhi Palam (Western Plains Station). The anomaly is heavily driven by unphysical behavior in humidity (44% contribution) with observed value of 74.1%, which was not corroborated by any neighboring stations in the network cluster. Field calibration or transducer replacement advised."
     },
     "106": {
       "alert_id": 106,
       "top_features": [
         {
           "feature": "humidity",
-          "contribution": 0.47,
+          "contribution": 0.48,
           "direction": "increases_anomaly"
         },
         {
           "feature": "pressure",
-          "contribution": 0.42,
+          "contribution": 0.39,
           "direction": "increases_anomaly"
         },
         {
           "feature": "temperature",
-          "contribution": 0.11,
-          "direction": "increases_anomaly"
+          "contribution": 0.13,
+          "direction": "decreases_anomaly"
         }
       ],
       "contributing_factors": [
@@ -1372,34 +1372,34 @@
           "name": "Humidity Deviation",
           "category": "atmospheric_parameter",
           "feature": "humidity",
-          "contribution": 0.47,
+          "contribution": 0.48,
           "direction": "increases_anomaly",
-          "observed_value": "80.6%",
+          "observed_value": "93.8%",
           "baseline_value": "45.0%",
-          "deviation": "+35.6%",
-          "description": "Observed 80.6% vs historical nominal baseline 45.0% (Delta: +35.6%)"
+          "deviation": "+48.8%",
+          "description": "Observed 93.8% vs historical nominal baseline 45.0% (Delta: +48.8%)"
         },
         {
           "name": "Pressure Deviation",
           "category": "atmospheric_parameter",
           "feature": "pressure",
-          "contribution": 0.42,
+          "contribution": 0.39,
           "direction": "increases_anomaly",
-          "observed_value": "953.1hPa",
+          "observed_value": "954.3hPa",
           "baseline_value": "840.0hPa",
-          "deviation": "+113.1hPa",
-          "description": "Observed 953.1hPa vs historical nominal baseline 840.0hPa (Delta: +113.1hPa)"
+          "deviation": "+114.3hPa",
+          "description": "Observed 954.3hPa vs historical nominal baseline 840.0hPa (Delta: +114.3hPa)"
         },
         {
           "name": "Temperature Deviation",
           "category": "atmospheric_parameter",
           "feature": "temperature",
-          "contribution": 0.11,
-          "direction": "increases_anomaly",
-          "observed_value": "18.3\u00b0C",
+          "contribution": 0.13,
+          "direction": "decreases_anomaly",
+          "observed_value": "14.4\u00b0C",
           "baseline_value": "18.0\u00b0C",
-          "deviation": "+0.3\u00b0C",
-          "description": "Observed 18.3\u00b0C vs historical nominal baseline 18.0\u00b0C (Delta: +0.3\u00b0C)"
+          "deviation": "-3.6\u00b0C",
+          "description": "Observed 14.4\u00b0C vs historical nominal baseline 18.0\u00b0C (Delta: -3.6\u00b0C)"
         },
         {
           "name": "Spatial Neighbor Correlation",
@@ -1439,7 +1439,7 @@
         {
           "step_number": 1,
           "title": "Sensor Variance Trigger",
-          "evidence": "Anomalous unphysical reading on humidity (80.6%) triggered single-station STL residual and statistical Z-score detectors (> 3.2 sigma).",
+          "evidence": "Anomalous unphysical reading on humidity (93.8%) triggered single-station STL residual and statistical Z-score detectors (> 3.2 sigma).",
           "status": "flagged"
         },
         {
@@ -1497,7 +1497,7 @@
           "station_name": "Chennai Meenambakkam (Airport Plains Hub)",
           "distance_km": 12.4,
           "reading": "45.3%",
-          "expected": "80.6%",
+          "expected": "93.8%",
           "is_corroborating": false,
           "status": "Normal (Divergent)"
         }
@@ -1508,14 +1508,14 @@
         "Schedule physical field inspection or transducer replacement if drift exceeds 48 hours.",
         "Temporarily down-weight humidity channel from spatial weather interpolation grid."
       ],
-      "narrative": "Isolated HIGH-severity sensor fault identified at Chennai Nungambakkam (Central Coastal Base). The anomaly is heavily driven by unphysical behavior in humidity (47% contribution) with observed value of 80.6%, which was not corroborated by any neighboring stations in the network cluster. Field calibration or transducer replacement advised."
+      "narrative": "Isolated HIGH-severity sensor fault identified at Chennai Nungambakkam (Central Coastal Base). The anomaly is heavily driven by unphysical behavior in humidity (48% contribution) with observed value of 93.8%, which was not corroborated by any neighboring stations in the network cluster. Field calibration or transducer replacement advised."
     },
     "107": {
       "alert_id": 107,
       "top_features": [
         {
           "feature": "pressure",
-          "contribution": 0.41,
+          "contribution": 0.42,
           "direction": "increases_anomaly"
         },
         {
@@ -1534,12 +1534,12 @@
           "name": "Pressure Deviation",
           "category": "atmospheric_parameter",
           "feature": "pressure",
-          "contribution": 0.41,
+          "contribution": 0.42,
           "direction": "increases_anomaly",
-          "observed_value": "956.2hPa",
+          "observed_value": "955.2hPa",
           "baseline_value": "840.0hPa",
-          "deviation": "+116.2hPa",
-          "description": "Observed 956.2hPa vs historical nominal baseline 840.0hPa (Delta: +116.2hPa)"
+          "deviation": "+115.2hPa",
+          "description": "Observed 955.2hPa vs historical nominal baseline 840.0hPa (Delta: +115.2hPa)"
         },
         {
           "name": "Temperature Deviation",
@@ -1547,10 +1547,10 @@
           "feature": "temperature",
           "contribution": 0.34,
           "direction": "increases_anomaly",
-          "observed_value": "32.9\u00b0C",
+          "observed_value": "32.4\u00b0C",
           "baseline_value": "18.0\u00b0C",
-          "deviation": "+14.9\u00b0C",
-          "description": "Observed 32.9\u00b0C vs historical nominal baseline 18.0\u00b0C (Delta: +14.9\u00b0C)"
+          "deviation": "+14.4\u00b0C",
+          "description": "Observed 32.4\u00b0C vs historical nominal baseline 18.0\u00b0C (Delta: +14.4\u00b0C)"
         },
         {
           "name": "Humidity Deviation",
@@ -1558,10 +1558,10 @@
           "feature": "humidity",
           "contribution": 0.24,
           "direction": "decreases_anomaly",
-          "observed_value": "38.4%",
+          "observed_value": "40.1%",
           "baseline_value": "45.0%",
-          "deviation": "-6.6%",
-          "description": "Observed 38.4% vs historical nominal baseline 45.0% (Delta: -6.6%)"
+          "deviation": "-4.9%",
+          "description": "Observed 40.1% vs historical nominal baseline 45.0% (Delta: -4.9%)"
         },
         {
           "name": "Spatial Neighbor Correlation",
@@ -1659,7 +1659,7 @@
           "station_name": "Chennai Nungambakkam (Central Coastal Base)",
           "distance_km": 12.4,
           "reading": "840.3hPa",
-          "expected": "956.2hPa",
+          "expected": "955.2hPa",
           "is_corroborating": false,
           "status": "Normal (Divergent)"
         }
@@ -1669,7 +1669,7 @@
         "Verify solar panel charge controller and station backup battery voltage.",
         "Inspect physical transmission antenna cable connections for moisture ingress or wind misalignment."
       ],
-      "narrative": "Communication failure: telemetry packet dropout detected at Chennai Meenambakkam (Airport Plains Hub). Sensor channel pressure ceased continuous transmission (41% contribution). Physical hardware diagnostics and telemetry uplink inspection recommended."
+      "narrative": "Communication failure: telemetry packet dropout detected at Chennai Meenambakkam (Airport Plains Hub). Sensor channel pressure ceased continuous transmission (42% contribution). Physical hardware diagnostics and telemetry uplink inspection recommended."
     }
   }
 }

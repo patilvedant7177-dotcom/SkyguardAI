@@ -144,5 +144,7 @@ pytest tests/ -v
 ## 📄 Documentation
 
 - Full Platform Architecture: [DOCUMENTATION.md](DOCUMENTATION.md)
+- Technology Stack & Methodology: [TECHSTACK.md](TECHSTACK.md)
 - UI & Frontend Deep-Dive: [FRONTEND_ARCHITECTURE.md](FRONTEND_ARCHITECTURE.md)
-- Microsoft Word Reports: `SkyguardAI_Documentation.docx` & `SkyguardAI_Frontend_Documentation.docx`
+- Microsoft Word Reports: `SkyguardAI_Documentation.docx`, `SkyguardAI_Frontend_Documentation.docx`, & `SkyguardAI_TechStack_Documentation.docx`
+
