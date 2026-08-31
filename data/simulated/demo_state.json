@@ -24,7 +24,7 @@
       "latitude": 28.585,
       "longitude": 77.206,
       "elevation": 216,
-      "status": "fault",
+      "status": "normal",
       "source": "simulated"
     },
     {
@@ -42,7 +42,7 @@
       "latitude": 12.9698,
       "longitude": 77.75,
       "elevation": 915,
-      "status": "fault",
+      "status": "normal",
       "source": "simulated"
     },
     {
@@ -51,7 +51,7 @@
       "latitude": 13.08,
       "longitude": 77.58,
       "elevation": 932,
-      "status": "fault",
+      "status": "normal",
       "source": "simulated"
     },
     {
@@ -78,7 +78,7 @@
       "latitude": 18.53,
       "longitude": 73.85,
       "elevation": 560,
-      "status": "fault",
+      "status": "normal",
       "source": "simulated"
     },
     {
@@ -87,7 +87,7 @@
       "latitude": 18.54,
       "longitude": 73.79,
       "elevation": 585,
-      "status": "fault",
+      "status": "normal",
       "source": "simulated"
     }
   ],
@@ -96,63 +96,39 @@
       "id": 101,
       "station_id": 1,
       "station_name": "Mumbai Colaba (South Coastal Observatory)",
-      "timestamp": "2026-08-31T15:00:00+00:00Z",
+      "timestamp": "2026-08-31T03:30:00+00:00Z",
       "confidence": 0.91,
-      "severity": "medium",
+      "severity": "high",
       "root_cause": "sensor_fault",
-      "summary": "Isolated calibration drift detected on temperature (Mumbai Colaba (South Coastal Observatory))",
+      "summary": "Isolated spike detected on temperature (Mumbai Colaba (South Coastal Observatory))",
       "parameters_flagged": [
         "temperature"
       ],
-      "status": "active"
+      "status": "active",
+      "event_type": "spike",
+      "magnitude": -3.3477642398494156
     },
     {
       "id": 102,
       "station_id": 1,
       "station_name": "Mumbai Colaba (South Coastal Observatory)",
-      "timestamp": "2026-08-31T15:00:00+00:00Z",
-      "confidence": 0.91,
-      "severity": "medium",
-      "root_cause": "sensor_fault",
-      "summary": "Isolated calibration drift detected on pressure (Mumbai Colaba (South Coastal Observatory))",
+      "timestamp": "2026-08-31T11:00:00+00:00Z",
+      "confidence": 0.94,
+      "severity": "high",
+      "root_cause": "genuine_event",
+      "summary": "Regional atmospheric front detected across 2 stations (corroborated by Mumbai Santacruz (Inland Suburban Hub))",
       "parameters_flagged": [
-        "pressure"
+        "humidity"
       ],
-      "status": "active"
+      "status": "active",
+      "event_type": "frozen_sensor",
+      "magnitude": 48.0
     },
     {
       "id": 103,
-      "station_id": 1,
-      "station_name": "Mumbai Colaba (South Coastal Observatory)",
-      "timestamp": "2026-08-31T07:00:00+00:00Z",
-      "confidence": 0.91,
-      "severity": "high",
-      "root_cause": "sensor_fault",
-      "summary": "Isolated frozen sensor detected on humidity (Mumbai Colaba (South Coastal Observatory))",
-      "parameters_flagged": [
-        "humidity"
-      ],
-      "status": "active"
-    },
-    {
-      "id": 104,
-      "station_id": 1,
-      "station_name": "Mumbai Colaba (South Coastal Observatory)",
-      "timestamp": "2026-08-31T15:00:00+00:00Z",
-      "confidence": 0.91,
-      "severity": "medium",
-      "root_cause": "sensor_fault",
-      "summary": "Isolated calibration drift detected on humidity (Mumbai Colaba (South Coastal Observatory))",
-      "parameters_flagged": [
-        "humidity"
-      ],
-      "status": "active"
-    },
-    {
-      "id": 105,
       "station_id": 2,
       "station_name": "Mumbai Santacruz (Inland Suburban Hub)",
-      "timestamp": "2026-08-30T14:00:00+00:00Z",
+      "timestamp": "2026-08-30T18:00:00+00:00Z",
       "confidence": 0.91,
       "severity": "high",
       "root_cause": "sensor_fault",
@@ -160,153 +136,31 @@
       "parameters_flagged": [
         "temperature"
       ],
-      "status": "active"
+      "status": "active",
+      "event_type": "spike",
+      "magnitude": 3.412279278329738
     },
     {
-      "id": 106,
+      "id": 104,
       "station_id": 2,
       "station_name": "Mumbai Santacruz (Inland Suburban Hub)",
-      "timestamp": "2026-08-31T15:00:00+00:00Z",
-      "confidence": 0.91,
-      "severity": "medium",
-      "root_cause": "sensor_fault",
-      "summary": "Isolated calibration drift detected on temperature (Mumbai Santacruz (Inland Suburban Hub))",
-      "parameters_flagged": [
-        "temperature"
-      ],
-      "status": "active"
-    },
-    {
-      "id": 107,
-      "station_id": 2,
-      "station_name": "Mumbai Santacruz (Inland Suburban Hub)",
-      "timestamp": "2026-08-31T15:00:00+00:00Z",
-      "confidence": 0.91,
-      "severity": "medium",
-      "root_cause": "sensor_fault",
-      "summary": "Isolated calibration drift detected on pressure (Mumbai Santacruz (Inland Suburban Hub))",
-      "parameters_flagged": [
-        "pressure"
-      ],
-      "status": "active"
-    },
-    {
-      "id": 108,
-      "station_id": 2,
-      "station_name": "Mumbai Santacruz (Inland Suburban Hub)",
-      "timestamp": "2026-08-31T07:30:00+00:00Z",
-      "confidence": 0.91,
+      "timestamp": "2026-08-31T10:45:00+00:00Z",
+      "confidence": 0.94,
       "severity": "high",
-      "root_cause": "sensor_fault",
-      "summary": "Isolated frozen sensor detected on humidity (Mumbai Santacruz (Inland Suburban Hub))",
+      "root_cause": "genuine_event",
+      "summary": "Regional atmospheric front detected across 2 stations (corroborated by Mumbai Colaba (South Coastal Observatory))",
       "parameters_flagged": [
         "humidity"
       ],
-      "status": "active"
+      "status": "active",
+      "event_type": "frozen_sensor",
+      "magnitude": 46.0
     },
     {
-      "id": 109,
-      "station_id": 2,
-      "station_name": "Mumbai Santacruz (Inland Suburban Hub)",
-      "timestamp": "2026-08-31T15:00:00+00:00Z",
-      "confidence": 0.91,
-      "severity": "medium",
-      "root_cause": "sensor_fault",
-      "summary": "Isolated calibration drift detected on humidity (Mumbai Santacruz (Inland Suburban Hub))",
-      "parameters_flagged": [
-        "humidity"
-      ],
-      "status": "active"
-    },
-    {
-      "id": 110,
-      "station_id": 3,
-      "station_name": "Delhi Safdarjung (Central Met Observatory)",
-      "timestamp": "2026-08-31T15:00:00+00:00Z",
-      "confidence": 0.91,
-      "severity": "medium",
-      "root_cause": "sensor_fault",
-      "summary": "Isolated calibration drift detected on temperature (Delhi Safdarjung (Central Met Observatory))",
-      "parameters_flagged": [
-        "temperature"
-      ],
-      "status": "active"
-    },
-    {
-      "id": 111,
-      "station_id": 3,
-      "station_name": "Delhi Safdarjung (Central Met Observatory)",
-      "timestamp": "2026-08-31T15:00:00+00:00Z",
-      "confidence": 0.91,
-      "severity": "medium",
-      "root_cause": "sensor_fault",
-      "summary": "Isolated calibration drift detected on pressure (Delhi Safdarjung (Central Met Observatory))",
-      "parameters_flagged": [
-        "pressure"
-      ],
-      "status": "active"
-    },
-    {
-      "id": 112,
-      "station_id": 3,
-      "station_name": "Delhi Safdarjung (Central Met Observatory)",
-      "timestamp": "2026-08-25T18:30:00+00:00Z",
-      "confidence": 0.91,
-      "severity": "high",
-      "root_cause": "sensor_fault",
-      "summary": "Isolated frozen sensor detected on humidity (Delhi Safdarjung (Central Met Observatory))",
-      "parameters_flagged": [
-        "humidity"
-      ],
-      "status": "active"
-    },
-    {
-      "id": 113,
-      "station_id": 3,
-      "station_name": "Delhi Safdarjung (Central Met Observatory)",
-      "timestamp": "2026-08-31T15:00:00+00:00Z",
-      "confidence": 0.91,
-      "severity": "medium",
-      "root_cause": "sensor_fault",
-      "summary": "Isolated calibration drift detected on humidity (Delhi Safdarjung (Central Met Observatory))",
-      "parameters_flagged": [
-        "humidity"
-      ],
-      "status": "active"
-    },
-    {
-      "id": 114,
+      "id": 105,
       "station_id": 4,
       "station_name": "Delhi Palam (Western Plains Station)",
-      "timestamp": "2026-08-31T15:00:00+00:00Z",
-      "confidence": 0.91,
-      "severity": "medium",
-      "root_cause": "sensor_fault",
-      "summary": "Isolated calibration drift detected on temperature (Delhi Palam (Western Plains Station))",
-      "parameters_flagged": [
-        "temperature"
-      ],
-      "status": "active"
-    },
-    {
-      "id": 115,
-      "station_id": 4,
-      "station_name": "Delhi Palam (Western Plains Station)",
-      "timestamp": "2026-08-31T15:00:00+00:00Z",
-      "confidence": 0.91,
-      "severity": "medium",
-      "root_cause": "sensor_fault",
-      "summary": "Isolated calibration drift detected on pressure (Delhi Palam (Western Plains Station))",
-      "parameters_flagged": [
-        "pressure"
-      ],
-      "status": "active"
-    },
-    {
-      "id": 116,
-      "station_id": 4,
-      "station_name": "Delhi Palam (Western Plains Station)",
-      "timestamp": "2026-08-29T19:45:00+00:00Z",
+      "timestamp": "2026-08-29T23:45:00+00:00Z",
       "confidence": 0.91,
       "severity": "high",
       "root_cause": "sensor_fault",
@@ -314,94 +168,12 @@
       "parameters_flagged": [
         "humidity"
       ],
-      "status": "active"
+      "status": "active",
+      "event_type": "frozen_sensor",
+      "magnitude": 28.0
     },
     {
-      "id": 117,
-      "station_id": 4,
-      "station_name": "Delhi Palam (Western Plains Station)",
-      "timestamp": "2026-08-31T15:00:00+00:00Z",
-      "confidence": 0.91,
-      "severity": "medium",
-      "root_cause": "sensor_fault",
-      "summary": "Isolated calibration drift detected on humidity (Delhi Palam (Western Plains Station))",
-      "parameters_flagged": [
-        "humidity"
-      ],
-      "status": "active"
-    },
-    {
-      "id": 118,
-      "station_id": 5,
-      "station_name": "Bengaluru Whitefield (Tech Park Station)",
-      "timestamp": "2026-08-31T15:00:00+00:00Z",
-      "confidence": 0.91,
-      "severity": "medium",
-      "root_cause": "sensor_fault",
-      "summary": "Isolated calibration drift detected on temperature (Bengaluru Whitefield (Tech Park Station))",
-      "parameters_flagged": [
-        "temperature"
-      ],
-      "status": "active"
-    },
-    {
-      "id": 119,
-      "station_id": 5,
-      "station_name": "Bengaluru Whitefield (Tech Park Station)",
-      "timestamp": "2026-08-31T15:00:00+00:00Z",
-      "confidence": 0.91,
-      "severity": "medium",
-      "root_cause": "sensor_fault",
-      "summary": "Isolated calibration drift detected on humidity (Bengaluru Whitefield (Tech Park Station))",
-      "parameters_flagged": [
-        "humidity"
-      ],
-      "status": "active"
-    },
-    {
-      "id": 120,
-      "station_id": 6,
-      "station_name": "Bengaluru GKVK (Agricultural Campus Lab)",
-      "timestamp": "2026-08-31T15:00:00+00:00Z",
-      "confidence": 0.91,
-      "severity": "medium",
-      "root_cause": "sensor_fault",
-      "summary": "Isolated calibration drift detected on temperature (Bengaluru GKVK (Agricultural Campus Lab))",
-      "parameters_flagged": [
-        "temperature"
-      ],
-      "status": "active"
-    },
-    {
-      "id": 121,
-      "station_id": 6,
-      "station_name": "Bengaluru GKVK (Agricultural Campus Lab)",
-      "timestamp": "2026-08-31T15:00:00+00:00Z",
-      "confidence": 0.91,
-      "severity": "medium",
-      "root_cause": "sensor_fault",
-      "summary": "Isolated calibration drift detected on humidity (Bengaluru GKVK (Agricultural Campus Lab))",
-      "parameters_flagged": [
-        "humidity"
-      ],
-      "status": "active"
-    },
-    {
-      "id": 122,
-      "station_id": 7,
-      "station_name": "Chennai Nungambakkam (Central Coastal Base)",
-      "timestamp": "2026-08-31T15:00:00+00:00Z",
-      "confidence": 0.91,
-      "severity": "medium",
-      "root_cause": "sensor_fault",
-      "summary": "Isolated calibration drift detected on temperature (Chennai Nungambakkam (Central Coastal Base))",
-      "parameters_flagged": [
-        "temperature"
-      ],
-      "status": "active"
-    },
-    {
-      "id": 123,
+      "id": 106,
       "station_id": 7,
       "station_name": "Chennai Nungambakkam (Central Coastal Base)",
       "timestamp": "2026-08-27T06:00:00+00:00Z",
@@ -412,27 +184,15 @@
       "parameters_flagged": [
         "humidity"
       ],
-      "status": "active"
+      "status": "active",
+      "event_type": "frozen_sensor",
+      "magnitude": 20.0
     },
     {
-      "id": 124,
-      "station_id": 7,
-      "station_name": "Chennai Nungambakkam (Central Coastal Base)",
-      "timestamp": "2026-08-31T15:00:00+00:00Z",
-      "confidence": 0.91,
-      "severity": "medium",
-      "root_cause": "sensor_fault",
-      "summary": "Isolated calibration drift detected on humidity (Chennai Nungambakkam (Central Coastal Base))",
-      "parameters_flagged": [
-        "humidity"
-      ],
-      "status": "active"
-    },
-    {
-      "id": 125,
+      "id": 107,
       "station_id": 8,
       "station_name": "Chennai Meenambakkam (Airport Plains Hub)",
-      "timestamp": "2026-08-30T11:30:00+00:00Z",
+      "timestamp": "2026-08-30T15:30:00+00:00Z",
       "confidence": 0.91,
       "severity": "high",
       "root_cause": "comms_error",
@@ -442,233 +202,341 @@
         "pressure",
         "humidity"
       ],
-      "status": "active"
-    },
-    {
-      "id": 126,
-      "station_id": 8,
-      "station_name": "Chennai Meenambakkam (Airport Plains Hub)",
-      "timestamp": "2026-08-31T15:00:00+00:00Z",
-      "confidence": 0.91,
-      "severity": "medium",
-      "root_cause": "sensor_fault",
-      "summary": "Isolated calibration drift detected on temperature (Chennai Meenambakkam (Airport Plains Hub))",
-      "parameters_flagged": [
-        "temperature"
-      ],
-      "status": "active"
-    },
-    {
-      "id": 127,
-      "station_id": 8,
-      "station_name": "Chennai Meenambakkam (Airport Plains Hub)",
-      "timestamp": "2026-08-27T05:30:00+00:00Z",
-      "confidence": 0.91,
-      "severity": "high",
-      "root_cause": "sensor_fault",
-      "summary": "Isolated frozen sensor detected on humidity (Chennai Meenambakkam (Airport Plains Hub))",
-      "parameters_flagged": [
-        "humidity"
-      ],
-      "status": "active"
-    },
-    {
-      "id": 128,
-      "station_id": 8,
-      "station_name": "Chennai Meenambakkam (Airport Plains Hub)",
-      "timestamp": "2026-08-31T15:00:00+00:00Z",
-      "confidence": 0.91,
-      "severity": "medium",
-      "root_cause": "sensor_fault",
-      "summary": "Isolated calibration drift detected on humidity (Chennai Meenambakkam (Airport Plains Hub))",
-      "parameters_flagged": [
-        "humidity"
-      ],
-      "status": "active"
-    },
-    {
-      "id": 129,
-      "station_id": 9,
-      "station_name": "Pune Shivajinagar (Met Research Center)",
-      "timestamp": "2026-08-31T15:00:00+00:00Z",
-      "confidence": 0.91,
-      "severity": "medium",
-      "root_cause": "sensor_fault",
-      "summary": "Isolated calibration drift detected on temperature (Pune Shivajinagar (Met Research Center))",
-      "parameters_flagged": [
-        "temperature"
-      ],
-      "status": "active"
-    },
-    {
-      "id": 130,
-      "station_id": 9,
-      "station_name": "Pune Shivajinagar (Met Research Center)",
-      "timestamp": "2026-08-31T15:00:00+00:00Z",
-      "confidence": 0.91,
-      "severity": "medium",
-      "root_cause": "sensor_fault",
-      "summary": "Isolated calibration drift detected on pressure (Pune Shivajinagar (Met Research Center))",
-      "parameters_flagged": [
-        "pressure"
-      ],
-      "status": "active"
-    },
-    {
-      "id": 131,
-      "station_id": 9,
-      "station_name": "Pune Shivajinagar (Met Research Center)",
-      "timestamp": "2026-08-31T06:00:00+00:00Z",
-      "confidence": 0.91,
-      "severity": "high",
-      "root_cause": "sensor_fault",
-      "summary": "Isolated frozen sensor detected on humidity (Pune Shivajinagar (Met Research Center))",
-      "parameters_flagged": [
-        "humidity"
-      ],
-      "status": "active"
-    },
-    {
-      "id": 132,
-      "station_id": 9,
-      "station_name": "Pune Shivajinagar (Met Research Center)",
-      "timestamp": "2026-08-31T15:00:00+00:00Z",
-      "confidence": 0.91,
-      "severity": "medium",
-      "root_cause": "sensor_fault",
-      "summary": "Isolated calibration drift detected on humidity (Pune Shivajinagar (Met Research Center))",
-      "parameters_flagged": [
-        "humidity"
-      ],
-      "status": "active"
-    },
-    {
-      "id": 133,
-      "station_id": 10,
-      "station_name": "Pune Pashan (Atmospheric Science Lab)",
-      "timestamp": "2026-08-31T15:00:00+00:00Z",
-      "confidence": 0.91,
-      "severity": "medium",
-      "root_cause": "sensor_fault",
-      "summary": "Isolated calibration drift detected on temperature (Pune Pashan (Atmospheric Science Lab))",
-      "parameters_flagged": [
-        "temperature"
-      ],
-      "status": "active"
-    },
-    {
-      "id": 134,
-      "station_id": 10,
-      "station_name": "Pune Pashan (Atmospheric Science Lab)",
-      "timestamp": "2026-08-31T15:00:00+00:00Z",
-      "confidence": 0.91,
-      "severity": "medium",
-      "root_cause": "sensor_fault",
-      "summary": "Isolated calibration drift detected on pressure (Pune Pashan (Atmospheric Science Lab))",
-      "parameters_flagged": [
-        "pressure"
-      ],
-      "status": "active"
-    },
-    {
-      "id": 135,
-      "station_id": 10,
-      "station_name": "Pune Pashan (Atmospheric Science Lab)",
-      "timestamp": "2026-08-31T06:30:00+00:00Z",
-      "confidence": 0.91,
-      "severity": "high",
-      "root_cause": "sensor_fault",
-      "summary": "Isolated frozen sensor detected on humidity (Pune Pashan (Atmospheric Science Lab))",
-      "parameters_flagged": [
-        "humidity"
-      ],
-      "status": "active"
-    },
-    {
-      "id": 136,
-      "station_id": 10,
-      "station_name": "Pune Pashan (Atmospheric Science Lab)",
-      "timestamp": "2026-08-31T15:00:00+00:00Z",
-      "confidence": 0.91,
-      "severity": "medium",
-      "root_cause": "sensor_fault",
-      "summary": "Isolated calibration drift detected on humidity (Pune Pashan (Atmospheric Science Lab))",
-      "parameters_flagged": [
-        "humidity"
-      ],
-      "status": "active"
+      "status": "active",
+      "event_type": "comms_dropout",
+      "magnitude": 25.0
     }
   ],
   "sensor_health": {
     "1": {
       "station_id": 1,
-      "health_score": 58,
+      "health_score": 51,
       "trend": "degrading",
       "maintenance_forecast_days": 7,
-      "last_maintenance_at": "2026-08-03T15:10:25.144518+00:00Z"
+      "last_maintenance_at": "2026-08-08T19:46:19Z",
+      "diagnostics": [
+        {
+          "name": "RTD Temperature Probe",
+          "metric": "+0.29% (Drift)",
+          "status": "nominal",
+          "status_label": "Nominal"
+        },
+        {
+          "name": "Barometric Capsule",
+          "metric": "96.7% Tension",
+          "status": "nominal",
+          "status_label": "Nominal"
+        },
+        {
+          "name": "Hygrometer Capacitance",
+          "metric": "+0.42% Capacitance Bias",
+          "status": "warning",
+          "status_label": "High Drift"
+        },
+        {
+          "name": "Telemetry Modem",
+          "metric": "100.0% Uplink",
+          "status": "nominal",
+          "status_label": "Nominal"
+        }
+      ]
     },
     "2": {
       "station_id": 2,
-      "health_score": 58,
+      "health_score": 52,
       "trend": "degrading",
       "maintenance_forecast_days": 7,
-      "last_maintenance_at": "2026-07-31T15:10:25.144535+00:00Z"
+      "last_maintenance_at": "2026-08-05T19:46:19Z",
+      "diagnostics": [
+        {
+          "name": "RTD Temperature Probe",
+          "metric": "+0.24% (Drift)",
+          "status": "nominal",
+          "status_label": "Nominal"
+        },
+        {
+          "name": "Barometric Capsule",
+          "metric": "96.7% Tension",
+          "status": "nominal",
+          "status_label": "Nominal"
+        },
+        {
+          "name": "Hygrometer Capacitance",
+          "metric": "+0.37% Capacitance Bias",
+          "status": "warning",
+          "status_label": "High Drift"
+        },
+        {
+          "name": "Telemetry Modem",
+          "metric": "100.0% Uplink",
+          "status": "nominal",
+          "status_label": "Nominal"
+        }
+      ]
     },
     "3": {
       "station_id": 3,
-      "health_score": 58,
-      "trend": "degrading",
-      "maintenance_forecast_days": 7,
-      "last_maintenance_at": "2026-07-28T15:10:25.144545+00:00Z"
+      "health_score": 96,
+      "trend": "stable",
+      "maintenance_forecast_days": null,
+      "last_maintenance_at": "2026-08-02T19:46:19Z",
+      "diagnostics": [
+        {
+          "name": "RTD Temperature Probe",
+          "metric": "+0.02% (Nominal)",
+          "status": "nominal",
+          "status_label": "Nominal"
+        },
+        {
+          "name": "Barometric Capsule",
+          "metric": "97.2% Tension",
+          "status": "nominal",
+          "status_label": "Nominal"
+        },
+        {
+          "name": "Hygrometer Capacitance",
+          "metric": "+0.20% Capacitance Bias",
+          "status": "nominal",
+          "status_label": "Nominal"
+        },
+        {
+          "name": "Telemetry Modem",
+          "metric": "100.0% Uplink",
+          "status": "nominal",
+          "status_label": "Nominal"
+        }
+      ]
     },
     "4": {
       "station_id": 4,
-      "health_score": 58,
+      "health_score": 44,
       "trend": "degrading",
-      "maintenance_forecast_days": 7,
-      "last_maintenance_at": "2026-07-25T15:10:25.144552+00:00Z"
+      "maintenance_forecast_days": 6,
+      "last_maintenance_at": "2026-07-30T19:46:19Z",
+      "diagnostics": [
+        {
+          "name": "RTD Temperature Probe",
+          "metric": "+0.02% (Nominal)",
+          "status": "nominal",
+          "status_label": "Nominal"
+        },
+        {
+          "name": "Barometric Capsule",
+          "metric": "97.2% Tension",
+          "status": "nominal",
+          "status_label": "Nominal"
+        },
+        {
+          "name": "Hygrometer Capacitance",
+          "metric": "Nominal",
+          "status": "nominal",
+          "status_label": "Nominal"
+        },
+        {
+          "name": "Telemetry Modem",
+          "metric": "100.0% Uplink",
+          "status": "nominal",
+          "status_label": "Nominal"
+        }
+      ]
     },
     "5": {
       "station_id": 5,
-      "health_score": 58,
-      "trend": "degrading",
-      "maintenance_forecast_days": 7,
-      "last_maintenance_at": "2026-07-22T15:10:25.144559+00:00Z"
+      "health_score": 98,
+      "trend": "stable",
+      "maintenance_forecast_days": null,
+      "last_maintenance_at": "2026-07-27T19:46:19Z",
+      "diagnostics": [
+        {
+          "name": "RTD Temperature Probe",
+          "metric": "+0.10% (Nominal)",
+          "status": "nominal",
+          "status_label": "Nominal"
+        },
+        {
+          "name": "Barometric Capsule",
+          "metric": "97.4% Tension",
+          "status": "nominal",
+          "status_label": "Nominal"
+        },
+        {
+          "name": "Hygrometer Capacitance",
+          "metric": "+0.34% Capacitance Bias",
+          "status": "warning",
+          "status_label": "High Drift"
+        },
+        {
+          "name": "Telemetry Modem",
+          "metric": "100.0% Uplink",
+          "status": "nominal",
+          "status_label": "Nominal"
+        }
+      ]
     },
     "6": {
       "station_id": 6,
-      "health_score": 58,
-      "trend": "degrading",
-      "maintenance_forecast_days": 7,
-      "last_maintenance_at": "2026-07-19T15:10:25.144565+00:00Z"
+      "health_score": 96,
+      "trend": "stable",
+      "maintenance_forecast_days": null,
+      "last_maintenance_at": "2026-07-24T19:46:19Z",
+      "diagnostics": [
+        {
+          "name": "RTD Temperature Probe",
+          "metric": "+0.00% (Nominal)",
+          "status": "nominal",
+          "status_label": "Nominal"
+        },
+        {
+          "name": "Barometric Capsule",
+          "metric": "97.3% Tension",
+          "status": "nominal",
+          "status_label": "Nominal"
+        },
+        {
+          "name": "Hygrometer Capacitance",
+          "metric": "+0.31% Capacitance Bias",
+          "status": "warning",
+          "status_label": "High Drift"
+        },
+        {
+          "name": "Telemetry Modem",
+          "metric": "100.0% Uplink",
+          "status": "nominal",
+          "status_label": "Nominal"
+        }
+      ]
     },
     "7": {
       "station_id": 7,
-      "health_score": 58,
+      "health_score": 45,
       "trend": "degrading",
-      "maintenance_forecast_days": 7,
-      "last_maintenance_at": "2026-07-16T15:10:25.144571+00:00Z"
+      "maintenance_forecast_days": 6,
+      "last_maintenance_at": "2026-07-21T19:46:19Z",
+      "diagnostics": [
+        {
+          "name": "RTD Temperature Probe",
+          "metric": "+0.15% (Drift)",
+          "status": "nominal",
+          "status_label": "Nominal"
+        },
+        {
+          "name": "Barometric Capsule",
+          "metric": "97.4% Tension",
+          "status": "nominal",
+          "status_label": "Nominal"
+        },
+        {
+          "name": "Hygrometer Capacitance",
+          "metric": "+0.38% Capacitance Bias",
+          "status": "warning",
+          "status_label": "High Drift"
+        },
+        {
+          "name": "Telemetry Modem",
+          "metric": "100.0% Uplink",
+          "status": "nominal",
+          "status_label": "Nominal"
+        }
+      ]
     },
     "8": {
       "station_id": 8,
-      "health_score": 45,
+      "health_score": 23,
       "trend": "degrading",
-      "maintenance_forecast_days": 2,
-      "last_maintenance_at": "2026-07-13T15:10:25.144578+00:00Z"
+      "maintenance_forecast_days": 3,
+      "last_maintenance_at": "2026-07-18T19:46:19Z",
+      "diagnostics": [
+        {
+          "name": "RTD Temperature Probe",
+          "metric": "+0.18% (Drift)",
+          "status": "nominal",
+          "status_label": "Nominal"
+        },
+        {
+          "name": "Barometric Capsule",
+          "metric": "97.9% Tension",
+          "status": "nominal",
+          "status_label": "Nominal"
+        },
+        {
+          "name": "Hygrometer Capacitance",
+          "metric": "+0.44% Capacitance Bias",
+          "status": "warning",
+          "status_label": "High Drift"
+        },
+        {
+          "name": "Telemetry Modem",
+          "metric": "96.3% Uplink",
+          "status": "nominal",
+          "status_label": "Nominal"
+        }
+      ]
     },
     "9": {
       "station_id": 9,
-      "health_score": 58,
+      "health_score": 83,
       "trend": "degrading",
-      "maintenance_forecast_days": 7,
-      "last_maintenance_at": "2026-07-10T15:10:25.144585+00:00Z"
+      "maintenance_forecast_days": 20,
+      "last_maintenance_at": "2026-08-09T19:46:19Z",
+      "diagnostics": [
+        {
+          "name": "RTD Temperature Probe",
+          "metric": "+0.19% (Drift)",
+          "status": "nominal",
+          "status_label": "Nominal"
+        },
+        {
+          "name": "Barometric Capsule",
+          "metric": "96.6% Tension",
+          "status": "nominal",
+          "status_label": "Nominal"
+        },
+        {
+          "name": "Hygrometer Capacitance",
+          "metric": "+0.49% Capacitance Bias",
+          "status": "warning",
+          "status_label": "High Drift"
+        },
+        {
+          "name": "Telemetry Modem",
+          "metric": "100.0% Uplink",
+          "status": "nominal",
+          "status_label": "Nominal"
+        }
+      ]
     },
     "10": {
       "station_id": 10,
-      "health_score": 58,
+      "health_score": 84,
       "trend": "degrading",
-      "maintenance_forecast_days": 7,
-      "last_maintenance_at": "2026-07-07T15:10:25.144591+00:00Z"
+      "maintenance_forecast_days": 21,
+      "last_maintenance_at": "2026-08-06T19:46:19Z",
+      "diagnostics": [
+        {
+          "name": "RTD Temperature Probe",
+          "metric": "+0.16% (Drift)",
+          "status": "nominal",
+          "status_label": "Nominal"
+        },
+        {
+          "name": "Barometric Capsule",
+          "metric": "96.6% Tension",
+          "status": "nominal",
+          "status_label": "Nominal"
+        },
+        {
+          "name": "Hygrometer Capacitance",
+          "metric": "+0.45% Capacitance Bias",
+          "status": "warning",
+          "status_label": "High Drift"
+        },
+        {
+          "name": "Telemetry Modem",
+          "metric": "100.0% Uplink",
+          "status": "nominal",
+          "status_label": "Nominal"
+        }
+      ]
     }
   },
   "explanations": {
@@ -676,397 +544,1132 @@
       "alert_id": 101,
       "top_features": [
         {
+          "feature": "pressure",
+          "contribution": 0.4,
+          "direction": "increases_anomaly"
+        },
+        {
           "feature": "temperature",
-          "contribution": 0.88,
+          "contribution": 0.31,
+          "direction": "decreases_anomaly"
+        },
+        {
+          "feature": "humidity",
+          "contribution": 0.28,
           "direction": "increases_anomaly"
         }
       ],
-      "narrative": "Isolated sensor fault: Mumbai Colaba (South Coastal Observatory) triggered an anomaly on temperature, but 0 of 1 nearest neighboring stations corroborated the reading. Hardware diagnostics or field recalibration recommended."
+      "contributing_factors": [
+        {
+          "name": "Pressure Deviation",
+          "category": "atmospheric_parameter",
+          "feature": "pressure",
+          "contribution": 0.4,
+          "direction": "increases_anomaly",
+          "observed_value": "949.0hPa",
+          "baseline_value": "840.0hPa",
+          "deviation": "+109.0hPa",
+          "description": "Observed 949.0hPa vs historical nominal baseline 840.0hPa (Delta: +109.0hPa)"
+        },
+        {
+          "name": "Temperature Deviation",
+          "category": "atmospheric_parameter",
+          "feature": "temperature",
+          "contribution": 0.31,
+          "direction": "decreases_anomaly",
+          "observed_value": "16.1\u00b0C",
+          "baseline_value": "18.0\u00b0C",
+          "deviation": "-1.9\u00b0C",
+          "description": "Observed 16.1\u00b0C vs historical nominal baseline 18.0\u00b0C (Delta: -1.9\u00b0C)"
+        },
+        {
+          "name": "Humidity Deviation",
+          "category": "atmospheric_parameter",
+          "feature": "humidity",
+          "contribution": 0.28,
+          "direction": "increases_anomaly",
+          "observed_value": "87.9%",
+          "baseline_value": "45.0%",
+          "deviation": "+42.9%",
+          "description": "Observed 87.9% vs historical nominal baseline 45.0% (Delta: +42.9%)"
+        },
+        {
+          "name": "Spatial Neighbor Correlation",
+          "category": "spatial_network",
+          "feature": "spatial_cluster",
+          "contribution": 0.42,
+          "direction": "increases_anomaly",
+          "observed_value": "0/2 Agreeing",
+          "baseline_value": "2/2 Synchronized",
+          "deviation": "-2 Uncorroborated",
+          "description": "Isolated divergence: 0 of 2 nearest stations within 35km radius showed matching trends"
+        },
+        {
+          "name": "Temporal Rate-of-Change",
+          "category": "temporal_dynamics",
+          "feature": "derivative",
+          "contribution": 0.32,
+          "direction": "increases_anomaly",
+          "observed_value": "> 3.8 sigma/15min",
+          "baseline_value": "\u00b10.5 sigma/hr",
+          "deviation": "Elevated Gradient",
+          "description": "Instantaneous step-jump in telemetry stream exceeding 4.5 sigma rate-of-change limit"
+        },
+        {
+          "name": "Multivariate Physics Consistency",
+          "category": "physics_model",
+          "feature": "mahalanobis",
+          "contribution": 0.28,
+          "direction": "increases_anomaly",
+          "observed_value": "Covariance Breach",
+          "baseline_value": "Clausius-Clapeyron Bound",
+          "deviation": "3.4 sigma Mahalanobis",
+          "description": "Cross-parameter covariance check evaluating temperature-pressure-humidity thermodynamic consistency"
+        }
+      ],
+      "reasoning_chain": [
+        {
+          "step_number": 1,
+          "title": "Sensor Variance Trigger",
+          "evidence": "Anomalous unphysical reading on pressure (949.0hPa) triggered single-station STL residual and statistical Z-score detectors (> 3.2 sigma).",
+          "status": "flagged"
+        },
+        {
+          "step_number": 2,
+          "title": "Spatial Network Cross-Validation",
+          "evidence": "0 of 2 nearest neighboring stations within 35km corroborated the reading, establishing that the anomaly is strictly isolated to this transducer.",
+          "status": "isolated"
+        },
+        {
+          "step_number": 3,
+          "title": "Multivariate Covariance Violation",
+          "evidence": "Coupled atmospheric channels (pressure and humidity) failed to exhibit corresponding adiabatic thermodynamic shifts, violating physical atmospheric constraints.",
+          "status": "unphysical"
+        },
+        {
+          "step_number": 4,
+          "title": "Ensemble Verdict & Classification",
+          "evidence": "Classified as Isolated Sensor Fault on pressure. Transducer recalibration or hardware probe replacement required.",
+          "status": "verdict"
+        }
+      ],
+      "detector_breakdown": [
+        {
+          "detector_name": "Statistical STL & Z-Score Filter",
+          "score": 0.94,
+          "threshold": 0.6,
+          "flagged": true,
+          "description": "Monitors robust median seasonal-trend decomposition residuals and rolling 3-sigma limits."
+        },
+        {
+          "detector_name": "LSTM Autoencoder Temporal Reconstruction",
+          "score": 0.88,
+          "threshold": 0.55,
+          "flagged": true,
+          "description": "Deep sequence model evaluating temporal dynamics and multi-step prediction error."
+        },
+        {
+          "detector_name": "Isolation Forest Multivariate Anomaly",
+          "score": 0.86,
+          "threshold": 0.5,
+          "flagged": true,
+          "description": "Non-parametric tree ensemble isolating multivariate out-of-distribution feature spaces."
+        },
+        {
+          "detector_name": "Spatial & Mahalanobis Consistency Engine",
+          "score": 0.93,
+          "threshold": 0.5,
+          "flagged": true,
+          "description": "Gaussian kernel spatial interpolation and covariance matrix cross-validation across neighboring stations."
+        }
+      ],
+      "neighbor_corroboration": [
+        {
+          "station_id": 2,
+          "station_name": "Mumbai Santacruz (Inland Suburban Hub)",
+          "distance_km": 19.1,
+          "reading": "840.3hPa",
+          "expected": "949.0hPa",
+          "is_corroborating": false,
+          "status": "Normal (Divergent)"
+        }
+      ],
+      "recommendations": [
+        "Execute remote offset zero-calibration routine on pressure sensor probe.",
+        "Verify aspirator radiation shield fan operation to prevent solar thermal trapping.",
+        "Schedule physical field inspection or transducer replacement if drift exceeds 48 hours.",
+        "Temporarily down-weight pressure channel from spatial weather interpolation grid."
+      ],
+      "narrative": "Isolated HIGH-severity sensor fault identified at Mumbai Colaba (South Coastal Observatory). The anomaly is heavily driven by unphysical behavior in pressure (40% contribution) with observed value of 949.0hPa, which was not corroborated by any neighboring stations in the network cluster. Field calibration or transducer replacement advised."
     },
     "102": {
       "alert_id": 102,
       "top_features": [
         {
           "feature": "pressure",
-          "contribution": 0.88,
-          "direction": "decreases_anomaly"
+          "contribution": 0.43,
+          "direction": "increases_anomaly"
+        },
+        {
+          "feature": "humidity",
+          "contribution": 0.43,
+          "direction": "increases_anomaly"
+        },
+        {
+          "feature": "temperature",
+          "contribution": 0.15,
+          "direction": "increases_anomaly"
         }
       ],
-      "narrative": "Isolated sensor fault: Mumbai Colaba (South Coastal Observatory) triggered an anomaly on pressure, but 0 of 1 nearest neighboring stations corroborated the reading. Hardware diagnostics or field recalibration recommended."
+      "contributing_factors": [
+        {
+          "name": "Pressure Deviation",
+          "category": "atmospheric_parameter",
+          "feature": "pressure",
+          "contribution": 0.43,
+          "direction": "increases_anomaly",
+          "observed_value": "965.9hPa",
+          "baseline_value": "840.0hPa",
+          "deviation": "+125.9hPa",
+          "description": "Observed 965.9hPa vs historical nominal baseline 840.0hPa (Delta: +125.9hPa)"
+        },
+        {
+          "name": "Humidity Deviation",
+          "category": "atmospheric_parameter",
+          "feature": "humidity",
+          "contribution": 0.43,
+          "direction": "increases_anomaly",
+          "observed_value": "71.3%",
+          "baseline_value": "45.0%",
+          "deviation": "+26.3%",
+          "description": "Observed 71.3% vs historical nominal baseline 45.0% (Delta: +26.3%)"
+        },
+        {
+          "name": "Temperature Deviation",
+          "category": "atmospheric_parameter",
+          "feature": "temperature",
+          "contribution": 0.15,
+          "direction": "increases_anomaly",
+          "observed_value": "21.7\u00b0C",
+          "baseline_value": "18.0\u00b0C",
+          "deviation": "+3.7\u00b0C",
+          "description": "Observed 21.7\u00b0C vs historical nominal baseline 18.0\u00b0C (Delta: +3.7\u00b0C)"
+        },
+        {
+          "name": "Spatial Neighbor Correlation",
+          "category": "spatial_network",
+          "feature": "spatial_cluster",
+          "contribution": 0.35,
+          "direction": "decreases_anomaly",
+          "observed_value": "2/2 Agreeing",
+          "baseline_value": "2/2 Synchronized",
+          "deviation": "-0 Uncorroborated",
+          "description": "Synchronized regional movement confirmed: 2 of 2 nearby stations corroborated the event"
+        },
+        {
+          "name": "Temporal Rate-of-Change",
+          "category": "temporal_dynamics",
+          "feature": "derivative",
+          "contribution": 0.32,
+          "direction": "increases_anomaly",
+          "observed_value": "> 3.8 sigma/15min",
+          "baseline_value": "\u00b10.5 sigma/hr",
+          "deviation": "Elevated Gradient",
+          "description": "Instantaneous step-jump in telemetry stream exceeding 4.5 sigma rate-of-change limit"
+        },
+        {
+          "name": "Multivariate Physics Consistency",
+          "category": "physics_model",
+          "feature": "mahalanobis",
+          "contribution": 0.28,
+          "direction": "decreases_anomaly",
+          "observed_value": "Physically Consistent",
+          "baseline_value": "Clausius-Clapeyron Bound",
+          "deviation": "0.8 sigma Mahalanobis",
+          "description": "Cross-parameter covariance check evaluating temperature-pressure-humidity thermodynamic consistency"
+        }
+      ],
+      "reasoning_chain": [
+        {
+          "step_number": 1,
+          "title": "Primary Atmospheric Detection",
+          "evidence": "Significant meteorological variance detected in pressure (965.9hPa), exceeding baseline statistical thresholds with severity 'high'.",
+          "status": "flagged"
+        },
+        {
+          "step_number": 2,
+          "title": "Spatial Network Cross-Validation",
+          "evidence": "2 of 2 neighboring stations within the local radius confirmed coherent synchronized movement, validating a regional wavefront.",
+          "status": "corroborated"
+        },
+        {
+          "step_number": 3,
+          "title": "Multivariate Thermodynamic Coherence",
+          "evidence": "Observed barometric pressure drop and relative humidity shifts match standard atmospheric front physics (Clausius-Clapeyron relation).",
+          "status": "validated"
+        },
+        {
+          "step_number": 4,
+          "title": "Ensemble Verdict & Classification",
+          "evidence": "Classified as Genuine Regional Weather Event. Station hardware and telemetry channels are performing within operational specifications.",
+          "status": "verdict"
+        }
+      ],
+      "detector_breakdown": [
+        {
+          "detector_name": "Statistical STL & Z-Score Filter",
+          "score": 0.92,
+          "threshold": 0.6,
+          "flagged": true,
+          "description": "Monitors robust median seasonal-trend decomposition residuals and rolling 3-sigma limits."
+        },
+        {
+          "detector_name": "LSTM Autoencoder Temporal Reconstruction",
+          "score": 0.89,
+          "threshold": 0.55,
+          "flagged": true,
+          "description": "Deep sequence model evaluating temporal dynamics and multi-step prediction error."
+        },
+        {
+          "detector_name": "Isolation Forest Multivariate Anomaly",
+          "score": 0.92,
+          "threshold": 0.5,
+          "flagged": true,
+          "description": "Non-parametric tree ensemble isolating multivariate out-of-distribution feature spaces."
+        },
+        {
+          "detector_name": "Spatial & Mahalanobis Consistency Engine",
+          "score": 0.24,
+          "threshold": 0.5,
+          "flagged": false,
+          "description": "Gaussian kernel spatial interpolation and covariance matrix cross-validation across neighboring stations."
+        }
+      ],
+      "neighbor_corroboration": [
+        {
+          "station_id": 2,
+          "station_name": "Mumbai Santacruz (Inland Suburban Hub)",
+          "distance_km": 19.1,
+          "reading": "965.5hPa",
+          "expected": "965.9hPa",
+          "is_corroborating": true,
+          "status": "Corroborated"
+        }
+      ],
+      "recommendations": [
+        "Confirm synoptic radar and satellite imagery for active mesoscale convective system or regional front.",
+        "Retain telemetry data in high-confidence meteorological dataset; do NOT filter or down-weight.",
+        "Notify regional meteorological watch desk of observed rapid variance in pressure."
+      ],
+      "narrative": "A HIGH-severity regional meteorological front was detected at Mumbai Colaba (South Coastal Observatory). The primary driver is pressure (43% contribution) with observed value of 965.9hPa, coherently corroborated across 2 neighboring stations within the spatial network. Station hardware is operating normally; alert reflects genuine localized atmospheric dynamics."
     },
     "103": {
       "alert_id": 103,
       "top_features": [
         {
+          "feature": "temperature",
+          "contribution": 0.45,
+          "direction": "increases_anomaly"
+        },
+        {
+          "feature": "pressure",
+          "contribution": 0.43,
+          "direction": "increases_anomaly"
+        },
+        {
           "feature": "humidity",
-          "contribution": 0.88,
+          "contribution": 0.11,
           "direction": "increases_anomaly"
         }
       ],
-      "narrative": "Isolated sensor fault: Mumbai Colaba (South Coastal Observatory) triggered an anomaly on humidity, but 0 of 1 nearest neighboring stations corroborated the reading. Hardware diagnostics or field recalibration recommended."
+      "contributing_factors": [
+        {
+          "name": "Temperature Deviation",
+          "category": "atmospheric_parameter",
+          "feature": "temperature",
+          "contribution": 0.45,
+          "direction": "increases_anomaly",
+          "observed_value": "30.3\u00b0C",
+          "baseline_value": "18.0\u00b0C",
+          "deviation": "+12.3\u00b0C",
+          "description": "Observed 30.3\u00b0C vs historical nominal baseline 18.0\u00b0C (Delta: +12.3\u00b0C)"
+        },
+        {
+          "name": "Pressure Deviation",
+          "category": "atmospheric_parameter",
+          "feature": "pressure",
+          "contribution": 0.43,
+          "direction": "increases_anomaly",
+          "observed_value": "954.8hPa",
+          "baseline_value": "840.0hPa",
+          "deviation": "+114.8hPa",
+          "description": "Observed 954.8hPa vs historical nominal baseline 840.0hPa (Delta: +114.8hPa)"
+        },
+        {
+          "name": "Humidity Deviation",
+          "category": "atmospheric_parameter",
+          "feature": "humidity",
+          "contribution": 0.11,
+          "direction": "increases_anomaly",
+          "observed_value": "46.2%",
+          "baseline_value": "45.0%",
+          "deviation": "+1.2%",
+          "description": "Observed 46.2% vs historical nominal baseline 45.0% (Delta: +1.2%)"
+        },
+        {
+          "name": "Spatial Neighbor Correlation",
+          "category": "spatial_network",
+          "feature": "spatial_cluster",
+          "contribution": 0.42,
+          "direction": "increases_anomaly",
+          "observed_value": "0/2 Agreeing",
+          "baseline_value": "2/2 Synchronized",
+          "deviation": "-2 Uncorroborated",
+          "description": "Isolated divergence: 0 of 2 nearest stations within 35km radius showed matching trends"
+        },
+        {
+          "name": "Temporal Rate-of-Change",
+          "category": "temporal_dynamics",
+          "feature": "derivative",
+          "contribution": 0.32,
+          "direction": "increases_anomaly",
+          "observed_value": "> 3.8 sigma/15min",
+          "baseline_value": "\u00b10.5 sigma/hr",
+          "deviation": "Elevated Gradient",
+          "description": "Instantaneous step-jump in telemetry stream exceeding 4.5 sigma rate-of-change limit"
+        },
+        {
+          "name": "Multivariate Physics Consistency",
+          "category": "physics_model",
+          "feature": "mahalanobis",
+          "contribution": 0.28,
+          "direction": "increases_anomaly",
+          "observed_value": "Covariance Breach",
+          "baseline_value": "Clausius-Clapeyron Bound",
+          "deviation": "3.4 sigma Mahalanobis",
+          "description": "Cross-parameter covariance check evaluating temperature-pressure-humidity thermodynamic consistency"
+        }
+      ],
+      "reasoning_chain": [
+        {
+          "step_number": 1,
+          "title": "Sensor Variance Trigger",
+          "evidence": "Anomalous unphysical reading on temperature (30.3\u00b0C) triggered single-station STL residual and statistical Z-score detectors (> 3.2 sigma).",
+          "status": "flagged"
+        },
+        {
+          "step_number": 2,
+          "title": "Spatial Network Cross-Validation",
+          "evidence": "0 of 2 nearest neighboring stations within 35km corroborated the reading, establishing that the anomaly is strictly isolated to this transducer.",
+          "status": "isolated"
+        },
+        {
+          "step_number": 3,
+          "title": "Multivariate Covariance Violation",
+          "evidence": "Coupled atmospheric channels (pressure and humidity) failed to exhibit corresponding adiabatic thermodynamic shifts, violating physical atmospheric constraints.",
+          "status": "unphysical"
+        },
+        {
+          "step_number": 4,
+          "title": "Ensemble Verdict & Classification",
+          "evidence": "Classified as Isolated Sensor Fault on temperature. Transducer recalibration or hardware probe replacement required.",
+          "status": "verdict"
+        }
+      ],
+      "detector_breakdown": [
+        {
+          "detector_name": "Statistical STL & Z-Score Filter",
+          "score": 0.97,
+          "threshold": 0.6,
+          "flagged": true,
+          "description": "Monitors robust median seasonal-trend decomposition residuals and rolling 3-sigma limits."
+        },
+        {
+          "detector_name": "LSTM Autoencoder Temporal Reconstruction",
+          "score": 0.88,
+          "threshold": 0.55,
+          "flagged": true,
+          "description": "Deep sequence model evaluating temporal dynamics and multi-step prediction error."
+        },
+        {
+          "detector_name": "Isolation Forest Multivariate Anomaly",
+          "score": 0.89,
+          "threshold": 0.5,
+          "flagged": true,
+          "description": "Non-parametric tree ensemble isolating multivariate out-of-distribution feature spaces."
+        },
+        {
+          "detector_name": "Spatial & Mahalanobis Consistency Engine",
+          "score": 0.93,
+          "threshold": 0.5,
+          "flagged": true,
+          "description": "Gaussian kernel spatial interpolation and covariance matrix cross-validation across neighboring stations."
+        }
+      ],
+      "neighbor_corroboration": [
+        {
+          "station_id": 1,
+          "station_name": "Mumbai Colaba (South Coastal Observatory)",
+          "distance_km": 19.1,
+          "reading": "18.3\u00b0C",
+          "expected": "30.3\u00b0C",
+          "is_corroborating": false,
+          "status": "Normal (Divergent)"
+        }
+      ],
+      "recommendations": [
+        "Execute remote offset zero-calibration routine on temperature sensor probe.",
+        "Verify aspirator radiation shield fan operation to prevent solar thermal trapping.",
+        "Schedule physical field inspection or transducer replacement if drift exceeds 48 hours.",
+        "Temporarily down-weight temperature channel from spatial weather interpolation grid."
+      ],
+      "narrative": "Isolated HIGH-severity sensor fault identified at Mumbai Santacruz (Inland Suburban Hub). The anomaly is heavily driven by unphysical behavior in temperature (45% contribution) with observed value of 30.3\u00b0C, which was not corroborated by any neighboring stations in the network cluster. Field calibration or transducer replacement advised."
     },
     "104": {
       "alert_id": 104,
       "top_features": [
         {
+          "feature": "pressure",
+          "contribution": 0.43,
+          "direction": "increases_anomaly"
+        },
+        {
           "feature": "humidity",
-          "contribution": 0.88,
-          "direction": "decreases_anomaly"
+          "contribution": 0.43,
+          "direction": "increases_anomaly"
+        },
+        {
+          "feature": "temperature",
+          "contribution": 0.14,
+          "direction": "increases_anomaly"
         }
       ],
-      "narrative": "Isolated sensor fault: Mumbai Colaba (South Coastal Observatory) triggered an anomaly on humidity, but 0 of 1 nearest neighboring stations corroborated the reading. Hardware diagnostics or field recalibration recommended."
+      "contributing_factors": [
+        {
+          "name": "Pressure Deviation",
+          "category": "atmospheric_parameter",
+          "feature": "pressure",
+          "contribution": 0.43,
+          "direction": "increases_anomaly",
+          "observed_value": "965.7hPa",
+          "baseline_value": "840.0hPa",
+          "deviation": "+125.7hPa",
+          "description": "Observed 965.7hPa vs historical nominal baseline 840.0hPa (Delta: +125.7hPa)"
+        },
+        {
+          "name": "Humidity Deviation",
+          "category": "atmospheric_parameter",
+          "feature": "humidity",
+          "contribution": 0.43,
+          "direction": "increases_anomaly",
+          "observed_value": "72.7%",
+          "baseline_value": "45.0%",
+          "deviation": "+27.7%",
+          "description": "Observed 72.7% vs historical nominal baseline 45.0% (Delta: +27.7%)"
+        },
+        {
+          "name": "Temperature Deviation",
+          "category": "atmospheric_parameter",
+          "feature": "temperature",
+          "contribution": 0.14,
+          "direction": "increases_anomaly",
+          "observed_value": "21.2\u00b0C",
+          "baseline_value": "18.0\u00b0C",
+          "deviation": "+3.2\u00b0C",
+          "description": "Observed 21.2\u00b0C vs historical nominal baseline 18.0\u00b0C (Delta: +3.2\u00b0C)"
+        },
+        {
+          "name": "Spatial Neighbor Correlation",
+          "category": "spatial_network",
+          "feature": "spatial_cluster",
+          "contribution": 0.35,
+          "direction": "decreases_anomaly",
+          "observed_value": "2/2 Agreeing",
+          "baseline_value": "2/2 Synchronized",
+          "deviation": "-0 Uncorroborated",
+          "description": "Synchronized regional movement confirmed: 2 of 2 nearby stations corroborated the event"
+        },
+        {
+          "name": "Temporal Rate-of-Change",
+          "category": "temporal_dynamics",
+          "feature": "derivative",
+          "contribution": 0.32,
+          "direction": "increases_anomaly",
+          "observed_value": "> 3.8 sigma/15min",
+          "baseline_value": "\u00b10.5 sigma/hr",
+          "deviation": "Elevated Gradient",
+          "description": "Instantaneous step-jump in telemetry stream exceeding 4.5 sigma rate-of-change limit"
+        },
+        {
+          "name": "Multivariate Physics Consistency",
+          "category": "physics_model",
+          "feature": "mahalanobis",
+          "contribution": 0.28,
+          "direction": "decreases_anomaly",
+          "observed_value": "Physically Consistent",
+          "baseline_value": "Clausius-Clapeyron Bound",
+          "deviation": "0.8 sigma Mahalanobis",
+          "description": "Cross-parameter covariance check evaluating temperature-pressure-humidity thermodynamic consistency"
+        }
+      ],
+      "reasoning_chain": [
+        {
+          "step_number": 1,
+          "title": "Primary Atmospheric Detection",
+          "evidence": "Significant meteorological variance detected in pressure (965.7hPa), exceeding baseline statistical thresholds with severity 'high'.",
+          "status": "flagged"
+        },
+        {
+          "step_number": 2,
+          "title": "Spatial Network Cross-Validation",
+          "evidence": "2 of 2 neighboring stations within the local radius confirmed coherent synchronized movement, validating a regional wavefront.",
+          "status": "corroborated"
+        },
+        {
+          "step_number": 3,
+          "title": "Multivariate Thermodynamic Coherence",
+          "evidence": "Observed barometric pressure drop and relative humidity shifts match standard atmospheric front physics (Clausius-Clapeyron relation).",
+          "status": "validated"
+        },
+        {
+          "step_number": 4,
+          "title": "Ensemble Verdict & Classification",
+          "evidence": "Classified as Genuine Regional Weather Event. Station hardware and telemetry channels are performing within operational specifications.",
+          "status": "verdict"
+        }
+      ],
+      "detector_breakdown": [
+        {
+          "detector_name": "Statistical STL & Z-Score Filter",
+          "score": 0.95,
+          "threshold": 0.6,
+          "flagged": true,
+          "description": "Monitors robust median seasonal-trend decomposition residuals and rolling 3-sigma limits."
+        },
+        {
+          "detector_name": "LSTM Autoencoder Temporal Reconstruction",
+          "score": 0.91,
+          "threshold": 0.55,
+          "flagged": true,
+          "description": "Deep sequence model evaluating temporal dynamics and multi-step prediction error."
+        },
+        {
+          "detector_name": "Isolation Forest Multivariate Anomaly",
+          "score": 0.89,
+          "threshold": 0.5,
+          "flagged": true,
+          "description": "Non-parametric tree ensemble isolating multivariate out-of-distribution feature spaces."
+        },
+        {
+          "detector_name": "Spatial & Mahalanobis Consistency Engine",
+          "score": 0.32,
+          "threshold": 0.5,
+          "flagged": false,
+          "description": "Gaussian kernel spatial interpolation and covariance matrix cross-validation across neighboring stations."
+        }
+      ],
+      "neighbor_corroboration": [
+        {
+          "station_id": 1,
+          "station_name": "Mumbai Colaba (South Coastal Observatory)",
+          "distance_km": 19.1,
+          "reading": "965.3hPa",
+          "expected": "965.7hPa",
+          "is_corroborating": true,
+          "status": "Corroborated"
+        }
+      ],
+      "recommendations": [
+        "Confirm synoptic radar and satellite imagery for active mesoscale convective system or regional front.",
+        "Retain telemetry data in high-confidence meteorological dataset; do NOT filter or down-weight.",
+        "Notify regional meteorological watch desk of observed rapid variance in pressure."
+      ],
+      "narrative": "A HIGH-severity regional meteorological front was detected at Mumbai Santacruz (Inland Suburban Hub). The primary driver is pressure (43% contribution) with observed value of 965.7hPa, coherently corroborated across 2 neighboring stations within the spatial network. Station hardware is operating normally; alert reflects genuine localized atmospheric dynamics."
     },
     "105": {
       "alert_id": 105,
       "top_features": [
         {
+          "feature": "pressure",
+          "contribution": 0.43,
+          "direction": "increases_anomaly"
+        },
+        {
+          "feature": "humidity",
+          "contribution": 0.42,
+          "direction": "increases_anomaly"
+        },
+        {
           "feature": "temperature",
-          "contribution": 0.88,
+          "contribution": 0.15,
           "direction": "increases_anomaly"
         }
       ],
-      "narrative": "Isolated sensor fault: Mumbai Santacruz (Inland Suburban Hub) triggered an anomaly on temperature, but 0 of 1 nearest neighboring stations corroborated the reading. Hardware diagnostics or field recalibration recommended."
+      "contributing_factors": [
+        {
+          "name": "Pressure Deviation",
+          "category": "atmospheric_parameter",
+          "feature": "pressure",
+          "contribution": 0.43,
+          "direction": "increases_anomaly",
+          "observed_value": "946.0hPa",
+          "baseline_value": "840.0hPa",
+          "deviation": "+106.0hPa",
+          "description": "Observed 946.0hPa vs historical nominal baseline 840.0hPa (Delta: +106.0hPa)"
+        },
+        {
+          "name": "Humidity Deviation",
+          "category": "atmospheric_parameter",
+          "feature": "humidity",
+          "contribution": 0.42,
+          "direction": "increases_anomaly",
+          "observed_value": "69.8%",
+          "baseline_value": "45.0%",
+          "deviation": "+24.8%",
+          "description": "Observed 69.8% vs historical nominal baseline 45.0% (Delta: +24.8%)"
+        },
+        {
+          "name": "Temperature Deviation",
+          "category": "atmospheric_parameter",
+          "feature": "temperature",
+          "contribution": 0.15,
+          "direction": "increases_anomaly",
+          "observed_value": "21.4\u00b0C",
+          "baseline_value": "18.0\u00b0C",
+          "deviation": "+3.4\u00b0C",
+          "description": "Observed 21.4\u00b0C vs historical nominal baseline 18.0\u00b0C (Delta: +3.4\u00b0C)"
+        },
+        {
+          "name": "Spatial Neighbor Correlation",
+          "category": "spatial_network",
+          "feature": "spatial_cluster",
+          "contribution": 0.42,
+          "direction": "increases_anomaly",
+          "observed_value": "0/2 Agreeing",
+          "baseline_value": "2/2 Synchronized",
+          "deviation": "-2 Uncorroborated",
+          "description": "Isolated divergence: 0 of 2 nearest stations within 35km radius showed matching trends"
+        },
+        {
+          "name": "Temporal Rate-of-Change",
+          "category": "temporal_dynamics",
+          "feature": "derivative",
+          "contribution": 0.32,
+          "direction": "increases_anomaly",
+          "observed_value": "> 3.8 sigma/15min",
+          "baseline_value": "\u00b10.5 sigma/hr",
+          "deviation": "Elevated Gradient",
+          "description": "Instantaneous step-jump in telemetry stream exceeding 4.5 sigma rate-of-change limit"
+        },
+        {
+          "name": "Multivariate Physics Consistency",
+          "category": "physics_model",
+          "feature": "mahalanobis",
+          "contribution": 0.28,
+          "direction": "increases_anomaly",
+          "observed_value": "Covariance Breach",
+          "baseline_value": "Clausius-Clapeyron Bound",
+          "deviation": "3.4 sigma Mahalanobis",
+          "description": "Cross-parameter covariance check evaluating temperature-pressure-humidity thermodynamic consistency"
+        }
+      ],
+      "reasoning_chain": [
+        {
+          "step_number": 1,
+          "title": "Sensor Variance Trigger",
+          "evidence": "Anomalous unphysical reading on pressure (946.0hPa) triggered single-station STL residual and statistical Z-score detectors (> 3.2 sigma).",
+          "status": "flagged"
+        },
+        {
+          "step_number": 2,
+          "title": "Spatial Network Cross-Validation",
+          "evidence": "0 of 2 nearest neighboring stations within 35km corroborated the reading, establishing that the anomaly is strictly isolated to this transducer.",
+          "status": "isolated"
+        },
+        {
+          "step_number": 3,
+          "title": "Multivariate Covariance Violation",
+          "evidence": "Coupled atmospheric channels (pressure and humidity) failed to exhibit corresponding adiabatic thermodynamic shifts, violating physical atmospheric constraints.",
+          "status": "unphysical"
+        },
+        {
+          "step_number": 4,
+          "title": "Ensemble Verdict & Classification",
+          "evidence": "Classified as Isolated Sensor Fault on pressure. Transducer recalibration or hardware probe replacement required.",
+          "status": "verdict"
+        }
+      ],
+      "detector_breakdown": [
+        {
+          "detector_name": "Statistical STL & Z-Score Filter",
+          "score": 0.42,
+          "threshold": 0.6,
+          "flagged": false,
+          "description": "Monitors robust median seasonal-trend decomposition residuals and rolling 3-sigma limits."
+        },
+        {
+          "detector_name": "LSTM Autoencoder Temporal Reconstruction",
+          "score": 0.96,
+          "threshold": 0.55,
+          "flagged": true,
+          "description": "Deep sequence model evaluating temporal dynamics and multi-step prediction error."
+        },
+        {
+          "detector_name": "Isolation Forest Multivariate Anomaly",
+          "score": 0.74,
+          "threshold": 0.5,
+          "flagged": true,
+          "description": "Non-parametric tree ensemble isolating multivariate out-of-distribution feature spaces."
+        },
+        {
+          "detector_name": "Spatial & Mahalanobis Consistency Engine",
+          "score": 0.76,
+          "threshold": 0.5,
+          "flagged": true,
+          "description": "Gaussian kernel spatial interpolation and covariance matrix cross-validation across neighboring stations."
+        }
+      ],
+      "neighbor_corroboration": [
+        {
+          "station_id": 3,
+          "station_name": "Delhi Safdarjung (Central Met Observatory)",
+          "distance_km": 10.2,
+          "reading": "840.3hPa",
+          "expected": "946.0hPa",
+          "is_corroborating": false,
+          "status": "Normal (Divergent)"
+        }
+      ],
+      "recommendations": [
+        "Execute remote offset zero-calibration routine on pressure sensor probe.",
+        "Verify aspirator radiation shield fan operation to prevent solar thermal trapping.",
+        "Schedule physical field inspection or transducer replacement if drift exceeds 48 hours.",
+        "Temporarily down-weight pressure channel from spatial weather interpolation grid."
+      ],
+      "narrative": "Isolated HIGH-severity sensor fault identified at Delhi Palam (Western Plains Station). The anomaly is heavily driven by unphysical behavior in pressure (43% contribution) with observed value of 946.0hPa, which was not corroborated by any neighboring stations in the network cluster. Field calibration or transducer replacement advised."
     },
     "106": {
       "alert_id": 106,
       "top_features": [
         {
+          "feature": "humidity",
+          "contribution": 0.47,
+          "direction": "increases_anomaly"
+        },
+        {
+          "feature": "pressure",
+          "contribution": 0.42,
+          "direction": "increases_anomaly"
+        },
+        {
           "feature": "temperature",
-          "contribution": 0.88,
+          "contribution": 0.11,
           "direction": "increases_anomaly"
         }
       ],
-      "narrative": "Isolated sensor fault: Mumbai Santacruz (Inland Suburban Hub) triggered an anomaly on temperature, but 0 of 1 nearest neighboring stations corroborated the reading. Hardware diagnostics or field recalibration recommended."
+      "contributing_factors": [
+        {
+          "name": "Humidity Deviation",
+          "category": "atmospheric_parameter",
+          "feature": "humidity",
+          "contribution": 0.47,
+          "direction": "increases_anomaly",
+          "observed_value": "80.6%",
+          "baseline_value": "45.0%",
+          "deviation": "+35.6%",
+          "description": "Observed 80.6% vs historical nominal baseline 45.0% (Delta: +35.6%)"
+        },
+        {
+          "name": "Pressure Deviation",
+          "category": "atmospheric_parameter",
+          "feature": "pressure",
+          "contribution": 0.42,
+          "direction": "increases_anomaly",
+          "observed_value": "953.1hPa",
+          "baseline_value": "840.0hPa",
+          "deviation": "+113.1hPa",
+          "description": "Observed 953.1hPa vs historical nominal baseline 840.0hPa (Delta: +113.1hPa)"
+        },
+        {
+          "name": "Temperature Deviation",
+          "category": "atmospheric_parameter",
+          "feature": "temperature",
+          "contribution": 0.11,
+          "direction": "increases_anomaly",
+          "observed_value": "18.3\u00b0C",
+          "baseline_value": "18.0\u00b0C",
+          "deviation": "+0.3\u00b0C",
+          "description": "Observed 18.3\u00b0C vs historical nominal baseline 18.0\u00b0C (Delta: +0.3\u00b0C)"
+        },
+        {
+          "name": "Spatial Neighbor Correlation",
+          "category": "spatial_network",
+          "feature": "spatial_cluster",
+          "contribution": 0.42,
+          "direction": "increases_anomaly",
+          "observed_value": "0/2 Agreeing",
+          "baseline_value": "2/2 Synchronized",
+          "deviation": "-2 Uncorroborated",
+          "description": "Isolated divergence: 0 of 2 nearest stations within 35km radius showed matching trends"
+        },
+        {
+          "name": "Temporal Rate-of-Change",
+          "category": "temporal_dynamics",
+          "feature": "derivative",
+          "contribution": 0.32,
+          "direction": "increases_anomaly",
+          "observed_value": "> 3.8 sigma/15min",
+          "baseline_value": "\u00b10.5 sigma/hr",
+          "deviation": "Elevated Gradient",
+          "description": "Instantaneous step-jump in telemetry stream exceeding 4.5 sigma rate-of-change limit"
+        },
+        {
+          "name": "Multivariate Physics Consistency",
+          "category": "physics_model",
+          "feature": "mahalanobis",
+          "contribution": 0.28,
+          "direction": "increases_anomaly",
+          "observed_value": "Covariance Breach",
+          "baseline_value": "Clausius-Clapeyron Bound",
+          "deviation": "3.4 sigma Mahalanobis",
+          "description": "Cross-parameter covariance check evaluating temperature-pressure-humidity thermodynamic consistency"
+        }
+      ],
+      "reasoning_chain": [
+        {
+          "step_number": 1,
+          "title": "Sensor Variance Trigger",
+          "evidence": "Anomalous unphysical reading on humidity (80.6%) triggered single-station STL residual and statistical Z-score detectors (> 3.2 sigma).",
+          "status": "flagged"
+        },
+        {
+          "step_number": 2,
+          "title": "Spatial Network Cross-Validation",
+          "evidence": "0 of 2 nearest neighboring stations within 35km corroborated the reading, establishing that the anomaly is strictly isolated to this transducer.",
+          "status": "isolated"
+        },
+        {
+          "step_number": 3,
+          "title": "Multivariate Covariance Violation",
+          "evidence": "Coupled atmospheric channels (pressure and humidity) failed to exhibit corresponding adiabatic thermodynamic shifts, violating physical atmospheric constraints.",
+          "status": "unphysical"
+        },
+        {
+          "step_number": 4,
+          "title": "Ensemble Verdict & Classification",
+          "evidence": "Classified as Isolated Sensor Fault on humidity. Transducer recalibration or hardware probe replacement required.",
+          "status": "verdict"
+        }
+      ],
+      "detector_breakdown": [
+        {
+          "detector_name": "Statistical STL & Z-Score Filter",
+          "score": 0.44,
+          "threshold": 0.6,
+          "flagged": false,
+          "description": "Monitors robust median seasonal-trend decomposition residuals and rolling 3-sigma limits."
+        },
+        {
+          "detector_name": "LSTM Autoencoder Temporal Reconstruction",
+          "score": 0.97,
+          "threshold": 0.55,
+          "flagged": true,
+          "description": "Deep sequence model evaluating temporal dynamics and multi-step prediction error."
+        },
+        {
+          "detector_name": "Isolation Forest Multivariate Anomaly",
+          "score": 0.76,
+          "threshold": 0.5,
+          "flagged": true,
+          "description": "Non-parametric tree ensemble isolating multivariate out-of-distribution feature spaces."
+        },
+        {
+          "detector_name": "Spatial & Mahalanobis Consistency Engine",
+          "score": 0.78,
+          "threshold": 0.5,
+          "flagged": true,
+          "description": "Gaussian kernel spatial interpolation and covariance matrix cross-validation across neighboring stations."
+        }
+      ],
+      "neighbor_corroboration": [
+        {
+          "station_id": 8,
+          "station_name": "Chennai Meenambakkam (Airport Plains Hub)",
+          "distance_km": 12.4,
+          "reading": "45.3%",
+          "expected": "80.6%",
+          "is_corroborating": false,
+          "status": "Normal (Divergent)"
+        }
+      ],
+      "recommendations": [
+        "Execute remote offset zero-calibration routine on humidity sensor probe.",
+        "Verify aspirator radiation shield fan operation to prevent solar thermal trapping.",
+        "Schedule physical field inspection or transducer replacement if drift exceeds 48 hours.",
+        "Temporarily down-weight humidity channel from spatial weather interpolation grid."
+      ],
+      "narrative": "Isolated HIGH-severity sensor fault identified at Chennai Nungambakkam (Central Coastal Base). The anomaly is heavily driven by unphysical behavior in humidity (47% contribution) with observed value of 80.6%, which was not corroborated by any neighboring stations in the network cluster. Field calibration or transducer replacement advised."
     },
     "107": {
       "alert_id": 107,
       "top_features": [
         {
           "feature": "pressure",
-          "contribution": 0.88,
-          "direction": "decreases_anomaly"
-        }
-      ],
-      "narrative": "Isolated sensor fault: Mumbai Santacruz (Inland Suburban Hub) triggered an anomaly on pressure, but 0 of 1 nearest neighboring stations corroborated the reading. Hardware diagnostics or field recalibration recommended."
-    },
-    "108": {
-      "alert_id": 108,
-      "top_features": [
-        {
-          "feature": "humidity",
-          "contribution": 0.88,
+          "contribution": 0.41,
           "direction": "increases_anomaly"
-        }
-      ],
-      "narrative": "Isolated sensor fault: Mumbai Santacruz (Inland Suburban Hub) triggered an anomaly on humidity, but 0 of 1 nearest neighboring stations corroborated the reading. Hardware diagnostics or field recalibration recommended."
-    },
-    "109": {
-      "alert_id": 109,
-      "top_features": [
-        {
-          "feature": "humidity",
-          "contribution": 0.88,
-          "direction": "decreases_anomaly"
-        }
-      ],
-      "narrative": "Isolated sensor fault: Mumbai Santacruz (Inland Suburban Hub) triggered an anomaly on humidity, but 0 of 1 nearest neighboring stations corroborated the reading. Hardware diagnostics or field recalibration recommended."
-    },
-    "110": {
-      "alert_id": 110,
-      "top_features": [
+        },
         {
           "feature": "temperature",
-          "contribution": 0.88,
+          "contribution": 0.34,
           "direction": "increases_anomaly"
+        },
+        {
+          "feature": "humidity",
+          "contribution": 0.24,
+          "direction": "decreases_anomaly"
         }
       ],
-      "narrative": "Isolated sensor fault: Delhi Safdarjung (Central Met Observatory) triggered an anomaly on temperature, but 0 of 1 nearest neighboring stations corroborated the reading. Hardware diagnostics or field recalibration recommended."
-    },
-    "111": {
-      "alert_id": 111,
-      "top_features": [
+      "contributing_factors": [
         {
+          "name": "Pressure Deviation",
+          "category": "atmospheric_parameter",
           "feature": "pressure",
-          "contribution": 0.88,
-          "direction": "increases_anomaly"
-        }
-      ],
-      "narrative": "Isolated sensor fault: Delhi Safdarjung (Central Met Observatory) triggered an anomaly on pressure, but 0 of 1 nearest neighboring stations corroborated the reading. Hardware diagnostics or field recalibration recommended."
-    },
-    "112": {
-      "alert_id": 112,
-      "top_features": [
+          "contribution": 0.41,
+          "direction": "increases_anomaly",
+          "observed_value": "956.2hPa",
+          "baseline_value": "840.0hPa",
+          "deviation": "+116.2hPa",
+          "description": "Observed 956.2hPa vs historical nominal baseline 840.0hPa (Delta: +116.2hPa)"
+        },
         {
-          "feature": "humidity",
-          "contribution": 0.88,
-          "direction": "increases_anomaly"
-        }
-      ],
-      "narrative": "Isolated sensor fault: Delhi Safdarjung (Central Met Observatory) triggered an anomaly on humidity, but 0 of 1 nearest neighboring stations corroborated the reading. Hardware diagnostics or field recalibration recommended."
-    },
-    "113": {
-      "alert_id": 113,
-      "top_features": [
-        {
-          "feature": "humidity",
-          "contribution": 0.88,
-          "direction": "decreases_anomaly"
-        }
-      ],
-      "narrative": "Isolated sensor fault: Delhi Safdarjung (Central Met Observatory) triggered an anomaly on humidity, but 0 of 1 nearest neighboring stations corroborated the reading. Hardware diagnostics or field recalibration recommended."
-    },
-    "114": {
-      "alert_id": 114,
-      "top_features": [
-        {
+          "name": "Temperature Deviation",
+          "category": "atmospheric_parameter",
           "feature": "temperature",
-          "contribution": 0.88,
-          "direction": "increases_anomaly"
-        }
-      ],
-      "narrative": "Isolated sensor fault: Delhi Palam (Western Plains Station) triggered an anomaly on temperature, but 0 of 1 nearest neighboring stations corroborated the reading. Hardware diagnostics or field recalibration recommended."
-    },
-    "115": {
-      "alert_id": 115,
-      "top_features": [
+          "contribution": 0.34,
+          "direction": "increases_anomaly",
+          "observed_value": "32.9\u00b0C",
+          "baseline_value": "18.0\u00b0C",
+          "deviation": "+14.9\u00b0C",
+          "description": "Observed 32.9\u00b0C vs historical nominal baseline 18.0\u00b0C (Delta: +14.9\u00b0C)"
+        },
         {
-          "feature": "pressure",
-          "contribution": 0.88,
-          "direction": "increases_anomaly"
-        }
-      ],
-      "narrative": "Isolated sensor fault: Delhi Palam (Western Plains Station) triggered an anomaly on pressure, but 0 of 1 nearest neighboring stations corroborated the reading. Hardware diagnostics or field recalibration recommended."
-    },
-    "116": {
-      "alert_id": 116,
-      "top_features": [
-        {
+          "name": "Humidity Deviation",
+          "category": "atmospheric_parameter",
           "feature": "humidity",
-          "contribution": 0.88,
-          "direction": "increases_anomaly"
-        }
-      ],
-      "narrative": "Isolated sensor fault: Delhi Palam (Western Plains Station) triggered an anomaly on humidity, but 0 of 1 nearest neighboring stations corroborated the reading. Hardware diagnostics or field recalibration recommended."
-    },
-    "117": {
-      "alert_id": 117,
-      "top_features": [
+          "contribution": 0.24,
+          "direction": "decreases_anomaly",
+          "observed_value": "38.4%",
+          "baseline_value": "45.0%",
+          "deviation": "-6.6%",
+          "description": "Observed 38.4% vs historical nominal baseline 45.0% (Delta: -6.6%)"
+        },
         {
-          "feature": "humidity",
-          "contribution": 0.88,
-          "direction": "decreases_anomaly"
-        }
-      ],
-      "narrative": "Isolated sensor fault: Delhi Palam (Western Plains Station) triggered an anomaly on humidity, but 0 of 1 nearest neighboring stations corroborated the reading. Hardware diagnostics or field recalibration recommended."
-    },
-    "118": {
-      "alert_id": 118,
-      "top_features": [
+          "name": "Spatial Neighbor Correlation",
+          "category": "spatial_network",
+          "feature": "spatial_cluster",
+          "contribution": 0.25,
+          "direction": "increases_anomaly",
+          "observed_value": "0/2 Agreeing",
+          "baseline_value": "2/2 Synchronized",
+          "deviation": "-2 Uncorroborated",
+          "description": "Packet stream gap: station failed heartbeat check across neighboring receiver mesh"
+        },
         {
-          "feature": "temperature",
-          "contribution": 0.88,
-          "direction": "increases_anomaly"
-        }
-      ],
-      "narrative": "Isolated sensor fault: Bengaluru Whitefield (Tech Park Station) triggered an anomaly on temperature, but 0 of 1 nearest neighboring stations corroborated the reading. Hardware diagnostics or field recalibration recommended."
-    },
-    "119": {
-      "alert_id": 119,
-      "top_features": [
+          "name": "Temporal Rate-of-Change",
+          "category": "temporal_dynamics",
+          "feature": "derivative",
+          "contribution": 0.32,
+          "direction": "increases_anomaly",
+          "observed_value": "> 3.8 sigma/15min",
+          "baseline_value": "\u00b10.5 sigma/hr",
+          "deviation": "Elevated Gradient",
+          "description": "Instantaneous step-jump in telemetry stream exceeding 4.5 sigma rate-of-change limit"
+        },
         {
-          "feature": "humidity",
-          "contribution": 0.88,
-          "direction": "decreases_anomaly"
+          "name": "Multivariate Physics Consistency",
+          "category": "physics_model",
+          "feature": "mahalanobis",
+          "contribution": 0.28,
+          "direction": "increases_anomaly",
+          "observed_value": "Covariance Breach",
+          "baseline_value": "Clausius-Clapeyron Bound",
+          "deviation": "3.4 sigma Mahalanobis",
+          "description": "Cross-parameter covariance check evaluating temperature-pressure-humidity thermodynamic consistency"
         }
       ],
-      "narrative": "Isolated sensor fault: Bengaluru Whitefield (Tech Park Station) triggered an anomaly on humidity, but 0 of 1 nearest neighboring stations corroborated the reading. Hardware diagnostics or field recalibration recommended."
-    },
-    "120": {
-      "alert_id": 120,
-      "top_features": [
+      "reasoning_chain": [
         {
-          "feature": "temperature",
-          "contribution": 0.88,
-          "direction": "increases_anomaly"
-        }
-      ],
-      "narrative": "Isolated sensor fault: Bengaluru GKVK (Agricultural Campus Lab) triggered an anomaly on temperature, but 0 of 1 nearest neighboring stations corroborated the reading. Hardware diagnostics or field recalibration recommended."
-    },
-    "121": {
-      "alert_id": 121,
-      "top_features": [
+          "step_number": 1,
+          "title": "Telemetry Packet Loss Detected",
+          "evidence": "Complete observation blackout detected on Chennai Meenambakkam (Airport Plains Hub) across multiple consecutive 15-minute telemetry intervals.",
+          "status": "flagged"
+        },
         {
-          "feature": "humidity",
-          "contribution": 0.88,
-          "direction": "decreases_anomaly"
-        }
-      ],
-      "narrative": "Isolated sensor fault: Bengaluru GKVK (Agricultural Campus Lab) triggered an anomaly on humidity, but 0 of 1 nearest neighboring stations corroborated the reading. Hardware diagnostics or field recalibration recommended."
-    },
-    "122": {
-      "alert_id": 122,
-      "top_features": [
+          "step_number": 2,
+          "title": "Spatial Mesh Heartbeat Check",
+          "evidence": "Adjacent stations within 35km continue normal continuous telemetry broadcasts, isolating the drop to the local station uplink.",
+          "status": "isolated"
+        },
         {
-          "feature": "temperature",
-          "contribution": 0.88,
-          "direction": "increases_anomaly"
-        }
-      ],
-      "narrative": "Isolated sensor fault: Chennai Nungambakkam (Central Coastal Base) triggered an anomaly on temperature, but 0 of 1 nearest neighboring stations corroborated the reading. Hardware diagnostics or field recalibration recommended."
-    },
-    "123": {
-      "alert_id": 123,
-      "top_features": [
+          "step_number": 3,
+          "title": "Hardware Transmission Diagnosis",
+          "evidence": "Failure signature indicates RF antenna attenuation, LoRa/GSM modem timeout, or solar battery voltage drop rather than sensor calibration loss.",
+          "status": "hardware_alert"
+        },
         {
-          "feature": "humidity",
-          "contribution": 0.88,
-          "direction": "increases_anomaly"
+          "step_number": 4,
+          "title": "Ensemble Verdict & Classification",
+          "evidence": "Classified as Communication Dropout / Telemetry Outage. Immediate remote telemetry reset or power cycle recommended.",
+          "status": "verdict"
         }
       ],
-      "narrative": "Isolated sensor fault: Chennai Nungambakkam (Central Coastal Base) triggered an anomaly on humidity, but 0 of 1 nearest neighboring stations corroborated the reading. Hardware diagnostics or field recalibration recommended."
-    },
-    "124": {
-      "alert_id": 124,
-      "top_features": [
+      "detector_breakdown": [
         {
-          "feature": "humidity",
-          "contribution": 0.88,
-          "direction": "decreases_anomaly"
-        }
-      ],
-      "narrative": "Isolated sensor fault: Chennai Nungambakkam (Central Coastal Base) triggered an anomaly on humidity, but 0 of 1 nearest neighboring stations corroborated the reading. Hardware diagnostics or field recalibration recommended."
-    },
-    "125": {
-      "alert_id": 125,
-      "top_features": [
+          "detector_name": "Statistical STL & Z-Score Filter",
+          "score": 0.32,
+          "threshold": 0.6,
+          "flagged": false,
+          "description": "Monitors robust median seasonal-trend decomposition residuals and rolling 3-sigma limits."
+        },
         {
-          "feature": "temperature",
-          "contribution": 0.88,
-          "direction": "increases_anomaly"
-        }
-      ],
-      "narrative": "Communication failure: Chennai Meenambakkam (Airport Plains Hub) ceased transmitting sensor packets. Adjacent stations within 35km continue operating normally."
-    },
-    "126": {
-      "alert_id": 126,
-      "top_features": [
+          "detector_name": "LSTM Autoencoder Temporal Reconstruction",
+          "score": 0.97,
+          "threshold": 0.55,
+          "flagged": true,
+          "description": "Deep sequence model evaluating temporal dynamics and multi-step prediction error."
+        },
         {
-          "feature": "temperature",
-          "contribution": 0.88,
-          "direction": "increases_anomaly"
-        }
-      ],
-      "narrative": "Isolated sensor fault: Chennai Meenambakkam (Airport Plains Hub) triggered an anomaly on temperature, but 0 of 1 nearest neighboring stations corroborated the reading. Hardware diagnostics or field recalibration recommended."
-    },
-    "127": {
-      "alert_id": 127,
-      "top_features": [
+          "detector_name": "Isolation Forest Multivariate Anomaly",
+          "score": 0.86,
+          "threshold": 0.5,
+          "flagged": true,
+          "description": "Non-parametric tree ensemble isolating multivariate out-of-distribution feature spaces."
+        },
         {
-          "feature": "humidity",
-          "contribution": 0.88,
-          "direction": "increases_anomaly"
+          "detector_name": "Spatial & Mahalanobis Consistency Engine",
+          "score": 0.64,
+          "threshold": 0.5,
+          "flagged": true,
+          "description": "Gaussian kernel spatial interpolation and covariance matrix cross-validation across neighboring stations."
         }
       ],
-      "narrative": "Isolated sensor fault: Chennai Meenambakkam (Airport Plains Hub) triggered an anomaly on humidity, but 0 of 1 nearest neighboring stations corroborated the reading. Hardware diagnostics or field recalibration recommended."
-    },
-    "128": {
-      "alert_id": 128,
-      "top_features": [
+      "neighbor_corroboration": [
         {
-          "feature": "humidity",
-          "contribution": 0.88,
-          "direction": "decreases_anomaly"
+          "station_id": 7,
+          "station_name": "Chennai Nungambakkam (Central Coastal Base)",
+          "distance_km": 12.4,
+          "reading": "840.3hPa",
+          "expected": "956.2hPa",
+          "is_corroborating": false,
+          "status": "Normal (Divergent)"
         }
       ],
-      "narrative": "Isolated sensor fault: Chennai Meenambakkam (Airport Plains Hub) triggered an anomaly on humidity, but 0 of 1 nearest neighboring stations corroborated the reading. Hardware diagnostics or field recalibration recommended."
-    },
-    "129": {
-      "alert_id": 129,
-      "top_features": [
-        {
-          "feature": "temperature",
-          "contribution": 0.88,
-          "direction": "increases_anomaly"
-        }
+      "recommendations": [
+        "Initiate automated LoRa/GSM telemetry uplink reconnection sequence.",
+        "Verify solar panel charge controller and station backup battery voltage.",
+        "Inspect physical transmission antenna cable connections for moisture ingress or wind misalignment."
       ],
-      "narrative": "Isolated sensor fault: Pune Shivajinagar (Met Research Center) triggered an anomaly on temperature, but 0 of 1 nearest neighboring stations corroborated the reading. Hardware diagnostics or field recalibration recommended."
-    },
-    "130": {
-      "alert_id": 130,
-      "top_features": [
-        {
-          "feature": "pressure",
-          "contribution": 0.88,
-          "direction": "decreases_anomaly"
-        }
-      ],
-      "narrative": "Isolated sensor fault: Pune Shivajinagar (Met Research Center) triggered an anomaly on pressure, but 0 of 1 nearest neighboring stations corroborated the reading. Hardware diagnostics or field recalibration recommended."
-    },
-    "131": {
-      "alert_id": 131,
-      "top_features": [
-        {
-          "feature": "humidity",
-          "contribution": 0.88,
-          "direction": "increases_anomaly"
-        }
-      ],
-      "narrative": "Isolated sensor fault: Pune Shivajinagar (Met Research Center) triggered an anomaly on humidity, but 0 of 1 nearest neighboring stations corroborated the reading. Hardware diagnostics or field recalibration recommended."
-    },
-    "132": {
-      "alert_id": 132,
-      "top_features": [
-        {
-          "feature": "humidity",
-          "contribution": 0.88,
-          "direction": "decreases_anomaly"
-        }
-      ],
-      "narrative": "Isolated sensor fault: Pune Shivajinagar (Met Research Center) triggered an anomaly on humidity, but 0 of 1 nearest neighboring stations corroborated the reading. Hardware diagnostics or field recalibration recommended."
-    },
-    "133": {
-      "alert_id": 133,
-      "top_features": [
-        {
-          "feature": "temperature",
-          "contribution": 0.88,
-          "direction": "increases_anomaly"
-        }
-      ],
-      "narrative": "Isolated sensor fault: Pune Pashan (Atmospheric Science Lab) triggered an anomaly on temperature, but 0 of 1 nearest neighboring stations corroborated the reading. Hardware diagnostics or field recalibration recommended."
-    },
-    "134": {
-      "alert_id": 134,
-      "top_features": [
-        {
-          "feature": "pressure",
-          "contribution": 0.88,
-          "direction": "decreases_anomaly"
-        }
-      ],
-      "narrative": "Isolated sensor fault: Pune Pashan (Atmospheric Science Lab) triggered an anomaly on pressure, but 0 of 1 nearest neighboring stations corroborated the reading. Hardware diagnostics or field recalibration recommended."
-    },
-    "135": {
-      "alert_id": 135,
-      "top_features": [
-        {
-          "feature": "humidity",
-          "contribution": 0.88,
-          "direction": "increases_anomaly"
-        }
-      ],
-      "narrative": "Isolated sensor fault: Pune Pashan (Atmospheric Science Lab) triggered an anomaly on humidity, but 0 of 1 nearest neighboring stations corroborated the reading. Hardware diagnostics or field recalibration recommended."
-    },
-    "136": {
-      "alert_id": 136,
-      "top_features": [
-        {
-          "feature": "humidity",
-          "contribution": 0.88,
-          "direction": "decreases_anomaly"
-        }
-      ],
-      "narrative": "Isolated sensor fault: Pune Pashan (Atmospheric Science Lab) triggered an anomaly on humidity, but 0 of 1 nearest neighboring stations corroborated the reading. Hardware diagnostics or field recalibration recommended."
+      "narrative": "Communication failure: telemetry packet dropout detected at Chennai Meenambakkam (Airport Plains Hub). Sensor channel pressure ceased continuous transmission (41% contribution). Physical hardware diagnostics and telemetry uplink inspection recommended."
     }
   }
 }

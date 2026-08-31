@@ -743,7 +743,8 @@ def generate_stations(
             + synoptic_hum
             + micro_hum_s
         )
-        h_series = np.clip(h_series, 12.0, 98.0)
+        h_series = np.maximum(14.0 + np.abs(micro_hum_s) * 0.6, h_series)
+        h_series = np.minimum(98.0, h_series)
 
         w_series = np.maximum(0.2, st_cfg["base_wind"] + 1.6 * np.sin(diurnal_phase - np.pi / 3) + micro_wind_s)
         wdir_series = (180.0 + 45.0 * np.sin(diurnal_phase / 2.0) + st_rng.normal(0, 15.0, n_steps)) % 360.0
@@ -884,30 +885,33 @@ def detect_and_fuse_network(
                     })
 
                 # Check 3: Frozen flatlines
-                is_same = (ser.round(2) == ser.round(2).shift(1))
-                run_len = is_same.astype(int).groupby((~is_same).cumsum()).cumsum()
-                if (run_len >= 8).any():
-                    idx_froz = run_len.idxmax()
-                    flagged_events.append({
-                        "type": "frozen_sensor",
-                        "timestamp": st_data.at[idx_froz, "obstime"],
-                        "parameter": col,
-                        "magnitude": float(run_len.loc[idx_froz]),
-                        "direction": "none",
-                    })
-
-                # Check 4: Calibration drift (systematic residual slope)
-                if len(ser) >= 48:
-                    recent = ser.iloc[-48:]
-                    slope = np.polyfit(np.arange(len(recent)), recent.values, 1)[0]
-                    if abs(slope) > 0.08:
+                is_same = (ser == ser.shift(1))
+                if is_same.any():
+                    run_len = is_same.astype(int).groupby((~is_same).cumsum()).cumsum()
+                    min_run = 8 if col in ("temperature", "pressure") else 20
+                    if (run_len >= min_run).any():
+                        idx_froz = run_len.idxmax()
                         flagged_events.append({
-                            "type": "calibration_drift",
-                            "timestamp": st_data["obstime"].iloc[-1],
+                            "type": "frozen_sensor",
+                            "timestamp": st_data.at[idx_froz, "obstime"],
                             "parameter": col,
-                            "magnitude": float(slope * 48),
-                            "direction": "increases_anomaly" if slope > 0 else "decreases_anomaly",
+                            "magnitude": float(run_len.loc[idx_froz]),
+                            "direction": "none",
                         })
+
+                # Check 4: Calibration drift (systematic multi-day baseline shift)
+                if len(ser) >= 96:
+                    rolling_24h = ser.rolling(window=96, min_periods=48).mean().dropna()
+                    if len(rolling_24h) >= 48:
+                        slope = np.polyfit(np.arange(len(rolling_24h)), rolling_24h.values, 1)[0]
+                        if abs(slope) > 0.04:
+                            flagged_events.append({
+                                "type": "calibration_drift",
+                                "timestamp": st_data["obstime"].iloc[-1],
+                                "parameter": col,
+                                "magnitude": float(slope * 96),
+                                "direction": "increases_anomaly" if slope > 0 else "decreases_anomaly",
+                            })
 
         station_anomalies[sid] = flagged_events
 
@@ -956,14 +960,13 @@ def detect_and_fuse_network(
                     f"Adjacent stations within {radius_km:.0f}km continue operating normally."
                 )
                 params_flagged = ["temperature", "pressure", "humidity"]
-            elif len(corroborating_neighbors) >= 2:
-                # Multiple neighbors observed anomaly -> Genuine Weather Event!
+            elif len(corroborating_neighbors) >= 1 and (len(corroborating_neighbors) / max(1, len(neighbors))) >= 0.5:
+                # Corroborated by spatial cluster -> Genuine Regional Weather Event!
                 root_cause = "genuine_event"
                 severity = "high" if abs(ev["magnitude"]) > 4.0 else "medium"
                 status = "active"
                 n_names = ", ".join([stations_dict[n]["name"] for n in corroborating_neighbors[:2]])
                 summary = f"Regional atmospheric front detected across {len(corroborating_neighbors) + 1} stations (corroborated by {n_names})"
-                degraded_stations.add(sid)
                 narrative = (
                     f"Multi-station spatial consensus: Anomaly on {ev_param} is corroborated across "
                     f"{len(corroborating_neighbors)} neighboring stations within {radius_km:.0f}km. "
@@ -971,12 +974,15 @@ def detect_and_fuse_network(
                 )
                 params_flagged = [ev_param] if ev_param != "all" else ["temperature", "pressure"]
             else:
-                # Isolated single station anomaly -> Sensor Fault!
+                # Isolated single station anomaly -> Sensor Fault / Drift!
                 root_cause = "sensor_fault"
                 severity = "high" if ev_type in ["spike", "frozen_sensor"] else "medium"
                 status = "active"
                 summary = f"Isolated {ev_type.replace('_', ' ')} detected on {ev_param} ({st_meta['name']})"
-                active_station_faults.add(sid)
+                if ev_type == "calibration_drift":
+                    degraded_stations.add(sid)
+                else:
+                    active_station_faults.add(sid)
                 narrative = (
                     f"Isolated sensor fault: {st_meta['name']} triggered an anomaly on {ev_param}, "
                     f"but 0 of {len(neighbors)} nearest neighboring stations corroborated the reading. "
@@ -984,7 +990,7 @@ def detect_and_fuse_network(
                 )
                 params_flagged = [ev_param] if ev_param != "all" else ["temperature"]
 
-            alerts.append({
+            alert_record = {
                 "id": aid,
                 "station_id": sid,
                 "station_name": st_meta["name"],
@@ -995,43 +1001,51 @@ def detect_and_fuse_network(
                 "summary": summary,
                 "parameters_flagged": params_flagged,
                 "status": status,
-            })
-
-            explanations[aid] = {
-                "alert_id": aid,
-                "top_features": [
-                    {
-                        "feature": params_flagged[0] if params_flagged else "temperature",
-                        "contribution": 0.88,
-                        "direction": ev.get("direction", "increases_anomaly") if ev.get("direction") != "none" else "increases_anomaly",
-                    }
-                ],
-                "narrative": narrative,
+                "event_type": ev_type,
+                "magnitude": float(ev.get("magnitude", 3.5)),
             }
+            alerts.append(alert_record)
 
-    # Assign station status & sensor health scores
+            try:
+                from backend.explain import explain_alert
+            except ImportError:
+                from explain import explain_alert
+
+            # Obtain current parameter values at event time
+            st_data_ev = st_data[st_data["obstime"] == ev_time]
+            param_vals = {}
+            if not st_data_ev.empty:
+                r0 = st_data_ev.iloc[0]
+                param_vals = {
+                    "temperature": float(r0["temperature"]) if pd.notna(r0["temperature"]) else None,
+                    "pressure": float(r0["pressure"]) if pd.notna(r0["pressure"]) else None,
+                    "humidity": float(r0["humidity"]) if pd.notna(r0["humidity"]) else None,
+                }
+            else:
+                param_vals = {"temperature": 28.5, "pressure": 1010.0, "humidity": 75.0}
+
+            explanations[aid] = explain_alert(
+                alert_id=aid,
+                alert_data=alert_record,
+                parameter_values=param_vals,
+            )
+
+    try:
+        from backend.explain import predict_health
+    except ImportError:
+        from explain import predict_health
+
+    # Assign station status & sensor health scores dynamically from telemetry data
     final_stations: List[Dict[str, Any]] = []
     for sid, st in stations_dict.items():
         if sid in offline_stations:
             st_status = "offline"
-            health_score = 45
-            trend = "degrading"
-            maint_days = 2
         elif sid in active_station_faults:
             st_status = "fault"
-            health_score = 58
-            trend = "degrading"
-            maint_days = 7
         elif sid in degraded_stations:
             st_status = "degrading"
-            health_score = 88
-            trend = "stable"
-            maint_days = 30
         else:
             st_status = "normal"
-            health_score = 96
-            trend = "stable"
-            maint_days = None
 
         final_stations.append({
             "id": sid,
@@ -1043,13 +1057,31 @@ def detect_and_fuse_network(
             "source": "simulated",
         })
 
-        sensor_health_map[sid] = {
-            "station_id": sid,
-            "health_score": health_score,
-            "trend": trend,
-            "maintenance_forecast_days": maint_days,
-            "last_maintenance_at": (datetime.now(timezone.utc) - timedelta(days=25 + sid * 3)).isoformat() + "Z",
-        }
+        st_data = telemetry_df[telemetry_df["station_id"] == sid].sort_values("obstime").reset_index(drop=True)
+        st_alerts = [a for a in alerts if a.get("station_id") == sid]
+
+        # Compute data-driven sensor health for each station
+        health_info = predict_health(
+            station_id=sid,
+            telemetry_history=st_data,
+            recent_alerts=st_alerts,
+        )
+
+        # Ensure trend and status alignment if explicitly in offline or fault set
+        if st_status == "offline" and health_info["health_score"] > 45:
+            health_info["health_score"] = int(np.clip(35 + (sid % 7), 25, 42))
+            health_info["trend"] = "degrading"
+            health_info["maintenance_forecast_days"] = 2
+        elif st_status == "fault" and health_info["health_score"] > 60:
+            health_info["health_score"] = int(np.clip(50 + (sid % 7), 45, 58))
+            health_info["trend"] = "degrading"
+            health_info["maintenance_forecast_days"] = max(3, 7 - (sid % 3))
+        elif st_status == "degrading" and health_info["health_score"] >= 80:
+            health_info["health_score"] = int(np.clip(68 + ((sid * 3) % 9) - 4, 62, 76))
+            health_info["trend"] = "degrading"
+            health_info["maintenance_forecast_days"] = max(5, 15 - (sid % 5))
+
+        sensor_health_map[sid] = health_info
 
     return {
         "stations": final_stations,
