@@ -62,3 +62,22 @@ export interface Timeseries {
   hours: number;
   data: TimeseriesPoint[];
 }
+
+export interface ProfilingSummary {
+  csv_rows: number;
+  csv_columns: string[];
+  date_range: { start: string; end: string };
+  missingness_pct: Record<string, number>;
+  nc_variables: string[];
+  nc_dims: Record<string, number>;
+  matched_parameters: string[];
+}
+
+export interface AddStationResponse {
+  status: "success" | "error";
+  message: string;
+  station: Station;
+  profiling_summary: ProfilingSummary;
+  health: SensorHealth;
+  alerts_count: number;
+}

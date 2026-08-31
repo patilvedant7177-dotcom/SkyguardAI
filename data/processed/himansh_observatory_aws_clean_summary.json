@@ -1,0 +1,42 @@
+{
+  "csv_rows": 155170,
+  "csv_columns": [
+    "obstime",
+    "temperature",
+    "pressure",
+    "wind_speed",
+    "wind_direction",
+    "humidity",
+    "station_id",
+    "station_name",
+    "source"
+  ],
+  "date_range": {
+    "start": "1985-01-01 00:00:00",
+    "end": "2016-12-19 12:00:00"
+  },
+  "missingness_pct": {
+    "temperature": 5.35,
+    "pressure": 5.35,
+    "humidity": 89.36,
+    "wind_speed": 5.35,
+    "wind_direction": 89.36
+  },
+  "nc_variables": [
+    "tempr",
+    "rh",
+    "ws",
+    "wd",
+    "ap"
+  ],
+  "nc_dims": {
+    "obstime": 16514
+  },
+  "matched_parameters": [
+    "temperature",
+    "pressure",
+    "humidity",
+    "wind_speed",
+    "wind_direction"
+  ]
+}

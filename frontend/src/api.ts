@@ -6,6 +6,7 @@ import type {
   SensorHealth,
   Explanation,
   Timeseries,
+  AddStationResponse,
 } from "./types";
 
 export async function fetchHealth(): Promise<{ status: string }> {
@@ -94,4 +95,31 @@ export function createAlertEventSource(
     console.error("SSE error");
   };
   return es;
+}
+
+export async function uploadStation(
+  formData: FormData
+): Promise<AddStationResponse> {
+  const resp = await fetch(`${API_BASE_URL}/stations/upload`, {
+    method: "POST",
+    body: formData,
+  });
+  if (!resp.ok) {
+    const errorData = await resp.json().catch(() => ({}));
+    throw new Error(errorData.detail || "Failed to upload and register AWS station");
+  }
+  return resp.json();
+}
+
+export async function deleteStation(
+  stationId: number
+): Promise<{ status: string; station_id: number }> {
+  const resp = await fetch(`${API_BASE_URL}/stations/${stationId}`, {
+    method: "DELETE",
+  });
+  if (!resp.ok) {
+    const errorData = await resp.json().catch(() => ({}));
+    throw new Error(errorData.detail || `Failed to remove station #${stationId}`);
+  }
+  return resp.json();
 }

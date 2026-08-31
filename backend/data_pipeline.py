@@ -8,8 +8,9 @@ Processes raw CSV and NetCDF datasets from Antarctica's Maitri station:
 
 import json
 import os
+import re
 from pathlib import Path
-from typing import Any, Dict
+from typing import Any, Dict, Optional, Tuple
 
 import matplotlib
 matplotlib.use("Agg")  # Non-interactive backend
@@ -405,6 +406,182 @@ def engineer_features(
     print(f"Engineered features saved successfully -> {output_parquet} ({len(df)} rows, {len(df.columns)} features)")
 
     return df
+
+
+def ingest_station_files(
+    station_id: int,
+    station_name: str,
+    latitude: float,
+    longitude: float,
+    elevation: float,
+    raw_csv_path: Path | str,
+    raw_nc_path: Path | str,
+    slug: Optional[str] = None,
+) -> Dict[str, Any]:
+    """
+    End-to-end ingestion pipeline for manually uploaded AWS station CSV and NetCDF datasets.
+    Profiles both formats, aligns column mappings, removes anomalies/missingness,
+    engineers causal temporal features, and exports standardized clean and feature datasets.
+    """
+    PROCESSED_DIR.mkdir(parents=True, exist_ok=True)
+    raw_csv_path = Path(raw_csv_path)
+    raw_nc_path = Path(raw_nc_path)
+
+    if slug is None:
+        clean_name = re.sub(r"[^a-zA-Z0-9]+", "_", station_name.lower().strip()).strip("_")
+        slug = f"station_{clean_name}_{station_id}" if clean_name else f"station_{station_id}"
+
+    # 1. Profile NetCDF
+    nc_dims = {}
+    nc_attrs = {}
+    nc_vars = {}
+    try:
+        if raw_nc_path.exists() and raw_nc_path.stat().st_size > 0:
+            ds_nc = xr.open_dataset(raw_nc_path)
+            nc_dims = {str(k): int(v) for k, v in ds_nc.sizes.items()}
+            nc_attrs = {str(k): str(v) for k, v in ds_nc.attrs.items()}
+            for var_name in ds_nc.data_vars:
+                var_obj = ds_nc[var_name]
+                nc_vars[str(var_name)] = {
+                    "dims": [str(d) for d in var_obj.dims],
+                    "shape": list(var_obj.shape),
+                    "dtype": str(var_obj.dtype),
+                }
+    except Exception as exc:
+        print(f"NetCDF profiling note for {station_name}: {exc}")
+
+    # 2. Read CSV and intelligently detect/map columns
+    sample_df = pd.read_csv(raw_csv_path, nrows=5)
+    first_row_strings = [str(col).strip().lower() for col in sample_df.columns]
+    col_str_matches = any(
+        any(k in col_name for k in ["time", "date", "temp", "press", "hum", "wind", "rh", "ap", "ws", "wd"])
+        for col_name in first_row_strings
+    )
+    has_header = col_str_matches and not all(str(c).isdigit() for c in sample_df.columns)
+
+    if has_header:
+        df_raw = pd.read_csv(raw_csv_path)
+        col_map = {}
+        for c in df_raw.columns:
+            cl = str(c).lower().strip()
+            if any(k in cl for k in ["time", "date", "obstime", "timestamp"]):
+                col_map[c] = "obstime"
+            elif any(k in cl for k in ["tempr", "temp", "t_air", "air_temp"]):
+                col_map[c] = "temperature"
+            elif any(k in cl for k in ["press", "baro", "pressure", "slp", "mslp"]):
+                col_map[c] = "pressure"
+            elif any(k in cl for k in ["hum", "rh", "relative_humidity"]):
+                col_map[c] = "humidity"
+            elif any(k in cl for k in ["ws", "wind_speed", "wind_spd", "spd"]):
+                col_map[c] = "wind_speed"
+            elif any(k in cl for k in ["wd", "wind_dir", "wind_direction", "dir"]):
+                col_map[c] = "wind_direction"
+        df_raw = df_raw.rename(columns=col_map)
+        if "obstime" not in df_raw.columns and len(df_raw.columns) > 0:
+            df_raw = df_raw.rename(columns={df_raw.columns[0]: "obstime"})
+    else:
+        verified_columns = [
+            "obstime",
+            "temperature",
+            "pressure",
+            "wind_speed",
+            "wind_direction",
+            "humidity",
+        ]
+        df_raw = pd.read_csv(raw_csv_path, header=None)
+        if df_raw.shape[1] >= 6:
+            df_raw.columns = verified_columns[:df_raw.shape[1]]
+        elif df_raw.shape[1] >= 4:
+            df_raw.columns = ["obstime", "temperature", "pressure", "humidity"][:df_raw.shape[1]]
+        else:
+            df_raw.columns = [f"col_{i}" for i in range(df_raw.shape[1])]
+            if len(df_raw.columns) > 0:
+                df_raw.rename(columns={df_raw.columns[0]: "obstime"}, inplace=True)
+
+    # 3. Clean and validate
+    df = df_raw.copy()
+    df["obstime"] = pd.to_datetime(df["obstime"], errors="coerce")
+    df = df.dropna(subset=["obstime"]).sort_values("obstime").reset_index(drop=True)
+    df = df.drop_duplicates(subset=["obstime"], keep="first").reset_index(drop=True)
+
+    numeric_cols = [c for c in ["temperature", "pressure", "humidity", "wind_speed", "wind_direction"] if c in df.columns]
+    for c in numeric_cols:
+        df[c] = pd.to_numeric(df[c].replace([-999, -999.0, "-999", "-999.0"], np.nan), errors="coerce")
+
+    # Range validation
+    valid_ranges = {
+        "temperature": (-60.0, 55.0),
+        "pressure": (600.0, 1100.0),
+        "humidity": (0.0, 100.0),
+        "wind_speed": (0.0, 200.0),
+        "wind_direction": (0.0, 360.0),
+    }
+    for col, (vmin, vmax) in valid_ranges.items():
+        if col in df.columns:
+            invalid = (df[col] < vmin) | (df[col] > vmax)
+            df.loc[invalid, col] = np.nan
+
+    df["station_id"] = station_id
+    df["station_name"] = station_name
+    df["source"] = "real"
+
+    missingness_pct = {}
+    for col in numeric_cols:
+        null_cnt = int(df[col].isna().sum())
+        missingness_pct[col] = round((null_cnt / len(df)) * 100, 2) if len(df) > 0 else 0.0
+
+    # 4. Save clean parquet & json summary
+    clean_parquet_path = PROCESSED_DIR / f"{slug}_clean.parquet"
+    summary_json_path = PROCESSED_DIR / f"{slug}_clean_summary.json"
+    df.to_parquet(clean_parquet_path, index=False)
+
+    # 5. Feature Engineering
+    feat_df = df.copy()
+    feat_df["hour"] = feat_df["obstime"].dt.hour
+    feat_df["day_of_year"] = feat_df["obstime"].dt.dayofyear
+    feat_df["month"] = feat_df["obstime"].dt.month
+    feat_df["day_of_week"] = feat_df["obstime"].dt.dayofweek
+    feat_df["hour_sin"] = np.sin(2 * np.pi * feat_df["hour"] / 24.0)
+    feat_df["hour_cos"] = np.cos(2 * np.pi * feat_df["hour"] / 24.0)
+    feat_df["month_sin"] = np.sin(2 * np.pi * feat_df["month"] / 12.0)
+    feat_df["month_cos"] = np.cos(2 * np.pi * feat_df["month"] / 12.0)
+
+    for param in [c for c in ["temperature", "pressure", "humidity", "wind_speed"] if c in feat_df.columns]:
+        feat_df[f"{param}_diff_1h"] = feat_df[param] - feat_df[param].shift(1)
+        for w in [6, 24]:
+            feat_df[f"{param}_roll_mean_{w}h"] = feat_df[param].rolling(window=w, min_periods=1).mean()
+            feat_df[f"{param}_roll_std_{w}h"] = feat_df[param].rolling(window=w, min_periods=1).std()
+
+    if "temperature" in feat_df.columns and "pressure" in feat_df.columns:
+        feat_df["temp_pressure_ratio"] = feat_df["temperature"] / feat_df["pressure"]
+
+    features_parquet_path = PROCESSED_DIR / f"{slug}_features.parquet"
+    feat_df.to_parquet(features_parquet_path, index=False)
+
+    profiling_summary = {
+        "csv_rows": int(len(df)),
+        "csv_columns": [str(c) for c in df.columns],
+        "date_range": {
+            "start": str(df["obstime"].min()) if not df.empty else "N/A",
+            "end": str(df["obstime"].max()) if not df.empty else "N/A",
+        },
+        "missingness_pct": missingness_pct,
+        "nc_variables": list(nc_vars.keys()),
+        "nc_dims": nc_dims,
+        "matched_parameters": numeric_cols,
+    }
+
+    with open(summary_json_path, "w", encoding="utf-8") as f:
+        json.dump(profiling_summary, f, indent=2)
+
+    return {
+        "slug": slug,
+        "clean_df": df,
+        "features_df": feat_df,
+        "clean_parquet_path": clean_parquet_path,
+        "features_parquet_path": features_parquet_path,
+        "profiling_summary": profiling_summary,
+    }
 
 
 def main():

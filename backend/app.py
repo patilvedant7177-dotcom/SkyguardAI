@@ -19,6 +19,7 @@ import asyncio
 import json
 import logging
 import math
+import re
 import sys
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
@@ -26,7 +27,7 @@ from typing import Any, Dict, List, Optional
 
 import numpy as np
 import pandas as pd
-from fastapi import FastAPI, HTTPException, Query, Request
+from fastapi import FastAPI, HTTPException, Query, Request, File, Form, UploadFile
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import StreamingResponse
 
@@ -46,7 +47,7 @@ try:
         Trend,
     )
     from backend.consistency import consistency_score, fuse_and_classify
-    from backend.data_pipeline import PROCESSED_DIR, RAW_DIR
+    from backend.data_pipeline import PROCESSED_DIR, RAW_DIR, ingest_station_files
     from backend.detectors import (
         IsolationForestDetector,
         LSTMAutoencoder,
@@ -73,7 +74,7 @@ except ImportError:
         Trend,
     )
     from consistency import consistency_score, fuse_and_classify
-    from data_pipeline import PROCESSED_DIR, RAW_DIR
+    from data_pipeline import PROCESSED_DIR, RAW_DIR, ingest_station_files
     from detectors import (
         IsolationForestDetector,
         LSTMAutoencoder,
@@ -243,6 +244,130 @@ def _load_maitri_real_station() -> Optional[Dict[str, Any]]:
         return None
 
 
+def _register_custom_station(
+    station_id: int,
+    name: str,
+    lat: float,
+    lon: float,
+    elevation: float,
+    feat_df: pd.DataFrame,
+    clean_df: pd.DataFrame,
+    profiling_summary: Dict[str, Any],
+) -> Dict[str, Any]:
+    """
+    Registers a custom uploaded station into the active PIPELINE_STATE:
+    evaluates statistical anomalies, computes prognostics, and constructs timeseries points.
+    """
+    global PIPELINE_STATE
+
+    diag_window = feat_df.iloc[-720:].copy().reset_index(drop=True) if len(feat_df) > 720 else feat_df.copy().reset_index(drop=True)
+    recent_72h = feat_df.iloc[-72:].copy().reset_index(drop=True) if len(feat_df) > 72 else feat_df.copy().reset_index(drop=True)
+
+    # 1. Run detection on recent telemetry
+    t_flags = 0
+    p_flags = 0
+    h_flags = 0
+    if "temperature" in diag_window.columns and not diag_window["temperature"].isna().all():
+        stat_t = statistical_detect(diag_window, column="temperature")
+        recent_mask = diag_window.index >= len(diag_window) - min(48, len(diag_window))
+        t_flags = int(stat_t.loc[recent_mask, "flags"].apply(len).sum())
+    if "pressure" in diag_window.columns and not diag_window["pressure"].isna().all():
+        stat_p = statistical_detect(diag_window, column="pressure")
+        recent_mask = diag_window.index >= len(diag_window) - min(48, len(diag_window))
+        p_flags = int(stat_p.loc[recent_mask, "flags"].apply(len).sum())
+    if "humidity" in diag_window.columns and not diag_window["humidity"].isna().all():
+        stat_h = statistical_detect(diag_window, column="humidity")
+        recent_mask = diag_window.index >= len(diag_window) - min(48, len(diag_window))
+        h_flags = int(stat_h.loc[recent_mask, "flags"].apply(len).sum())
+
+    # Station status determination
+    if t_flags > 5 or p_flags > 5:
+        station_status = StationStatus.fault.value
+    elif t_flags > 0 or p_flags > 0 or h_flags > 0:
+        station_status = StationStatus.degrading.value
+    else:
+        station_status = StationStatus.normal.value
+
+    # Compute sensor health
+    health = predict_health(station_id=station_id, telemetry_history=diag_window)
+
+    # Alerts & explanations
+    new_alerts = []
+    if t_flags > 0 or p_flags > 0:
+        flagged_params = []
+        if t_flags > 0:
+            flagged_params.append("temperature")
+        if p_flags > 0:
+            flagged_params.append("pressure")
+
+        last_row = recent_72h.iloc[-1]
+        ts_str = pd.to_datetime(last_row["obstime"]).isoformat() + "Z"
+        param_vals = {
+            "temperature": float(last_row.get("temperature", 20.0)) if pd.notna(last_row.get("temperature")) else 20.0,
+            "pressure": float(last_row.get("pressure", 980.0)) if pd.notna(last_row.get("pressure")) else 980.0,
+            "humidity": float(last_row.get("humidity", 50.0)) if pd.notna(last_row.get("humidity")) else 50.0,
+        }
+
+        alert_id_val = int(f"{station_id}01")
+        alert_obj = fuse_and_classify(
+            station_id=station_id,
+            station_name=name,
+            timestamp=ts_str,
+            detector_scores={"statistical": 0.70, "lstm": 0.60, "isolation_forest": 0.55, "consistency": 0.50},
+            detector_flags={"statistical": [f"observed_{p}_variance" for p in flagged_params]},
+            parameter_values=param_vals,
+            is_coherent_neighbor_event=False,
+            alert_id=alert_id_val,
+        )
+        if alert_obj:
+            new_alerts.append(alert_obj)
+            PIPELINE_STATE["explanations"][alert_id_val] = explain_alert(
+                alert_id=alert_id_val,
+                alert_data=alert_obj,
+                parameter_values=param_vals,
+            )
+
+    # Build timeseries points
+    pts = []
+    for _, row in recent_72h.iterrows():
+        ts_str = pd.to_datetime(row["obstime"]).isoformat() + "Z"
+        pts.append({
+            "timestamp": ts_str,
+            "temperature": float(row["temperature"]) if pd.notna(row.get("temperature")) else None,
+            "pressure": float(row["pressure"]) if pd.notna(row.get("pressure")) else None,
+            "humidity": float(row["humidity"]) if pd.notna(row.get("humidity")) else None,
+        })
+
+    station_obj = {
+        "id": station_id,
+        "name": name,
+        "latitude": lat,
+        "longitude": lon,
+        "elevation": elevation,
+        "status": station_status,
+        "source": "real",
+    }
+
+    # Register into PIPELINE_STATE (deduplicate if station_id exists)
+    PIPELINE_STATE["stations"] = [s for s in PIPELINE_STATE["stations"] if s["id"] != station_id]
+    PIPELINE_STATE["stations"].append(station_obj)
+    PIPELINE_STATE["sensor_health"][station_id] = health
+    PIPELINE_STATE["timeseries_by_station"][station_id] = {
+        "station_id": station_id,
+        "hours": len(pts),
+        "data": pts,
+    }
+    if new_alerts:
+        PIPELINE_STATE["alerts"].extend(new_alerts)
+
+    return {
+        "station": station_obj,
+        "health": health,
+        "alerts": new_alerts,
+        "timeseries": PIPELINE_STATE["timeseries_by_station"][station_id],
+    }
+
+
 def initialize_pipeline_state(city: str = "India", scenario: str = "all") -> None:
     """
     Executes the end-to-end data pipeline, anomaly detectors, spatial consistency engine,
@@ -309,6 +434,45 @@ async def get_stations():
     spatial coordinates, elevation, and metadata.
     """
     return PIPELINE_STATE["stations"]
+
+
+@app.delete("/stations/{station_id}")
+async def delete_station(station_id: int):
+    """
+    Removes a monitored AWS station from the network:
+    deletes its metadata, active timeseries stream, sensor health, and associated alerts.
+    """
+    global PIPELINE_STATE
+
+    station_exists = any(s["id"] == station_id for s in PIPELINE_STATE["stations"])
+    if not station_exists:
+        raise HTTPException(status_code=404, detail=f"Station #{station_id} not found")
+
+    # 1. Remove from stations list
+    PIPELINE_STATE["stations"] = [s for s in PIPELINE_STATE["stations"] if s["id"] != station_id]
+
+    # 2. Remove timeseries
+    PIPELINE_STATE["timeseries_by_station"].pop(station_id, None)
+    PIPELINE_STATE["timeseries_by_station"].pop(str(station_id), None)
+
+    # 3. Remove sensor health
+    PIPELINE_STATE["sensor_health"].pop(station_id, None)
+    PIPELINE_STATE["sensor_health"].pop(str(station_id), None)
+
+    # 4. Remove alerts and explanations
+    deleted_alert_ids = [a["id"] for a in PIPELINE_STATE["alerts"] if int(a.get("station_id", -1)) == station_id]
+    PIPELINE_STATE["alerts"] = [a for a in PIPELINE_STATE["alerts"] if int(a.get("station_id", -1)) != station_id]
+    for aid in deleted_alert_ids:
+        PIPELINE_STATE["explanations"].pop(aid, None)
+        PIPELINE_STATE["explanations"].pop(str(aid), None)
+
+    logger.info("Removed station #%d from atmospheric defense network", station_id)
+
+    return {
+        "status": "deleted",
+        "station_id": station_id,
+        "remaining_stations_count": len(PIPELINE_STATE["stations"]),
+    }
 
 
 @app.get("/alerts")
@@ -521,3 +685,96 @@ async def trigger_scenario(scenario: str = Query("all"), city: str = Query("Boul
         "stations_count": len(PIPELINE_STATE["stations"]),
         "alerts_count": len(PIPELINE_STATE["alerts"]),
     }
+
+
+@app.post("/stations/upload")
+async def upload_station(
+    name: str = Form(...),
+    latitude: float = Form(...),
+    longitude: float = Form(...),
+    elevation: float = Form(...),
+    station_id: Optional[int] = Form(None),
+    csv_file: UploadFile = File(...),
+    nc_file: UploadFile = File(...),
+):
+    """
+    Manually add an AWS Station with CSV and NetCDF datasets:
+    1. Validates input parameters and saves raw datasets to data/raw/.
+    2. Runs automated profiling, schema cross-matching, cleaning, and causal feature engineering.
+    3. Runs anomaly detection, spatial/statistical fusion, and prognostic health evaluation.
+    4. Registers the new station into live PIPELINE_STATE.
+    """
+    if not name or not name.strip():
+        raise HTTPException(status_code=400, detail="Station name is required")
+    if not (-90.0 <= latitude <= 90.0):
+        raise HTTPException(status_code=400, detail="Latitude must be between -90 and 90 degrees")
+    if not (-180.0 <= longitude <= 180.0):
+        raise HTTPException(status_code=400, detail="Longitude must be between -180 and 180 degrees")
+
+    # Determine station_id
+    if station_id is None or station_id <= 0:
+        existing_ids = [s["id"] for s in PIPELINE_STATE["stations"] if isinstance(s.get("id"), int)]
+        station_id = max(existing_ids, default=10) + 1
+
+    clean_slug = re.sub(r"[^a-zA-Z0-9]+", "_", name.lower().strip()).strip("_")
+    if not clean_slug:
+        clean_slug = f"station_{station_id}"
+
+    RAW_DIR.mkdir(parents=True, exist_ok=True)
+    raw_csv_path = RAW_DIR / f"{clean_slug}.csv"
+    raw_nc_path = RAW_DIR / f"{clean_slug}.nc"
+
+    try:
+        # Save uploaded files to disk
+        csv_bytes = await csv_file.read()
+        nc_bytes = await nc_file.read()
+
+        if len(csv_bytes) == 0:
+            raise HTTPException(status_code=400, detail="Uploaded CSV file is empty.")
+        if len(nc_bytes) == 0:
+            raise HTTPException(status_code=400, detail="Uploaded NetCDF file is empty.")
+
+        with open(raw_csv_path, "wb") as f:
+            f.write(csv_bytes)
+        with open(raw_nc_path, "wb") as f:
+            f.write(nc_bytes)
+
+        # Run ingestion pipeline
+        ingest_result = ingest_station_files(
+            station_id=station_id,
+            station_name=name.strip(),
+            latitude=latitude,
+            longitude=longitude,
+            elevation=elevation,
+            raw_csv_path=raw_csv_path,
+            raw_nc_path=raw_nc_path,
+            slug=clean_slug,
+        )
+
+        # Register station into PIPELINE_STATE
+        reg_result = _register_custom_station(
+            station_id=station_id,
+            name=name.strip(),
+            lat=latitude,
+            lon=longitude,
+            elevation=elevation,
+            feat_df=ingest_result["features_df"],
+            clean_df=ingest_result["clean_df"],
+            profiling_summary=ingest_result["profiling_summary"],
+        )
+
+        logger.info("Successfully uploaded and registered AWS station: %s (ID: %d)", name, station_id)
+
+        return {
+            "status": "success",
+            "message": f"Station '{name}' successfully ingested and registered.",
+            "station": reg_result["station"],
+            "profiling_summary": ingest_result["profiling_summary"],
+            "health": reg_result["health"],
+            "alerts_count": len(reg_result["alerts"]),
+        }
+    except HTTPException:
+        raise
+    except Exception as exc:
+        logger.error("Error ingesting station files: %s", exc, exc_info=True)
+        raise HTTPException(status_code=500, detail=f"Failed to ingest station: {str(exc)}")

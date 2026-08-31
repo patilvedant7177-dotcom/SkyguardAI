@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useParams, Link } from "react-router-dom";
+import { useParams, Link, useNavigate } from "react-router-dom";
 import {
   ResponsiveContainer,
   AreaChart,
@@ -11,18 +11,22 @@ import {
   ReferenceArea,
   Legend,
 } from "recharts";
-import { fetchTimeseries, fetchStations } from "../api";
+import { fetchTimeseries, fetchStations, deleteStation } from "../api";
 import type { Timeseries, Station } from "../types";
-import { Activity, ShieldCheck, Thermometer, Gauge, Droplets } from "lucide-react";
+import { Activity, ShieldCheck, Thermometer, Gauge, Droplets, Trash2, AlertTriangle, X } from "lucide-react";
 
 const StationDetail: React.FC = () => {
   const { stationId = "1" } = useParams<{ stationId: string }>();
+  const navigate = useNavigate();
   const [data, setData] = useState<Timeseries | null>(null);
   const [stations, setStations] = useState<Station[]>([]);
   const [hours, setHours] = useState<number>(72);
   const [activeParam, setActiveParam] = useState<"all" | "temperature" | "pressure" | "humidity">("all");
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
+  const [isDeleting, setIsDeleting] = useState(false);
+  const [deleteError, setDeleteError] = useState<string | null>(null);
 
   useEffect(() => {
     fetchStations().then(setStations).catch(() => {});
@@ -63,8 +67,158 @@ const StationDetail: React.FC = () => {
     fullDate: new Date(pt.timestamp).toLocaleString(),
   }));
 
+  const handleDeleteStation = async () => {
+    try {
+      setIsDeleting(true);
+      setDeleteError(null);
+      await deleteStation(parseInt(stationId));
+      setShowDeleteConfirm(false);
+      navigate("/");
+    } catch (err: any) {
+      setDeleteError(err.message || "Failed to remove station");
+    } finally {
+      setIsDeleting(false);
+    }
+  };
+
   return (
     <div style={{ display: "flex", flexDirection: "column", gap: "1.5rem" }}>
+      {/* Delete Confirmation Modal */}
+      {showDeleteConfirm && (
+        <div
+          style={{
+            position: "fixed",
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: 0,
+            background: "rgba(3, 7, 18, 0.85)",
+            backdropFilter: "blur(12px)",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            zIndex: 2000,
+            padding: "1rem",
+          }}
+          onClick={(e) => {
+            if (e.target === e.currentTarget && !isDeleting) setShowDeleteConfirm(false);
+          }}
+        >
+          <div
+            className="glass-panel"
+            style={{
+              width: "100%",
+              maxWidth: "480px",
+              borderRadius: "14px",
+              background: "linear-gradient(145deg, rgba(20, 24, 38, 0.98), rgba(15, 23, 42, 0.99))",
+              border: "1px solid rgba(244, 63, 94, 0.4)",
+              boxShadow: "0 25px 50px -12px rgba(0, 0, 0, 0.7), 0 0 25px rgba(244, 63, 94, 0.2)",
+              padding: "1.75rem",
+              display: "flex",
+              flexDirection: "column",
+              gap: "1.25rem",
+            }}
+          >
+            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start" }}>
+              <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+                <div
+                  style={{
+                    width: "36px",
+                    height: "36px",
+                    borderRadius: "10px",
+                    background: "rgba(244, 63, 94, 0.15)",
+                    border: "1px solid rgba(244, 63, 94, 0.3)",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                  }}
+                >
+                  <Trash2 size={18} color="#f43f5e" />
+                </div>
+                <div>
+                  <h3 style={{ fontSize: "1.15rem", fontWeight: 700, color: "#f8fafc" }}>
+                    Remove Station Node
+                  </h3>
+                  <div style={{ fontSize: "0.75rem", color: "#94a3b8" }}>
+                    Node #{stationId} · {currentStation?.name || "AWS Station"}
+                  </div>
+                </div>
+              </div>
+              <button
+                onClick={() => setShowDeleteConfirm(false)}
+                disabled={isDeleting}
+                style={{
+                  background: "transparent",
+                  border: "none",
+                  color: "#94a3b8",
+                  cursor: "pointer",
+                }}
+              >
+                <X size={18} />
+              </button>
+            </div>
+
+            {deleteError && (
+              <div
+                style={{
+                  padding: "0.75rem 1rem",
+                  borderRadius: "8px",
+                  background: "rgba(244, 63, 94, 0.15)",
+                  border: "1px solid rgba(244, 63, 94, 0.4)",
+                  color: "#fb7185",
+                  fontSize: "0.8rem",
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "8px",
+                }}
+              >
+                <AlertTriangle size={16} />
+                <span>{deleteError}</span>
+              </div>
+            )}
+
+            <p style={{ fontSize: "0.85rem", color: "#cbd5e1", lineHeight: "1.5" }}>
+              Are you sure you want to remove <strong>{currentStation?.name || `Station #${stationId}`}</strong> from the atmospheric defense network?
+              This will unregister its active stream, sensor health prognostics, and associated alert history.
+            </p>
+
+            <div style={{ display: "flex", gap: "0.75rem", justifyContent: "flex-end", marginTop: "0.5rem" }}>
+              <button
+                type="button"
+                onClick={() => setShowDeleteConfirm(false)}
+                disabled={isDeleting}
+                className="btn-secondary"
+                style={{ padding: "6px 14px", fontSize: "0.8rem" }}
+              >
+                Cancel
+              </button>
+              <button
+                type="button"
+                onClick={handleDeleteStation}
+                disabled={isDeleting}
+                style={{
+                  padding: "6px 16px",
+                  fontSize: "0.8rem",
+                  background: "#f43f5e",
+                  border: "1px solid rgba(244, 63, 94, 0.5)",
+                  borderRadius: "6px",
+                  color: "#fff",
+                  fontWeight: 600,
+                  cursor: isDeleting ? "not-allowed" : "pointer",
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "6px",
+                  boxShadow: "0 0 12px rgba(244, 63, 94, 0.4)",
+                }}
+              >
+                <Trash2 size={14} />
+                <span>{isDeleting ? "Removing..." : "Confirm Remove"}</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* Header with Station Switcher */}
       <div
         style={{
@@ -135,6 +289,25 @@ const StationDetail: React.FC = () => {
             <ShieldCheck size={14} color="var(--accent-emerald)" />
             <span>Health Profile</span>
           </Link>
+
+          {/* Remove Station Button */}
+          <button
+            onClick={() => setShowDeleteConfirm(true)}
+            className="btn-secondary"
+            title="Remove this AWS station from network"
+            style={{
+              fontSize: "0.8rem",
+              padding: "6px 12px",
+              color: "#fb7185",
+              borderColor: "rgba(244, 63, 94, 0.3)",
+              display: "flex",
+              alignItems: "center",
+              gap: "6px",
+            }}
+          >
+            <Trash2 size={14} color="#f43f5e" />
+            <span>Remove Station</span>
+          </button>
         </div>
       </div>
 
