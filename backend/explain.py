@@ -786,6 +786,34 @@ def predict_health(
     # Handle explicit forced status with station-specific realistic variance (within valid bounds)
     if forced_status:
         st_seed = (station_id * 7) % 9
+
+        # Calculate telemetry metrics if available to populate realistic diagnostics
+        t_drift_calc = 0.03 + (station_id % 4) * 0.01
+        p_tension_calc = 99.4 - (station_id % 3) * 0.2
+        h_drift_calc = 0.05 + (station_id % 3) * 0.02
+        uplink_calc = 99.8
+
+        if telemetry_history is not None and not telemetry_history.empty:
+            null_count = telemetry_history[["temperature", "pressure", "humidity"]].isna().sum().sum()
+            total_slots = len(telemetry_history) * 3
+            missing_ratio = null_count / max(1, total_slots)
+            uplink_calc = max(0.0, round((1.0 - missing_ratio) * 100, 1))
+
+            for col in ["temperature", "pressure", "humidity"]:
+                ser = telemetry_history[col].dropna()
+                if len(ser) >= 24:
+                    rolling_w = min(96, len(ser))
+                    rolling_mean = ser.rolling(window=rolling_w, min_periods=min(12, len(ser))).mean().dropna()
+                    if len(rolling_mean) >= 12:
+                        p_fit = np.polyfit(np.arange(len(rolling_mean)), rolling_mean.values, 1)
+                        slope_per_day = abs(p_fit[0]) * 96
+                        if col == "temperature":
+                            t_drift_calc = round(max(0.15, slope_per_day * 0.8), 2)
+                        elif col == "pressure":
+                            p_tension_calc = max(70.0, round(100.0 - slope_per_day * 4.0, 1))
+                        elif col == "humidity":
+                            h_drift_calc = round(max(0.15, slope_per_day * 0.5), 2)
+
         if forced_status == "offline":
             h_score = int(np.clip(38 + (st_seed % 5) - 2, 25, 45))
             return {
@@ -810,15 +838,15 @@ def predict_health(
                 "maintenance_forecast_days": max(3, 7 - (station_id % 3)),
                 "last_maintenance_at": base_last_maint,
                 "diagnostics": [
-                    {"name": "RTD Temperature Probe", "metric": f"+{2.1 + (station_id % 4) * 0.4:.2f}% (Drift)", "status": "critical", "status_label": "Transducer Fault"},
-                    {"name": "Barometric Capsule", "metric": f"{92.4 - (station_id % 5):.1f}% (Tension Loss)", "status": "warning", "status_label": "Degraded"},
+                    {"name": "RTD Temperature Probe", "metric": f"+{max(2.1, t_drift_calc + 1.5):.2f}% (Drift)", "status": "critical", "status_label": "Transducer Fault"},
+                    {"name": "Barometric Capsule", "metric": f"{min(92.4, p_tension_calc - 4.0):.1f}% (Tension Loss)", "status": "warning", "status_label": "Degraded"},
                     {"name": "Hygrometer Capacitance", "metric": "Variable Bias", "status": "warning", "status_label": "Needs Calibration"},
-                    {"name": "Telemetry Modem", "metric": "96.4% Uplink", "status": "nominal", "status_label": "Nominal"},
+                    {"name": "Telemetry Modem", "metric": f"{min(96.4, uplink_calc):.1f}% Uplink", "status": "nominal", "status_label": "Nominal"},
                 ],
             }
         elif forced_status == "degrading":
-            # Distinct degrading scores per station in range [58, 74]
-            h_score = int(np.clip(68 + ((station_id * 5) % 11) - 5, 55, 75))
+            # Distinct degrading scores per station in range [58, 75]
+            h_score = int(np.clip(68 + ((station_id * 5) % 11) - 5, 58, 75))
             m_days = max(4, 14 - (station_id % 6))
             return {
                 "station_id": int(station_id),
@@ -827,10 +855,30 @@ def predict_health(
                 "maintenance_forecast_days": m_days,
                 "last_maintenance_at": base_last_maint,
                 "diagnostics": [
-                    {"name": "RTD Temperature Probe", "metric": f"+{0.75 + (station_id % 5) * 0.22:.2f}% (Drift)", "status": "warning", "status_label": "Drift Detected"},
-                    {"name": "Barometric Capsule", "metric": f"{96.2 - (station_id % 4):.1f}% (Nominal)", "status": "nominal", "status_label": "Nominal"},
-                    {"name": "Hygrometer Capacitance", "metric": f"+{0.45 + (station_id % 3) * 0.15:.2f}% (Bias)", "status": "warning", "status_label": "Minor Drift"},
-                    {"name": "Telemetry Modem", "metric": "98.1% Uplink", "status": "nominal", "status_label": "Nominal"},
+                    {
+                        "name": "RTD Temperature Probe",
+                        "metric": f"+{max(0.65, t_drift_calc):.2f}% (Drift)",
+                        "status": "warning",
+                        "status_label": "Drift Detected",
+                    },
+                    {
+                        "name": "Barometric Capsule",
+                        "metric": f"{min(96.2, p_tension_calc):.1f}% Tension",
+                        "status": "nominal",
+                        "status_label": "Nominal",
+                    },
+                    {
+                        "name": "Hygrometer Capacitance",
+                        "metric": f"+{max(0.45, h_drift_calc):.2f}% Bias",
+                        "status": "warning",
+                        "status_label": "Minor Drift",
+                    },
+                    {
+                        "name": "Telemetry Modem",
+                        "metric": f"{min(98.5, uplink_calc):.1f}% Uplink",
+                        "status": "nominal",
+                        "status_label": "Nominal",
+                    },
                 ],
             }
         elif forced_status in ("healthy", "normal"):
@@ -904,7 +952,7 @@ def predict_health(
                         elif col == "humidity":
                             h_drift_val = round(slope_per_day * 0.5, 2)
 
-                        if slope_per_day > 2.0:
+                        if slope_per_day > 1.8:
                             denom = np.sum((rolling_mean.values - rolling_mean.mean()) ** 2)
                             pred = np.polyval(p_fit, np.arange(len(rolling_mean)))
                             r2 = 1.0 - (np.sum((rolling_mean.values - pred) ** 2) / max(1e-4, denom)) if denom > 1e-4 else 1.0
@@ -958,14 +1006,14 @@ def predict_health(
         maint_days = max(20, int(health_score / 2.0))
 
     # Build Subsystem Diagnostics
-    t_status = "critical" if t_drift_val > 2.0 else ("warning" if t_drift_val > 0.4 else "nominal")
-    t_label = "Drift Warning" if t_status == "warning" else ("Transducer Fault" if t_status == "critical" else "Nominal")
+    t_status = "critical" if t_drift_val > 2.0 else ("warning" if t_drift_val > 0.65 else "nominal")
+    t_label = "Transducer Fault" if t_status == "critical" else ("Drift Warning" if t_status == "warning" else "Nominal")
 
-    p_status = "critical" if p_tension_val < 88.0 else ("warning" if p_tension_val < 96.0 else "nominal")
-    p_label = "Baric Noise" if p_status == "warning" else ("Capsule Breach" if p_status == "critical" else "Nominal")
+    p_status = "critical" if p_tension_val < 88.0 else ("warning" if p_tension_val < 95.0 else "nominal")
+    p_label = "Capsule Breach" if p_status == "critical" else ("Baric Noise" if p_status == "warning" else "Nominal")
 
-    h_status = "critical" if h_drift_val > 1.8 else ("warning" if h_drift_val > 0.3 else "nominal")
-    h_label = "High Drift" if h_status == "warning" else ("Sensor Fault" if h_status == "critical" else "Nominal")
+    h_status = "critical" if h_drift_val > 1.8 else ("warning" if h_drift_val > 0.65 else "nominal")
+    h_label = "Sensor Fault" if h_status == "critical" else ("High Drift" if h_status == "warning" else "Nominal")
 
     u_status = "critical" if uplink_pct < 80.0 else ("warning" if uplink_pct < 95.0 else "nominal")
     u_label = "Telemetry Loss" if u_status == "critical" else ("Intermittent" if u_status == "warning" else "Nominal")
@@ -973,7 +1021,7 @@ def predict_health(
     diagnostics = [
         {
             "name": "RTD Temperature Probe",
-            "metric": f"+{t_drift_val:.2f}% (Drift)" if t_drift_val > 0.1 else f"+{t_drift_val:.2f}% (Nominal)",
+            "metric": f"+{t_drift_val:.2f}% (Drift)" if t_drift_val >= 0.4 else f"+{t_drift_val:.2f}% (Nominal)",
             "status": t_status,
             "status_label": t_label,
         },
@@ -985,7 +1033,7 @@ def predict_health(
         },
         {
             "name": "Hygrometer Capacitance",
-            "metric": f"+{h_drift_val:.2f}% Capacitance Bias" if h_drift_val > 0.1 else "Nominal",
+            "metric": f"+{h_drift_val:.2f}% Capacitance Bias" if h_drift_val >= 0.4 else "Nominal",
             "status": h_status,
             "status_label": h_label,
         },

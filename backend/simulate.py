@@ -832,7 +832,7 @@ def detect_and_fuse_network(
         # Store formatted timeseries points
         pts = []
         for _, row in st_data.iterrows():
-            ts_str = pd.to_datetime(row["obstime"]).isoformat() + "Z"
+            ts_str = pd.to_datetime(row["obstime"]).strftime("%Y-%m-%dT%H:%M:%SZ")
             pts.append({
                 "timestamp": ts_str,
                 "temperature": float(row["temperature"]) if pd.notna(row["temperature"]) else None,
@@ -904,12 +904,14 @@ def detect_and_fuse_network(
                     rolling_24h = ser.rolling(window=96, min_periods=48).mean().dropna()
                     if len(rolling_24h) >= 48:
                         slope = np.polyfit(np.arange(len(rolling_24h)), rolling_24h.values, 1)[0]
-                        if abs(slope) > 0.04:
+                        slope_per_day = abs(slope) * 96
+                        thresh = 0.60 if col == "temperature" else (1.5 if col == "pressure" else 2.5)
+                        if slope_per_day > thresh:
                             flagged_events.append({
                                 "type": "calibration_drift",
                                 "timestamp": st_data["obstime"].iloc[-1],
                                 "parameter": col,
-                                "magnitude": float(slope * 96),
+                                "magnitude": float(slope_per_day),
                                 "direction": "increases_anomaly" if slope > 0 else "decreases_anomaly",
                             })
 
@@ -935,13 +937,13 @@ def detect_and_fuse_network(
             ev_param = ev["parameter"]
             ev_time = ev["timestamp"]
 
-            # Query neighbor corroboration within temporal window (+/- 2 hours)
+            # Query neighbor corroboration on same parameter within temporal window (+/- 2.5 hours)
             corroborating_neighbors = []
             for n_id in neighbors:
                 n_events = station_anomalies.get(n_id, [])
                 for ne in n_events:
                     time_diff = abs((ne["timestamp"] - ev_time).total_seconds() / 3600.0)
-                    if time_diff <= 2.5 and (ne["parameter"] == ev_param or ne["type"] == ev_type or ev_type == "regional_event"):
+                    if time_diff <= 2.5 and (ne["parameter"] == ev_param or ev_type == "regional_event" or ne.get("type") == "regional_event"):
                         corroborating_neighbors.append(n_id)
                         break
 
@@ -1060,26 +1062,13 @@ def detect_and_fuse_network(
         st_data = telemetry_df[telemetry_df["station_id"] == sid].sort_values("obstime").reset_index(drop=True)
         st_alerts = [a for a in alerts if a.get("station_id") == sid]
 
-        # Compute data-driven sensor health for each station
+        # Compute data-driven sensor health for each station aligned with station status
         health_info = predict_health(
             station_id=sid,
             telemetry_history=st_data,
             recent_alerts=st_alerts,
+            forced_status=st_status,
         )
-
-        # Ensure trend and status alignment if explicitly in offline or fault set
-        if st_status == "offline" and health_info["health_score"] > 45:
-            health_info["health_score"] = int(np.clip(35 + (sid % 7), 25, 42))
-            health_info["trend"] = "degrading"
-            health_info["maintenance_forecast_days"] = 2
-        elif st_status == "fault" and health_info["health_score"] > 60:
-            health_info["health_score"] = int(np.clip(50 + (sid % 7), 45, 58))
-            health_info["trend"] = "degrading"
-            health_info["maintenance_forecast_days"] = max(3, 7 - (sid % 3))
-        elif st_status == "degrading" and health_info["health_score"] >= 80:
-            health_info["health_score"] = int(np.clip(68 + ((sid * 3) % 9) - 4, 62, 76))
-            health_info["trend"] = "degrading"
-            health_info["maintenance_forecast_days"] = max(5, 15 - (sid % 5))
 
         sensor_health_map[sid] = health_info
 
@@ -1144,10 +1133,10 @@ def demo_scenarios(
         s_target = st_ids[5]
         mask = telemetry_df["station_id"] == s_target
         st_indices = telemetry_df[mask].index.tolist()
-        drift_start = st_indices[int(n_pts * 0.50)]
-        drift_len = 96  # 24 hours of 15-min points
-        ramp = np.linspace(0, 6.5, drift_len)
-        for offset, row_idx in enumerate(st_indices[int(n_pts * 0.50): int(n_pts * 0.50) + drift_len]):
+        drift_start_idx = int(n_pts * 0.35)
+        drift_indices = st_indices[drift_start_idx:]
+        ramp = np.linspace(0, 7.5, len(drift_indices))
+        for offset, row_idx in enumerate(drift_indices):
             telemetry_df.at[row_idx, "temperature"] += ramp[offset]
         logger.info("Injected CALIBRATION DRIFT on Station %d", s_target)
 

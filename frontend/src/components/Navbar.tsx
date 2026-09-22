@@ -11,6 +11,7 @@ import {
   WifiOff,
 } from "lucide-react";
 import { fetchHealth } from "../api";
+import { ThemeSwitcher } from "./ThemeSwitcher";
 
 export const Navbar: React.FC = () => {
   const [healthOk, setHealthOk] = useState<boolean | null>(null);
@@ -74,29 +75,34 @@ export const Navbar: React.FC = () => {
           </div>
         </div>
 
-        {/* Navigation Tabs */}
-        <nav>
-          <ul className="navbar-nav-list">
-            {navItems.map((item) => {
-              const Icon = item.icon;
-              return (
-                <li key={item.to} style={{ listStyle: "none" }}>
-                  <NavLink
-                    to={item.to}
-                    end={item.to === "/"}
-                    className={({ isActive }) =>
-                      `navbar-nav-item ${isActive ? "active" : ""}`
-                    }
-                  >
-                    <Icon size={16} />
-                    <span>{item.label}</span>
-                  </NavLink>
-                </li>
-              );
-            })}
-          </ul>
-        </nav>
+        {/* Navigation Tabs & Theme Switcher */}
+        <div style={{ display: "flex", alignItems: "center", gap: "0.75rem", flexWrap: "wrap" }}>
+          <nav>
+            <ul className="navbar-nav-list">
+              {navItems.map((item) => {
+                const Icon = item.icon;
+                return (
+                  <li key={item.to} style={{ listStyle: "none" }}>
+                    <NavLink
+                      to={item.to}
+                      end={item.to === "/"}
+                      className={({ isActive }) =>
+                        `navbar-nav-item ${isActive ? "active" : ""}`
+                      }
+                    >
+                      <Icon size={16} />
+                      <span>{item.label}</span>
+                    </NavLink>
+                  </li>
+                );
+              })}
+            </ul>
+          </nav>
+
+          <ThemeSwitcher />
+        </div>
       </div>
     </header>
   );
 };
+

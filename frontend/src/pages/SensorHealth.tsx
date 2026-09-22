@@ -55,6 +55,8 @@ const SensorHealth: React.FC = () => {
       .finally(() => setLoading(false));
   }, [stationId]);
 
+  const currentStation = stations.find((s) => s.id === parseInt(stationId));
+
   // Circular gauge calculations
   const score = health?.health_score || 0;
   const radius = 80;
@@ -81,7 +83,9 @@ const SensorHealth: React.FC = () => {
             <h1 style={{ fontSize: "1.75rem", fontWeight: 700, letterSpacing: "-0.02em" }}>
               Sensor Health & Reliability
             </h1>
-            <span className="badge badge-normal">Station #{stationId}</span>
+            <span className={`badge badge-${currentStation?.status || "normal"}`}>
+              Station #{stationId} {currentStation ? `• ${currentStation.status.toUpperCase()}` : ""}
+            </span>
           </div>
           <p style={{ color: "var(--text-secondary)", fontSize: "0.9rem", marginTop: "4px" }}>
             Predictive calibration metrics, hardware degradation indices, and maintenance scheduling
@@ -95,8 +99,8 @@ const SensorHealth: React.FC = () => {
               value={stationId}
               onChange={(e) => (window.location.href = `#/health/${e.target.value}`)}
               style={{
-                background: "rgba(15, 23, 42, 0.8)",
-                color: "#f8fafc",
+                background: "var(--bg-card)",
+                color: "var(--text-primary)",
                 border: "1px solid var(--border-card)",
                 borderRadius: "6px",
                 padding: "6px 12px",
@@ -158,7 +162,7 @@ const SensorHealth: React.FC = () => {
                   cx="100"
                   cy="100"
                   r={radius}
-                  stroke="rgba(255, 255, 255, 0.08)"
+                  stroke="var(--border-card)"
                   strokeWidth="14"
                   fill="transparent"
                 />
@@ -192,7 +196,7 @@ const SensorHealth: React.FC = () => {
                   justifyContent: "center",
                 }}
               >
-                <span style={{ fontSize: "2.8rem", fontWeight: 800, color: "#f8fafc", lineHeight: 1 }}>
+                <span style={{ fontSize: "2.8rem", fontWeight: 800, color: "var(--text-primary)", lineHeight: 1 }}>
                   {score}
                 </span>
                 <span style={{ fontSize: "0.8rem", color: "var(--text-muted)", textTransform: "uppercase", marginTop: "4px" }}>
@@ -206,36 +210,36 @@ const SensorHealth: React.FC = () => {
               style={{
                 display: "inline-flex",
                 alignItems: "center",
-                gap: "6px",
+                gap: "8px",
                 padding: "6px 14px",
                 borderRadius: "9999px",
-                fontSize: "0.85rem",
-                fontWeight: 600,
-                background: `rgba(${score >= 80 ? "16, 185, 129" : score >= 50 ? "245, 158, 11" : "244, 63, 94"}, 0.15)`,
+                background: `${scoreColor}15`,
+                border: `1px solid ${scoreColor}40`,
                 color: scoreColor,
-                border: `1px solid ${scoreColor}`,
+                fontWeight: 600,
+                fontSize: "0.85rem",
               }}
             >
-              <CheckCircle2 size={14} />
-              <span>{score >= 80 ? "OPTIMAL INTEGRITY" : score >= 50 ? "DEGRADATION DETECTED" : "CRITICAL FAULT"}</span>
+              <CheckCircle2 size={16} />
+              <span>{score >= 80 ? "Optimal Operation" : score >= 50 ? "Degrading / Wear" : "Critical Maintenance"}</span>
             </div>
           </div>
 
-          {/* Details & Predictive Maintenance Cards */}
-          <div style={{ display: "flex", flexDirection: "column", gap: "1.25rem" }}>
-            {/* 3 Metric Summary Grid */}
+          {/* Diagnostics and Prognostics Panel */}
+          <div style={{ display: "flex", flexDirection: "column", gap: "1.5rem" }}>
+            {/* Top Cards: Trend, Forecast, Last Maintenance */}
             <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))", gap: "1rem" }}>
               {/* Trend Card */}
               <div className="glass-panel" style={{ padding: "1.25rem", display: "flex", flexDirection: "column", gap: "8px" }}>
                 <div style={{ display: "flex", justifyContent: "space-between", color: "var(--text-secondary)", fontSize: "0.85rem" }}>
-                  <span>Health Trend</span>
+                  <span>Degradation Trend</span>
                   <TrendIcon size={16} color={trendInfo?.color} />
                 </div>
                 <div style={{ fontSize: "1.4rem", fontWeight: 700, color: trendInfo?.color, textTransform: "capitalize" }}>
-                  {health.trend}
+                  {trendInfo?.label}
                 </div>
                 <div style={{ fontSize: "0.75rem", color: "var(--text-muted)" }}>
-                  Sensor drift rate vs baseline
+                  Sensor output stability
                 </div>
               </div>
 
@@ -245,7 +249,7 @@ const SensorHealth: React.FC = () => {
                   <span>Maintenance Forecast</span>
                   <Wrench size={16} color="var(--accent-amber)" />
                 </div>
-                <div style={{ fontSize: "1.4rem", fontWeight: 700, color: "#f8fafc" }}>
+                <div style={{ fontSize: "1.4rem", fontWeight: 700, color: "var(--text-primary)" }}>
                   {health.maintenance_forecast_days !== null ? `${health.maintenance_forecast_days} Days` : "No Action Needed"}
                 </div>
                 <div style={{ fontSize: "0.75rem", color: "var(--text-muted)" }}>
@@ -259,7 +263,7 @@ const SensorHealth: React.FC = () => {
                   <span>Last Maintenance</span>
                   <Calendar size={16} color="var(--accent-blue)" />
                 </div>
-                <div style={{ fontSize: "1.1rem", fontWeight: 600, color: "#f8fafc" }}>
+                <div style={{ fontSize: "1.1rem", fontWeight: 600, color: "var(--text-primary)" }}>
                   {new Date(health.last_maintenance_at).toLocaleDateString()}
                 </div>
                 <div style={{ fontSize: "0.75rem", color: "var(--text-muted)" }}>
@@ -298,13 +302,14 @@ const SensorHealth: React.FC = () => {
                           justifyContent: "space-between",
                           alignItems: "center",
                           padding: "10px 14px",
-                          background: "rgba(15, 23, 42, 0.6)",
+                          background: "var(--bg-card)",
                           borderRadius: "6px",
+                          border: "1px solid var(--border-card)",
                           borderLeft: `3px solid ${statusColor}`,
                         }}
                       >
                         <div style={{ display: "flex", flexDirection: "column", gap: "2px" }}>
-                          <span style={{ fontWeight: 600, color: "#f8fafc" }}>{diag.name}</span>
+                          <span style={{ fontWeight: 600, color: "var(--text-primary)" }}>{diag.name}</span>
                           <span style={{ color: "var(--text-muted)", fontSize: "0.75rem" }}>{diag.metric}</span>
                         </div>
                         <span
@@ -325,19 +330,19 @@ const SensorHealth: React.FC = () => {
                   })
                 ) : (
                   <>
-                    <div style={{ display: "flex", justifyContent: "space-between", padding: "8px 12px", background: "rgba(15, 23, 42, 0.5)", borderRadius: "6px" }}>
+                    <div style={{ display: "flex", justifyContent: "space-between", padding: "8px 12px", background: "rgba(100, 116, 139, 0.08)", borderRadius: "6px" }}>
                       <span style={{ color: "var(--text-secondary)" }}>Thermistor Calibration Drift</span>
                       <span style={{ color: score >= 80 ? "#10b981" : score >= 50 ? "#f59e0b" : "#f43f5e", fontWeight: 600 }}>
                         {score >= 80 ? "+0.04% (Nominal)" : score >= 50 ? "+0.85% (Drift Warning)" : "+2.40% (Transducer Fault)"}
                       </span>
                     </div>
-                    <div style={{ display: "flex", justifyContent: "space-between", padding: "8px 12px", background: "rgba(15, 23, 42, 0.5)", borderRadius: "6px" }}>
+                    <div style={{ display: "flex", justifyContent: "space-between", padding: "8px 12px", background: "rgba(100, 116, 139, 0.08)", borderRadius: "6px" }}>
                       <span style={{ color: "var(--text-secondary)" }}>Barometric Membrane Tension</span>
                       <span style={{ color: score >= 80 ? "#10b981" : score >= 50 ? "#f59e0b" : "#f43f5e", fontWeight: 600 }}>
                         {score >= 80 ? "99.2% (Nominal)" : score >= 50 ? "95.1% (Acceptable)" : "87.0% (Capsule Breach)"}
                       </span>
                     </div>
-                    <div style={{ display: "flex", justifyContent: "space-between", padding: "8px 12px", background: "rgba(15, 23, 42, 0.5)", borderRadius: "6px" }}>
+                    <div style={{ display: "flex", justifyContent: "space-between", padding: "8px 12px", background: "rgba(100, 116, 139, 0.08)", borderRadius: "6px" }}>
                       <span style={{ color: "var(--text-secondary)" }}>Hygrometer Capacitance Drift</span>
                       <span style={{ color: score >= 80 ? "#38bdf8" : score >= 50 ? "#f59e0b" : "#f43f5e", fontWeight: 600 }}>
                         {score >= 80 ? "Stable" : score >= 50 ? "Minor Bias" : "High Drift"}

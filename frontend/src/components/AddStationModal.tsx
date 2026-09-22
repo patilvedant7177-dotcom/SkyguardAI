@@ -310,9 +310,9 @@ export const AddStationModal: React.FC<AddStationModalProps> = ({
           maxHeight: "94vh",
           overflowY: "auto",
           borderRadius: "16px",
-          background: "linear-gradient(145deg, rgba(15, 23, 42, 0.97), rgba(11, 15, 25, 0.99))",
-          border: "1px solid rgba(56, 189, 248, 0.3)",
-          boxShadow: "0 25px 60px -15px rgba(0, 0, 0, 0.8), 0 0 35px rgba(56, 189, 248, 0.15)",
+          background: "var(--bg-card)",
+          border: "1px solid var(--border-card-bright)",
+          boxShadow: "0 25px 60px -15px rgba(0, 0, 0, 0.25), 0 0 35px rgba(56, 189, 248, 0.15)",
           padding: "1.75rem",
           display: "flex",
           flexDirection: "column",
@@ -332,17 +332,17 @@ export const AddStationModal: React.FC<AddStationModalProps> = ({
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
-                boxShadow: "0 0 15px rgba(56, 189, 248, 0.5)",
+                boxShadow: "0 0 15px rgba(56, 189, 248, 0.4)",
               }}
             >
               <Radio size={20} color="#fff" />
             </div>
             <div>
-              <h2 style={{ fontSize: "1.3rem", fontWeight: 700, letterSpacing: "-0.02em", color: "#f8fafc" }}>
-                Add Automatic Weather Station (AWS)
+              <h2 style={{ fontSize: "1.25rem", fontWeight: 700, color: "var(--text-primary)" }}>
+                Register New AWS Ground Station
               </h2>
-              <p style={{ fontSize: "0.8rem", color: "var(--text-secondary)", marginTop: "2px" }}>
-                Select location on map and upload observational CSV + NetCDF datasets.
+              <p style={{ fontSize: "0.8rem", color: "var(--text-muted)", marginTop: "2px" }}>
+                Add telemetry sensor node with NetCDF grid dataset and timeseries
               </p>
             </div>
           </div>
@@ -408,33 +408,34 @@ export const AddStationModal: React.FC<AddStationModalProps> = ({
                   display: "grid",
                   gridTemplateColumns: "repeat(auto-fit, minmax(140px, 1fr))",
                   gap: "0.75rem",
-                  background: "rgba(0, 0, 0, 0.25)",
+                  background: "rgba(100, 116, 139, 0.08)",
+                  border: "1px solid var(--border-card)",
                   padding: "0.85rem",
                   borderRadius: "8px",
                   fontSize: "0.8rem",
                 }}
               >
                 <div>
-                  <span style={{ color: "#94a3b8" }}>Ingested Rows:</span>
-                  <div style={{ fontWeight: 700, color: "#f8fafc", marginTop: "2px" }}>
+                  <span style={{ color: "var(--text-muted)" }}>Ingested Rows:</span>
+                  <div style={{ fontWeight: 700, color: "var(--text-primary)", marginTop: "2px" }}>
                     {result.profiling_summary.csv_rows.toLocaleString()}
                   </div>
                 </div>
                 <div>
-                  <span style={{ color: "#94a3b8" }}>Date Range:</span>
-                  <div style={{ fontWeight: 600, color: "#f8fafc", marginTop: "2px", fontSize: "0.75rem" }}>
+                  <span style={{ color: "var(--text-muted)" }}>Date Range:</span>
+                  <div style={{ fontWeight: 600, color: "var(--text-primary)", marginTop: "2px", fontSize: "0.75rem" }}>
                     {result.profiling_summary.date_range.start.slice(0, 10)} to {result.profiling_summary.date_range.end.slice(0, 10)}
                   </div>
                 </div>
                 <div>
-                  <span style={{ color: "#94a3b8" }}>NetCDF Vars:</span>
-                  <div style={{ fontWeight: 600, color: "#38bdf8", marginTop: "2px" }}>
+                  <span style={{ color: "var(--text-muted)" }}>NetCDF Vars:</span>
+                  <div style={{ fontWeight: 600, color: "var(--accent-cyan)", marginTop: "2px" }}>
                     {result.profiling_summary.nc_variables.join(", ") || "Standard"}
                   </div>
                 </div>
                 <div>
-                  <span style={{ color: "#94a3b8" }}>Health Score:</span>
-                  <div style={{ fontWeight: 700, color: "#34d399", marginTop: "2px" }}>
+                  <span style={{ color: "var(--text-muted)" }}>Health Score:</span>
+                  <div style={{ fontWeight: 700, color: "var(--accent-emerald)", marginTop: "2px" }}>
                     {result.health.health_score}/100 ({result.health.trend})
                   </div>
                 </div>
@@ -508,7 +509,7 @@ export const AddStationModal: React.FC<AddStationModalProps> = ({
                   top: "10px",
                   left: "10px",
                   zIndex: 400,
-                  background: "rgba(15, 23, 42, 0.85)",
+                  background: "var(--bg-card)",
                   backdropFilter: "blur(6px)",
                   padding: "4px 10px",
                   borderRadius: "6px",
@@ -517,7 +518,7 @@ export const AddStationModal: React.FC<AddStationModalProps> = ({
                   display: "flex",
                   alignItems: "center",
                   gap: "6px",
-                  color: "#f8fafc",
+                  color: "var(--text-primary)",
                 }}
               >
                 <MapIcon size={13} color="var(--accent-cyan)" />
@@ -541,13 +542,13 @@ export const AddStationModal: React.FC<AddStationModalProps> = ({
                     type="button"
                     onClick={() => setMapRegionTarget({ center: reg.center, zoom: reg.zoom })}
                     style={{
-                      background: "rgba(15, 23, 42, 0.85)",
+                      background: "var(--bg-card)",
                       backdropFilter: "blur(6px)",
                       border: "1px solid var(--border-card)",
                       borderRadius: "4px",
                       padding: "3px 8px",
                       fontSize: "0.7rem",
-                      color: "#94a3b8",
+                      color: "var(--text-primary)",
                       cursor: "pointer",
                     }}
                   >
@@ -612,7 +613,7 @@ export const AddStationModal: React.FC<AddStationModalProps> = ({
             {/* Metadata Fields */}
             <div style={{ display: "grid", gridTemplateColumns: "2fr 1fr", gap: "1rem" }}>
               <div>
-                <label style={{ display: "block", fontSize: "0.8rem", color: "#cbd5e1", marginBottom: "4px" }}>
+                <label style={{ display: "block", fontSize: "0.8rem", color: "var(--text-secondary)", marginBottom: "4px" }}>
                   Station Name *
                 </label>
                 <input
@@ -625,16 +626,16 @@ export const AddStationModal: React.FC<AddStationModalProps> = ({
                   style={{
                     width: "100%",
                     padding: "8px 12px",
-                    background: "rgba(15, 23, 42, 0.6)",
+                    background: "var(--bg-card)",
                     border: "1px solid var(--border-card)",
                     borderRadius: "8px",
-                    color: "#fff",
+                    color: "var(--text-primary)",
                     fontSize: "0.85rem",
                   }}
                 />
               </div>
               <div>
-                <label style={{ display: "block", fontSize: "0.8rem", color: "#cbd5e1", marginBottom: "4px" }}>
+                <label style={{ display: "block", fontSize: "0.8rem", color: "var(--text-secondary)", marginBottom: "4px" }}>
                   Station ID (Optional)
                 </label>
                 <input
@@ -646,10 +647,10 @@ export const AddStationModal: React.FC<AddStationModalProps> = ({
                   style={{
                     width: "100%",
                     padding: "8px 12px",
-                    background: "rgba(15, 23, 42, 0.6)",
+                    background: "var(--bg-card)",
                     border: "1px solid var(--border-card)",
                     borderRadius: "8px",
-                    color: "#fff",
+                    color: "var(--text-primary)",
                     fontSize: "0.85rem",
                   }}
                 />
@@ -659,7 +660,7 @@ export const AddStationModal: React.FC<AddStationModalProps> = ({
             {/* Coordinates Fields */}
             <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: "1rem" }}>
               <div>
-                <label style={{ display: "flex", alignItems: "center", gap: "4px", fontSize: "0.8rem", color: "#cbd5e1", marginBottom: "4px" }}>
+                <label style={{ display: "flex", alignItems: "center", gap: "4px", fontSize: "0.8rem", color: "var(--text-secondary)", marginBottom: "4px" }}>
                   <MapPin size={13} color="#38bdf8" />
                   <span>Latitude (°N) *</span>
                 </label>
@@ -674,16 +675,16 @@ export const AddStationModal: React.FC<AddStationModalProps> = ({
                   style={{
                     width: "100%",
                     padding: "8px 12px",
-                    background: "rgba(15, 23, 42, 0.6)",
+                    background: "var(--bg-card)",
                     border: "1px solid var(--border-card)",
                     borderRadius: "8px",
-                    color: "#fff",
+                    color: "var(--text-primary)",
                     fontSize: "0.85rem",
                   }}
                 />
               </div>
               <div>
-                <label style={{ display: "flex", alignItems: "center", gap: "4px", fontSize: "0.8rem", color: "#cbd5e1", marginBottom: "4px" }}>
+                <label style={{ display: "flex", alignItems: "center", gap: "4px", fontSize: "0.8rem", color: "var(--text-secondary)", marginBottom: "4px" }}>
                   <Compass size={13} color="#38bdf8" />
                   <span>Longitude (°E) *</span>
                 </label>
@@ -698,16 +699,16 @@ export const AddStationModal: React.FC<AddStationModalProps> = ({
                   style={{
                     width: "100%",
                     padding: "8px 12px",
-                    background: "rgba(15, 23, 42, 0.6)",
+                    background: "var(--bg-card)",
                     border: "1px solid var(--border-card)",
                     borderRadius: "8px",
-                    color: "#fff",
+                    color: "var(--text-primary)",
                     fontSize: "0.85rem",
                   }}
                 />
               </div>
               <div>
-                <label style={{ display: "flex", alignItems: "center", gap: "4px", fontSize: "0.8rem", color: "#cbd5e1", marginBottom: "4px" }}>
+                <label style={{ display: "flex", alignItems: "center", gap: "4px", fontSize: "0.8rem", color: "var(--text-secondary)", marginBottom: "4px" }}>
                   <Mountain size={13} color="#38bdf8" />
                   <span>Elevation (m) *</span>
                 </label>
@@ -722,10 +723,10 @@ export const AddStationModal: React.FC<AddStationModalProps> = ({
                   style={{
                     width: "100%",
                     padding: "8px 12px",
-                    background: "rgba(15, 23, 42, 0.6)",
+                    background: "var(--bg-card)",
                     border: "1px solid var(--border-card)",
                     borderRadius: "8px",
-                    color: "#fff",
+                    color: "var(--text-primary)",
                     fontSize: "0.85rem",
                   }}
                 />
@@ -736,18 +737,18 @@ export const AddStationModal: React.FC<AddStationModalProps> = ({
             <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "1rem" }}>
               {/* CSV Upload Dropzone */}
               <div>
-                <label style={{ display: "block", fontSize: "0.8rem", color: "#cbd5e1", marginBottom: "4px" }}>
+                <label style={{ display: "block", fontSize: "0.8rem", color: "var(--text-secondary)", marginBottom: "4px" }}>
                   Telemetry CSV File (.csv) *
                 </label>
                 <div
                   onClick={() => !isSubmitting && csvInputRef.current?.click()}
                   style={{
-                    border: `2px dashed ${csvFile ? "#38bdf8" : "rgba(255, 255, 255, 0.15)"}`,
+                    border: `2px dashed ${csvFile ? "#38bdf8" : "var(--border-card)"}`,
                     borderRadius: "10px",
                     padding: "1rem",
                     textAlign: "center",
                     cursor: isSubmitting ? "not-allowed" : "pointer",
-                    background: csvFile ? "rgba(56, 189, 248, 0.06)" : "rgba(15, 23, 42, 0.4)",
+                    background: csvFile ? "rgba(56, 189, 248, 0.08)" : "var(--bg-card)",
                     transition: "all 0.2s ease",
                   }}
                 >
@@ -764,24 +765,24 @@ export const AddStationModal: React.FC<AddStationModalProps> = ({
                   />
                   <FileText
                     size={24}
-                    color={csvFile ? "#38bdf8" : "#64748b"}
+                    color={csvFile ? "#38bdf8" : "var(--text-muted)"}
                     style={{ margin: "0 auto 6px" }}
                   />
                   {csvFile ? (
                     <div>
-                      <div style={{ fontSize: "0.82rem", fontWeight: 600, color: "#f8fafc" }}>
+                      <div style={{ fontSize: "0.82rem", fontWeight: 600, color: "var(--text-primary)" }}>
                         {csvFile.name}
                       </div>
-                      <div style={{ fontSize: "0.72rem", color: "#94a3b8", marginTop: "2px" }}>
+                      <div style={{ fontSize: "0.72rem", color: "var(--text-muted)", marginTop: "2px" }}>
                         {(csvFile.size / 1024 / 1024).toFixed(2)} MB
                       </div>
                     </div>
                   ) : (
                     <div>
-                      <div style={{ fontSize: "0.82rem", fontWeight: 500, color: "#cbd5e1" }}>
+                      <div style={{ fontSize: "0.82rem", fontWeight: 500, color: "var(--text-secondary)" }}>
                         Click to select CSV
                       </div>
-                      <div style={{ fontSize: "0.68rem", color: "#64748b", marginTop: "2px" }}>
+                      <div style={{ fontSize: "0.68rem", color: "var(--text-muted)", marginTop: "2px" }}>
                         Contains obstime, temp, pressure, wind, rh
                       </div>
                     </div>
@@ -791,18 +792,18 @@ export const AddStationModal: React.FC<AddStationModalProps> = ({
 
               {/* NetCDF Upload Dropzone */}
               <div>
-                <label style={{ display: "block", fontSize: "0.8rem", color: "#cbd5e1", marginBottom: "4px" }}>
+                <label style={{ display: "block", fontSize: "0.8rem", color: "var(--text-secondary)", marginBottom: "4px" }}>
                   NetCDF File (.nc) *
                 </label>
                 <div
                   onClick={() => !isSubmitting && ncInputRef.current?.click()}
                   style={{
-                    border: `2px dashed ${ncFile ? "#a855f7" : "rgba(255, 255, 255, 0.15)"}`,
+                    border: `2px dashed ${ncFile ? "#a855f7" : "var(--border-card)"}`,
                     borderRadius: "10px",
                     padding: "1rem",
                     textAlign: "center",
                     cursor: isSubmitting ? "not-allowed" : "pointer",
-                    background: ncFile ? "rgba(168, 85, 247, 0.06)" : "rgba(15, 23, 42, 0.4)",
+                    background: ncFile ? "rgba(168, 85, 247, 0.08)" : "var(--bg-card)",
                     transition: "all 0.2s ease",
                   }}
                 >
@@ -819,31 +820,32 @@ export const AddStationModal: React.FC<AddStationModalProps> = ({
                   />
                   <Database
                     size={24}
-                    color={ncFile ? "#a855f7" : "#64748b"}
+                    color={ncFile ? "#a855f7" : "var(--text-muted)"}
                     style={{ margin: "0 auto 6px" }}
                   />
                   {ncFile ? (
                     <div>
-                      <div style={{ fontSize: "0.82rem", fontWeight: 600, color: "#f8fafc" }}>
+                      <div style={{ fontSize: "0.82rem", fontWeight: 600, color: "var(--text-primary)" }}>
                         {ncFile.name}
                       </div>
-                      <div style={{ fontSize: "0.72rem", color: "#94a3b8", marginTop: "2px" }}>
+                      <div style={{ fontSize: "0.72rem", color: "var(--text-muted)", marginTop: "2px" }}>
                         {(ncFile.size / 1024 / 1024).toFixed(2)} MB
                       </div>
                     </div>
                   ) : (
                     <div>
-                      <div style={{ fontSize: "0.82rem", fontWeight: 500, color: "#cbd5e1" }}>
-                        Click to select NetCDF (.nc)
+                      <div style={{ fontSize: "0.82rem", fontWeight: 500, color: "var(--text-secondary)" }}>
+                        Click to select NetCDF
                       </div>
-                      <div style={{ fontSize: "0.68rem", color: "#64748b", marginTop: "2px" }}>
-                        Contains gridded/station atmospheric vars
+                      <div style={{ fontSize: "0.68rem", color: "var(--text-muted)", marginTop: "2px" }}>
+                        Spatial weather grid tensor
                       </div>
                     </div>
                   )}
                 </div>
               </div>
             </div>
+
 
             {/* Submitting Progress Indicator */}
             {isSubmitting && (

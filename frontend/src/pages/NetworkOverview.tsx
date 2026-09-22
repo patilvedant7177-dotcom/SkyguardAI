@@ -269,7 +269,7 @@ const NetworkOverview: React.FC = () => {
                 top: "16px",
                 left: "16px",
                 zIndex: 400,
-                background: "rgba(15, 23, 42, 0.85)",
+                background: "var(--bg-card)",
                 backdropFilter: "blur(8px)",
                 padding: "6px 12px",
                 borderRadius: "6px",
@@ -278,10 +278,11 @@ const NetworkOverview: React.FC = () => {
                 display: "flex",
                 alignItems: "center",
                 gap: "8px",
+                color: "var(--text-primary)",
               }}
             >
               <Layers size={14} color="var(--accent-cyan)" />
-              <span>SATELLITE TELEMETRY OVERLAY</span>
+              <span style={{ fontWeight: 600 }}>SATELLITE TELEMETRY OVERLAY</span>
             </div>
 
             <div
@@ -297,7 +298,7 @@ const NetworkOverview: React.FC = () => {
               <button
                 onClick={() => setFitAllTrigger((prev) => prev + 1)}
                 style={{
-                  background: "rgba(15, 23, 42, 0.85)",
+                  background: "var(--bg-card)",
                   backdropFilter: "blur(8px)",
                   padding: "6px 12px",
                   borderRadius: "6px",
@@ -306,7 +307,7 @@ const NetworkOverview: React.FC = () => {
                   display: "flex",
                   alignItems: "center",
                   gap: "6px",
-                  color: "#cbd5e1",
+                  color: "var(--text-primary)",
                   cursor: "pointer",
                 }}
               >
@@ -342,7 +343,7 @@ const NetworkOverview: React.FC = () => {
                     }}
                   >
                     <Popup>
-                      <div style={{ padding: "4px", minWidth: "190px", color: "#f8fafc" }}>
+                      <div style={{ padding: "4px", minWidth: "190px", color: "var(--text-primary)" }}>
                         <div style={{ fontWeight: 700, fontSize: "1rem", marginBottom: "4px" }}>
                           {station.name}
                         </div>
@@ -350,7 +351,7 @@ const NetworkOverview: React.FC = () => {
                           <span className={`badge badge-${station.status}`}>{station.status}</span>
                           <span className="badge badge-low">{station.source}</span>
                         </div>
-                        <div style={{ fontSize: "0.8rem", color: "#cbd5e1", lineHeight: "1.4" }}>
+                        <div style={{ fontSize: "0.8rem", color: "var(--text-secondary)", lineHeight: "1.4" }}>
                           <div>
                             <strong>Coords:</strong> {station.latitude.toFixed(4)}°, {station.longitude.toFixed(4)}°
                           </div>
@@ -366,7 +367,7 @@ const NetworkOverview: React.FC = () => {
                               padding: "5px 8px",
                               fontSize: "0.75rem",
                               background: "var(--accent-cyan)",
-                              color: "#0f172a",
+                              color: "#ffffff",
                               textAlign: "center",
                               borderRadius: "4px",
                               textDecoration: "none",
@@ -377,12 +378,11 @@ const NetworkOverview: React.FC = () => {
                           </Link>
                           <Link
                             to={`/health/${station.id}`}
+                            className="btn-secondary"
                             style={{
                               flex: 1,
                               padding: "5px 8px",
                               fontSize: "0.75rem",
-                              background: "rgba(255,255,255,0.1)",
-                              color: "#f8fafc",
                               textAlign: "center",
                               borderRadius: "4px",
                               textDecoration: "none",
@@ -426,14 +426,14 @@ const NetworkOverview: React.FC = () => {
                       ? "1px solid var(--accent-cyan)"
                       : "1px solid var(--border-card)",
                     background: isSelected
-                      ? "rgba(56, 189, 248, 0.08)"
-                      : "rgba(15, 23, 42, 0.4)",
+                      ? "rgba(56, 189, 248, 0.12)"
+                      : "var(--bg-card)",
                     transition: "all 0.2s ease",
                   }}
                 >
                   <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start" }}>
                     <div>
-                      <div style={{ fontWeight: 600, fontSize: "0.95rem", color: "#f8fafc" }}>
+                      <div style={{ fontWeight: 600, fontSize: "0.95rem", color: "var(--text-primary)" }}>
                         {station.name}
                       </div>
                       <div style={{ fontSize: "0.75rem", color: "var(--text-secondary)", marginTop: "2px" }}>
@@ -450,7 +450,7 @@ const NetworkOverview: React.FC = () => {
                     style={{
                       display: "flex",
                       justifyContent: "space-between",
-                      background: "rgba(0,0,0,0.2)",
+                      background: "rgba(100, 116, 139, 0.08)",
                       padding: "6px 10px",
                       borderRadius: "6px",
                       fontSize: "0.75rem",

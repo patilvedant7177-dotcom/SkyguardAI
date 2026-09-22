@@ -58,14 +58,22 @@ const StationDetail: React.FC = () => {
 
   // Anomaly window points (e.g. last 12 hours)
   const anomalyStartIndex = Math.max(0, points.length - 14);
-  const anomalyStartTime = points[anomalyStartIndex]?.timestamp;
-  const anomalyEndTime = points[points.length - 1]?.timestamp;
 
-  const formattedChartData = points.map((pt) => ({
-    ...pt,
-    formattedTime: new Date(pt.timestamp).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }),
-    fullDate: new Date(pt.timestamp).toLocaleString(),
-  }));
+  const parseTimestamp = (ts?: string | number) => {
+    if (!ts) return null;
+    const cleanStr = String(ts).replace(/\+00:00Z$/, "Z");
+    const d = new Date(cleanStr);
+    return isNaN(d.getTime()) ? null : d;
+  };
+
+  const formattedChartData = points.map((pt, idx) => {
+    const d = parseTimestamp(pt.timestamp);
+    return {
+      ...pt,
+      formattedTime: d ? d.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }) : `T-${idx}`,
+      fullDate: d ? d.toLocaleString() : (pt.timestamp || `Point #${idx + 1}`),
+    };
+  });
 
   const handleDeleteStation = async () => {
     try {
@@ -110,9 +118,9 @@ const StationDetail: React.FC = () => {
               width: "100%",
               maxWidth: "480px",
               borderRadius: "14px",
-              background: "linear-gradient(145deg, rgba(20, 24, 38, 0.98), rgba(15, 23, 42, 0.99))",
+              background: "var(--bg-card)",
               border: "1px solid rgba(244, 63, 94, 0.4)",
-              boxShadow: "0 25px 50px -12px rgba(0, 0, 0, 0.7), 0 0 25px rgba(244, 63, 94, 0.2)",
+              boxShadow: "0 25px 50px -12px rgba(0, 0, 0, 0.25), 0 0 25px rgba(244, 63, 94, 0.15)",
               padding: "1.75rem",
               display: "flex",
               flexDirection: "column",
@@ -136,10 +144,10 @@ const StationDetail: React.FC = () => {
                   <Trash2 size={18} color="#f43f5e" />
                 </div>
                 <div>
-                  <h3 style={{ fontSize: "1.15rem", fontWeight: 700, color: "#f8fafc" }}>
+                  <h3 style={{ fontSize: "1.15rem", fontWeight: 700, color: "var(--text-primary)" }}>
                     Remove Station Node
                   </h3>
-                  <div style={{ fontSize: "0.75rem", color: "#94a3b8" }}>
+                  <div style={{ fontSize: "0.75rem", color: "var(--text-muted)" }}>
                     Node #{stationId} · {currentStation?.name || "AWS Station"}
                   </div>
                 </div>
@@ -150,7 +158,7 @@ const StationDetail: React.FC = () => {
                 style={{
                   background: "transparent",
                   border: "none",
-                  color: "#94a3b8",
+                  color: "var(--text-muted)",
                   cursor: "pointer",
                 }}
               >
@@ -177,7 +185,7 @@ const StationDetail: React.FC = () => {
               </div>
             )}
 
-            <p style={{ fontSize: "0.85rem", color: "#cbd5e1", lineHeight: "1.5" }}>
+            <p style={{ fontSize: "0.85rem", color: "var(--text-secondary)", lineHeight: "1.5" }}>
               Are you sure you want to remove <strong>{currentStation?.name || `Station #${stationId}`}</strong> from the atmospheric defense network?
               This will unregister its active stream, sensor health prognostics, and associated alert history.
             </p>
@@ -242,8 +250,8 @@ const StationDetail: React.FC = () => {
               value={stationId}
               onChange={(e) => (window.location.href = `#/station/${e.target.value}`)}
               style={{
-                background: "rgba(15, 23, 42, 0.8)",
-                color: "#f8fafc",
+                background: "var(--bg-card)",
+                color: "var(--text-primary)",
                 border: "1px solid var(--border-card)",
                 borderRadius: "6px",
                 padding: "6px 12px",
@@ -319,7 +327,7 @@ const StationDetail: React.FC = () => {
             <span>Temperature</span>
             <Thermometer size={16} color="var(--accent-cyan)" />
           </div>
-          <div style={{ fontSize: "1.8rem", fontWeight: 700, color: "#f8fafc" }}>
+          <div style={{ fontSize: "1.8rem", fontWeight: 700, color: "var(--text-primary)" }}>
             {currentTemp.toFixed(1)}°C
           </div>
           <div style={{ fontSize: "0.75rem", color: "var(--text-muted)" }}>
@@ -341,7 +349,7 @@ const StationDetail: React.FC = () => {
             <span>Barometric Pressure</span>
             <Gauge size={16} color="var(--accent-amber)" />
           </div>
-          <div style={{ fontSize: "1.8rem", fontWeight: 700, color: "#f8fafc" }}>
+          <div style={{ fontSize: "1.8rem", fontWeight: 700, color: "var(--text-primary)" }}>
             {currentPressure.toFixed(0)} hPa
           </div>
           <div style={{ fontSize: "0.75rem", color: "var(--text-muted)" }}>
@@ -363,7 +371,7 @@ const StationDetail: React.FC = () => {
             <span>Relative Humidity</span>
             <Droplets size={16} color="var(--accent-blue)" />
           </div>
-          <div style={{ fontSize: "1.8rem", fontWeight: 700, color: "#f8fafc" }}>
+          <div style={{ fontSize: "1.8rem", fontWeight: 700, color: "var(--text-primary)" }}>
             {currentHumidity.toFixed(0)}%
           </div>
           <div style={{ fontSize: "0.75rem", color: "var(--text-muted)" }}>
@@ -427,12 +435,13 @@ const StationDetail: React.FC = () => {
                     <stop offset="95%" stopColor="#3b82f6" stopOpacity={0.0} />
                   </linearGradient>
                 </defs>
-                <CartesianGrid strokeDasharray="3 3" stroke="rgba(255, 255, 255, 0.06)" />
+                <CartesianGrid strokeDasharray="3 3" stroke="var(--border-card)" />
                 <XAxis
                   dataKey="formattedTime"
                   stroke="#64748b"
                   fontSize={12}
                   tickLine={false}
+                  tick={false}
                 />
                 <YAxis
                   stroke="#64748b"
@@ -447,25 +456,26 @@ const StationDetail: React.FC = () => {
                       return (
                         <div
                           style={{
-                            background: "rgba(15, 23, 42, 0.95)",
+                            background: "var(--bg-card)",
                             border: "1px solid var(--border-card-bright)",
                             borderRadius: "8px",
                             padding: "10px 14px",
-                            boxShadow: "0 8px 24px rgba(0,0,0,0.5)",
+                            boxShadow: "0 8px 24px rgba(0,0,0,0.15)",
                             fontSize: "0.85rem",
+                            backdropFilter: "blur(12px)",
                           }}
                         >
-                          <div style={{ fontWeight: 600, color: "#f8fafc", marginBottom: "6px" }}>
+                          <div style={{ fontWeight: 600, color: "var(--text-primary)", marginBottom: "6px" }}>
                             {dataPoint.fullDate}
                           </div>
                           <div style={{ color: "#38bdf8", marginBottom: "2px" }}>
-                            Temperature: <strong>{dataPoint.temperature.toFixed(2)} °C</strong>
+                            Temperature: <strong>{dataPoint.temperature?.toFixed(2) ?? "--"} °C</strong>
                           </div>
                           <div style={{ color: "#f59e0b", marginBottom: "2px" }}>
-                            Pressure: <strong>{dataPoint.pressure} hPa</strong>
+                            Pressure: <strong>{dataPoint.pressure ?? "--"} hPa</strong>
                           </div>
                           <div style={{ color: "#3b82f6" }}>
-                            Humidity: <strong>{dataPoint.humidity}%</strong>
+                            Humidity: <strong>{dataPoint.humidity ?? "--"}%</strong>
                           </div>
                         </div>
                       );
@@ -476,10 +486,10 @@ const StationDetail: React.FC = () => {
                 <Legend />
 
                 {/* Shaded Anomaly Region Overlay */}
-                {anomalyStartTime && anomalyEndTime && (
+                {formattedChartData.length > 0 && (
                   <ReferenceArea
-                    x1={new Date(anomalyStartTime).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}
-                    x2={new Date(anomalyEndTime).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}
+                    x1={formattedChartData[anomalyStartIndex]?.formattedTime}
+                    x2={formattedChartData[formattedChartData.length - 1]?.formattedTime}
                     stroke="#f59e0b"
                     strokeOpacity={0.6}
                     fill="#f59e0b"

@@ -267,8 +267,8 @@ const WhyFlagged: React.FC = () => {
               value={alertId}
               onChange={(e) => (window.location.href = `#/why-flagged/${e.target.value}`)}
               style={{
-                background: "rgba(15, 23, 42, 0.8)",
-                color: "#f8fafc",
+                background: "var(--bg-card)",
+                color: "var(--text-primary)",
                 border: "1px solid var(--border-card)",
                 borderRadius: "8px",
                 padding: "7px 12px",
@@ -367,7 +367,7 @@ const WhyFlagged: React.FC = () => {
                 <div style={{ fontSize: "0.7rem", color: "var(--text-muted)", textTransform: "uppercase", fontWeight: 600, letterSpacing: "0.03em" }}>
                   Primary Anomaly Driver
                 </div>
-                <div style={{ fontSize: "1.05rem", fontWeight: 700, color: "#f8fafc", textTransform: "capitalize", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>
+                <div style={{ fontSize: "1.05rem", fontWeight: 700, color: "var(--text-primary)", textTransform: "capitalize", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>
                   {leadFeature} ({leadContrib}%)
                 </div>
               </div>
@@ -394,7 +394,7 @@ const WhyFlagged: React.FC = () => {
                 <div style={{ fontSize: "0.7rem", color: "var(--text-muted)", textTransform: "uppercase", fontWeight: 600, letterSpacing: "0.03em" }}>
                   Diagnostic Classification
                 </div>
-                <div style={{ fontSize: "1.05rem", fontWeight: 700, color: "#f8fafc", textTransform: "capitalize", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>
+                <div style={{ fontSize: "1.05rem", fontWeight: 700, color: "var(--text-primary)", textTransform: "capitalize", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>
                   {currentAlert?.root_cause ? currentAlert.root_cause.replace("_", " ") : "Sensor Fault"}
                 </div>
               </div>
@@ -421,7 +421,7 @@ const WhyFlagged: React.FC = () => {
                 <div style={{ fontSize: "0.7rem", color: "var(--text-muted)", textTransform: "uppercase", fontWeight: 600, letterSpacing: "0.03em" }}>
                   Spatial Cluster Consensus
                 </div>
-                <div style={{ fontSize: "1.05rem", fontWeight: 700, color: "#f8fafc" }}>
+                <div style={{ fontSize: "1.05rem", fontWeight: 700, color: "var(--text-primary)" }}>
                   {currentAlert?.root_cause === "genuine_event" ? "2/2 Corroborated" : "0/2 Isolated"}
                 </div>
               </div>
@@ -448,7 +448,7 @@ const WhyFlagged: React.FC = () => {
                 <div style={{ fontSize: "0.7rem", color: "var(--text-muted)", textTransform: "uppercase", fontWeight: 600, letterSpacing: "0.03em" }}>
                   Detector Ensemble
                 </div>
-                <div style={{ fontSize: "1.05rem", fontWeight: 700, color: "#f8fafc" }}>
+                <div style={{ fontSize: "1.05rem", fontWeight: 700, color: "var(--text-primary)" }}>
                   {triggeredDetectorsCount} of {detectorBreakdown.length} Triggered
                 </div>
               </div>
@@ -479,7 +479,7 @@ const WhyFlagged: React.FC = () => {
               display: "flex",
               alignItems: "center",
               gap: "6px",
-              background: "rgba(15, 23, 42, 0.75)",
+              background: "rgba(100, 116, 139, 0.08)",
               padding: "5px",
               borderRadius: "10px",
               border: "1px solid var(--border-card)",
@@ -637,13 +637,14 @@ const WhyFlagged: React.FC = () => {
 
                   <div
                     style={{
-                      background: "rgba(245, 158, 11, 0.05)",
-                      border: "1px solid rgba(245, 158, 11, 0.2)",
+                      background: "rgba(245, 158, 11, 0.08)",
+                      border: "1px solid rgba(245, 158, 11, 0.25)",
                       borderRadius: "8px",
                       padding: "1.15rem",
                       fontSize: "0.92rem",
                       lineHeight: "1.6",
-                      color: "#fde68a",
+                      color: "var(--text-primary)",
+                      fontWeight: 500,
                     }}
                   >
                     "{explanation.narrative}"
@@ -693,7 +694,7 @@ const WhyFlagged: React.FC = () => {
                         <div
                           key={idx}
                           style={{
-                            background: "rgba(15, 23, 42, 0.55)",
+                            background: "var(--bg-card)",
                             border: "1px solid var(--border-card)",
                             borderRadius: "8px",
                             padding: "0.85rem 1rem",
@@ -811,8 +812,8 @@ const WhyFlagged: React.FC = () => {
                           alignItems: "flex-start",
                           gap: "8px",
                           fontSize: "0.82rem",
-                          color: "#f8fafc",
-                          background: "rgba(15, 23, 42, 0.5)",
+                          color: "var(--text-primary)",
+                          background: "var(--bg-card)",
                           border: "1px solid var(--border-card)",
                           padding: "0.7rem 0.85rem",
                           borderRadius: "7px",
@@ -840,7 +841,7 @@ const WhyFlagged: React.FC = () => {
                       </Link>
                     </div>
 
-                    <div style={{ fontSize: "0.88rem", fontWeight: 600, color: "#f8fafc", lineHeight: "1.4" }}>
+                    <div style={{ fontSize: "0.88rem", fontWeight: 600, color: "var(--text-primary)", lineHeight: "1.4" }}>
                       {currentAlert.summary}
                     </div>
 
@@ -872,7 +873,7 @@ const WhyFlagged: React.FC = () => {
                 </div>
 
                 {/* Factor Filter Tabs */}
-                <div style={{ display: "flex", gap: "4px", background: "rgba(15, 23, 42, 0.8)", padding: "3px", borderRadius: "8px", border: "1px solid var(--border-card)" }}>
+                <div style={{ display: "flex", gap: "4px", background: "rgba(100, 116, 139, 0.08)", padding: "3px", borderRadius: "8px", border: "1px solid var(--border-card)" }}>
                   <button
                     onClick={() => setFactorFilter("all")}
                     style={{
@@ -880,7 +881,7 @@ const WhyFlagged: React.FC = () => {
                       fontSize: "0.75rem",
                       fontWeight: 600,
                       borderRadius: "5px",
-                      background: factorFilter === "all" ? "var(--accent-primary)" : "transparent",
+                      background: factorFilter === "all" ? "var(--accent-cyan)" : "transparent",
                       color: factorFilter === "all" ? "#fff" : "var(--text-secondary)",
                       border: "none",
                       cursor: "pointer",
@@ -895,7 +896,7 @@ const WhyFlagged: React.FC = () => {
                       fontSize: "0.75rem",
                       fontWeight: 600,
                       borderRadius: "5px",
-                      background: factorFilter === "atmospheric" ? "var(--accent-primary)" : "transparent",
+                      background: factorFilter === "atmospheric" ? "var(--accent-cyan)" : "transparent",
                       color: factorFilter === "atmospheric" ? "#fff" : "var(--text-secondary)",
                       border: "none",
                       cursor: "pointer",
@@ -910,7 +911,7 @@ const WhyFlagged: React.FC = () => {
                       fontSize: "0.75rem",
                       fontWeight: 600,
                       borderRadius: "5px",
-                      background: factorFilter === "spatial_physics" ? "var(--accent-primary)" : "transparent",
+                      background: factorFilter === "spatial_physics" ? "var(--accent-cyan)" : "transparent",
                       color: factorFilter === "spatial_physics" ? "#fff" : "var(--text-secondary)",
                       border: "none",
                       cursor: "pointer",
@@ -926,7 +927,7 @@ const WhyFlagged: React.FC = () => {
                   <div
                     key={idx}
                     style={{
-                      background: "rgba(15, 23, 42, 0.6)",
+                      background: "var(--bg-card)",
                       border: "1px solid var(--border-card)",
                       borderRadius: "10px",
                       padding: "1.1rem",
@@ -940,7 +941,7 @@ const WhyFlagged: React.FC = () => {
                       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", gap: "8px" }}>
                         <div>
                           <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
-                            <span style={{ fontWeight: 600, fontSize: "0.95rem", color: "#f8fafc" }}>
+                            <span style={{ fontWeight: 600, fontSize: "0.95rem", color: "var(--text-primary)" }}>
                               {factor.name}
                             </span>
                             {getCategoryBadge(factor.category)}
@@ -971,15 +972,16 @@ const WhyFlagged: React.FC = () => {
                         display: "grid",
                         gridTemplateColumns: "1fr 1fr 1fr",
                         gap: "8px",
-                        background: "rgba(0, 0, 0, 0.3)",
+                        background: "rgba(100, 116, 139, 0.08)",
                         padding: "8px 12px",
                         borderRadius: "6px",
                         fontSize: "0.76rem",
+                        border: "1px solid var(--border-card)",
                       }}
                     >
                       <div>
                         <span style={{ color: "var(--text-muted)", display: "block", fontSize: "0.7rem" }}>Observed</span>
-                        <span style={{ fontWeight: 600, color: "#f8fafc" }}>{factor.observed_value}</span>
+                        <span style={{ fontWeight: 600, color: "var(--text-primary)" }}>{factor.observed_value}</span>
                       </div>
                       <div>
                         <span style={{ color: "var(--text-muted)", display: "block", fontSize: "0.7rem" }}>Baseline</span>
@@ -1050,14 +1052,14 @@ const WhyFlagged: React.FC = () => {
                       {/* Step Details */}
                       <div
                         style={{
-                          background: "rgba(15, 23, 42, 0.55)",
+                          background: "var(--bg-card)",
                           border: "1px solid var(--border-card)",
                           borderRadius: "8px",
                           padding: "0.85rem",
                           flex: 1,
                         }}
                       >
-                        <div style={{ fontWeight: 600, fontSize: "0.88rem", color: "#f8fafc", marginBottom: "3px" }}>
+                        <div style={{ fontWeight: 600, fontSize: "0.88rem", color: "var(--text-primary)", marginBottom: "3px" }}>
                           {step.title}
                         </div>
                         <div style={{ fontSize: "0.8rem", color: "var(--text-secondary)", lineHeight: "1.5" }}>
@@ -1086,7 +1088,7 @@ const WhyFlagged: React.FC = () => {
                     <div
                       key={idx}
                       style={{
-                        background: "rgba(15, 23, 42, 0.55)",
+                        background: "var(--bg-card)",
                         border: "1px solid var(--border-card)",
                         borderRadius: "8px",
                         padding: "0.85rem",
@@ -1096,7 +1098,7 @@ const WhyFlagged: React.FC = () => {
                       }}
                     >
                       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-                        <span style={{ fontWeight: 600, fontSize: "0.84rem", color: "#f8fafc" }}>
+                        <span style={{ fontWeight: 600, fontSize: "0.84rem", color: "var(--text-primary)" }}>
                           {det.detector_name}
                         </span>
                         <span
@@ -1154,8 +1156,8 @@ const WhyFlagged: React.FC = () => {
                   </thead>
                   <tbody>
                     {neighborCorroboration.map((n, idx) => (
-                      <tr key={idx} style={{ borderBottom: "1px solid rgba(255, 255, 255, 0.05)" }}>
-                        <td style={{ padding: "10px 8px", fontWeight: 600, color: "#f8fafc" }}>
+                      <tr key={idx} style={{ borderBottom: "1px solid var(--border-card)" }}>
+                        <td style={{ padding: "10px 8px", fontWeight: 600, color: "var(--text-primary)" }}>
                           <div style={{ display: "flex", alignItems: "center", gap: "6px" }}>
                             <MapPin size={14} color="var(--accent-cyan)" />
                             <span>{n.station_name}</span>
@@ -1164,7 +1166,7 @@ const WhyFlagged: React.FC = () => {
                         <td style={{ padding: "10px 8px", color: "var(--text-secondary)" }}>
                           {n.distance_km} km
                         </td>
-                        <td style={{ padding: "10px 8px", color: "#f8fafc", fontFamily: "var(--font-mono)" }}>
+                        <td style={{ padding: "10px 8px", color: "var(--text-primary)", fontFamily: "var(--font-mono)" }}>
                           {n.reading}
                         </td>
                         <td style={{ padding: "10px 8px" }}>

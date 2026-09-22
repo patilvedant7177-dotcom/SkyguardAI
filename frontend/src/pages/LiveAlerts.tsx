@@ -105,11 +105,11 @@ const LiveAlerts: React.FC = () => {
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
               style={{
-                background: "rgba(15, 23, 42, 0.8)",
+                background: "var(--bg-card)",
                 border: "1px solid var(--border-card)",
                 borderRadius: "6px",
                 padding: "6px 12px 6px 32px",
-                color: "#f8fafc",
+                color: "var(--text-primary)",
                 fontSize: "0.85rem",
                 outline: "none",
                 width: "220px",
@@ -136,7 +136,7 @@ const LiveAlerts: React.FC = () => {
       {filteredAlerts.length === 0 ? (
         <div className="glass-panel" style={{ padding: "3rem", textAlign: "center", color: "var(--text-muted)" }}>
           <ShieldAlert size={36} style={{ marginBottom: "0.75rem", color: "var(--accent-cyan)" }} />
-          <div style={{ fontSize: "1.1rem", fontWeight: 600, color: "#f8fafc" }}>No active alerts matching criteria</div>
+          <div style={{ fontSize: "1.1rem", fontWeight: 600, color: "var(--text-primary)" }}>No active alerts matching criteria</div>
           <div style={{ fontSize: "0.85rem", marginTop: "4px" }}>Listening for real-time telemetry events...</div>
         </div>
       ) : (
@@ -168,7 +168,7 @@ const LiveAlerts: React.FC = () => {
                 <div style={{ display: "flex", flexDirection: "column", gap: "6px", flex: 1, minWidth: "300px" }}>
                   <div style={{ display: "flex", alignItems: "center", gap: "8px", flexWrap: "wrap" }}>
                     <span className={`badge badge-${alert.severity}`}>{alert.severity}</span>
-                    <strong style={{ fontSize: "0.95rem", color: "#f8fafc" }}>
+                    <strong style={{ fontSize: "0.95rem", color: "var(--text-primary)" }}>
                       Station #{alert.station_id}
                     </strong>
                     <span style={{ fontSize: "0.75rem", color: "var(--text-muted)", display: "flex", alignItems: "center", gap: "4px" }}>
@@ -182,13 +182,13 @@ const LiveAlerts: React.FC = () => {
                     )}
                   </div>
 
-                  <div style={{ fontSize: "0.85rem", color: "#cbd5e1" }}>{alert.summary}</div>
+                  <div style={{ fontSize: "0.85rem", color: "var(--text-secondary)" }}>{alert.summary}</div>
 
                   {/* Flagged Parameters & Confidence */}
                   <div style={{ display: "flex", alignItems: "center", gap: "8px", flexWrap: "wrap", marginTop: "2px" }}>
                     <div style={{ display: "flex", alignItems: "center", gap: "4px", fontSize: "0.75rem", color: "var(--text-secondary)" }}>
                       <span>Confidence:</span>
-                      <strong style={{ color: "#e2e8f0" }}>{(alert.confidence * 100).toFixed(0)}%</strong>
+                      <strong style={{ color: "var(--text-primary)" }}>{(alert.confidence * 100).toFixed(0)}%</strong>
                     </div>
 
                     <div style={{ width: "1px", height: "12px", background: "var(--border-card)" }}></div>
@@ -196,7 +196,7 @@ const LiveAlerts: React.FC = () => {
                     <div style={{ display: "flex", alignItems: "center", gap: "4px", fontSize: "0.75rem", color: "var(--text-secondary)" }}>
                       <Cpu size={13} color="var(--accent-cyan)" />
                       <span>Root Cause:</span>
-                      <strong style={{ color: "#e2e8f0" }}>{alert.root_cause.replace("_", " ")}</strong>
+                      <strong style={{ color: "var(--text-primary)" }}>{alert.root_cause.replace("_", " ")}</strong>
                     </div>
                   </div>
                 </div>

@@ -166,9 +166,6 @@ def _load_maitri_real_station() -> Optional[Dict[str, Any]]:
         else:
             maitri_status = StationStatus.normal.value
 
-        # Compute sensor health prognostics from historical telemetry
-        maitri_health = predict_health(station_id=11, telemetry_history=diag_window)
-
         # Alerts and explanations if anomalous events detected
         maitri_alerts: List[Dict[str, Any]] = []
         maitri_explanations: Dict[int, Dict[str, Any]] = {}
@@ -207,10 +204,18 @@ def _load_maitri_real_station() -> Optional[Dict[str, Any]]:
                     parameter_values=param_vals,
                 )
 
+        # Compute sensor health prognostics from historical telemetry & alerts
+        maitri_health = predict_health(
+            station_id=11,
+            telemetry_history=diag_window,
+            recent_alerts=maitri_alerts,
+            forced_status=maitri_status,
+        )
+
         # Format real historical timeseries (most recent 72 hours from the dataset)
         pts = []
         for _, row in recent_72h.iterrows():
-            ts_str = pd.to_datetime(row["obstime"]).isoformat() + "Z"
+            ts_str = pd.to_datetime(row["obstime"]).strftime("%Y-%m-%dT%H:%M:%SZ")
             pts.append({
                 "timestamp": ts_str,
                 "temperature": float(row["temperature"]) if pd.notna(row.get("temperature")) else None,
@@ -288,9 +293,6 @@ def _register_custom_station(
     else:
         station_status = StationStatus.normal.value
 
-    # Compute sensor health
-    health = predict_health(station_id=station_id, telemetry_history=diag_window)
-
     # Alerts & explanations
     new_alerts = []
     if t_flags > 0 or p_flags > 0:
@@ -327,10 +329,18 @@ def _register_custom_station(
                 parameter_values=param_vals,
             )
 
+    # Compute sensor health aligned with station status & alerts
+    health = predict_health(
+        station_id=station_id,
+        telemetry_history=diag_window,
+        recent_alerts=new_alerts,
+        forced_status=station_status,
+    )
+
     # Build timeseries points
     pts = []
     for _, row in recent_72h.iterrows():
-        ts_str = pd.to_datetime(row["obstime"]).isoformat() + "Z"
+        ts_str = pd.to_datetime(row["obstime"]).strftime("%Y-%m-%dT%H:%M:%SZ")
         pts.append({
             "timestamp": ts_str,
             "temperature": float(row["temperature"]) if pd.notna(row.get("temperature")) else None,
@@ -598,6 +608,10 @@ async def get_sensor_health(station_id: int):
     if health is not None:
         return health
 
+    # Determine status of station if known
+    st_match = next((s for s in PIPELINE_STATE["stations"] if s.get("id") == station_id), None)
+    forced_st = st_match.get("status") if st_match else None
+
     # Compute dynamically using explain.predict_health()
     tel_history = None
     if PIPELINE_STATE["telemetry_df"] is not None:
@@ -610,6 +624,7 @@ async def get_sensor_health(station_id: int):
         station_id=station_id,
         telemetry_history=tel_history,
         recent_alerts=PIPELINE_STATE["alerts"],
+        forced_status=forced_st,
     )
 
 

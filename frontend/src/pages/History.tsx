@@ -101,11 +101,11 @@ const History: React.FC = () => {
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
               style={{
-                background: "rgba(15, 23, 42, 0.8)",
+                background: "var(--bg-card)",
                 border: "1px solid var(--border-card)",
                 borderRadius: "6px",
                 padding: "6px 12px 6px 32px",
-                color: "#f8fafc",
+                color: "var(--text-primary)",
                 fontSize: "0.85rem",
                 outline: "none",
                 width: "240px",
@@ -146,7 +146,7 @@ const History: React.FC = () => {
       ) : filteredAlerts.length === 0 ? (
         <div className="glass-panel" style={{ padding: "3rem", textAlign: "center", color: "var(--text-muted)" }}>
           <Archive size={36} style={{ marginBottom: "0.75rem", color: "var(--accent-blue)" }} />
-          <div style={{ fontSize: "1.1rem", fontWeight: 600, color: "#f8fafc" }}>No historical records found</div>
+          <div style={{ fontSize: "1.1rem", fontWeight: 600, color: "var(--text-primary)" }}>No historical records found</div>
           <div style={{ fontSize: "0.85rem", marginTop: "4px" }}>
             No {activeTab} alerts matching the active filters in this time range.
           </div>
@@ -155,7 +155,7 @@ const History: React.FC = () => {
         <div className="glass-panel" style={{ overflowX: "auto", padding: "0" }}>
           <table style={{ margin: 0, width: "100%", borderCollapse: "collapse", background: "transparent" }}>
             <thead>
-              <tr style={{ background: "rgba(15, 23, 42, 0.6)", borderBottom: "1px solid var(--border-card)" }}>
+              <tr style={{ background: "rgba(100, 116, 139, 0.08)", borderBottom: "1px solid var(--border-card)" }}>
                 <th style={{ padding: "12px 16px", color: "var(--text-secondary)", fontSize: "0.8rem", fontWeight: 600, border: "none" }}>
                   Incident ID
                 </th>
@@ -187,24 +187,24 @@ const History: React.FC = () => {
                 <tr
                   key={alert.id}
                   style={{
-                    borderBottom: "1px solid rgba(255, 255, 255, 0.04)",
+                    borderBottom: "1px solid var(--border-card)",
                     transition: "background 0.15s ease",
                   }}
-                  onMouseEnter={(e) => (e.currentTarget.style.background = "rgba(30, 41, 59, 0.4)")}
+                  onMouseEnter={(e) => (e.currentTarget.style.background = "rgba(56, 189, 248, 0.06)")}
                   onMouseLeave={(e) => (e.currentTarget.style.background = "transparent")}
                 >
                   <td style={{ padding: "12px 16px", border: "none", fontWeight: 600, color: "var(--accent-cyan)" }}>
                     #{alert.id}
                   </td>
                   <td style={{ padding: "12px 16px", border: "none" }}>
-                    <div style={{ fontWeight: 600, color: "#f8fafc" }}>{alert.station_name}</div>
+                    <div style={{ fontWeight: 600, color: "var(--text-primary)" }}>{alert.station_name}</div>
                     <div style={{ fontSize: "0.75rem", color: "var(--text-muted)" }}>ID: {alert.station_id}</div>
                   </td>
                   <td style={{ padding: "12px 16px", border: "none" }}>
                     <span className={`badge badge-${alert.severity}`}>{alert.severity}</span>
                   </td>
                   <td style={{ padding: "12px 16px", border: "none", maxWidth: "300px" }}>
-                    <div style={{ color: "#f8fafc", fontWeight: 500 }}>{alert.summary}</div>
+                    <div style={{ color: "var(--text-primary)", fontWeight: 500 }}>{alert.summary}</div>
                     <div style={{ fontSize: "0.75rem", color: "var(--text-muted)", marginTop: "2px" }}>
                       Cause: <strong style={{ color: "var(--text-secondary)" }}>{alert.root_cause.replace("_", " ")}</strong> ({(alert.confidence * 100).toFixed(0)}% conf)
                     </div>
@@ -218,8 +218,8 @@ const History: React.FC = () => {
                             fontSize: "0.7rem",
                             padding: "2px 6px",
                             borderRadius: "4px",
-                            background: "rgba(255,255,255,0.06)",
-                            color: "#cbd5e1",
+                            background: "rgba(100, 116, 139, 0.1)",
+                            color: "var(--text-secondary)",
                             textTransform: "capitalize",
                           }}
                         >

@@ -183,3 +183,19 @@ class TestPredictHealth:
         assert h_off["health_score"] <= 45
         assert h_off["trend"] == Trend.degrading.value
         assert h_off["maintenance_forecast_days"] <= 3
+
+    def test_forced_status_with_telemetry(self):
+        timestamps = pd.date_range("2026-08-20", periods=200, freq="15min")
+        df = pd.DataFrame({
+            "obstime": timestamps,
+            "temperature": 20.0 + np.sin(np.arange(200) / 10.0) * 3.0,
+            "pressure": 840.0,
+            "humidity": 50.0,
+        })
+        h = predict_health(station_id=12, telemetry_history=df, forced_status="degrading")
+        assert 58 <= h["health_score"] <= 75
+        assert h["trend"] == Trend.degrading.value
+        assert h["maintenance_forecast_days"] is not None
+        # Verify subsystem diagnostics contains warning
+        diag_statuses = [d["status"] for d in h["diagnostics"]]
+        assert "warning" in diag_statuses

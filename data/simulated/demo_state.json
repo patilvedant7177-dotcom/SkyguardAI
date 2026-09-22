@@ -51,7 +51,7 @@
       "latitude": 13.08,
       "longitude": 77.58,
       "elevation": 932,
-      "status": "normal",
+      "status": "degrading",
       "source": "simulated"
     },
     {
@@ -96,7 +96,7 @@
       "id": 101,
       "station_id": 1,
       "station_name": "Mumbai Colaba (South Coastal Observatory)",
-      "timestamp": "2026-08-31T04:30:00+00:00Z",
+      "timestamp": "2026-09-22T04:30:00+00:00Z",
       "confidence": 0.91,
       "severity": "high",
       "root_cause": "sensor_fault",
@@ -112,7 +112,7 @@
       "id": 102,
       "station_id": 1,
       "station_name": "Mumbai Colaba (South Coastal Observatory)",
-      "timestamp": "2026-08-31T12:00:00+00:00Z",
+      "timestamp": "2026-09-22T12:00:00+00:00Z",
       "confidence": 0.94,
       "severity": "high",
       "root_cause": "genuine_event",
@@ -128,7 +128,7 @@
       "id": 103,
       "station_id": 2,
       "station_name": "Mumbai Santacruz (Inland Suburban Hub)",
-      "timestamp": "2026-08-30T19:00:00+00:00Z",
+      "timestamp": "2026-09-21T19:00:00+00:00Z",
       "confidence": 0.91,
       "severity": "high",
       "root_cause": "sensor_fault",
@@ -144,7 +144,7 @@
       "id": 104,
       "station_id": 2,
       "station_name": "Mumbai Santacruz (Inland Suburban Hub)",
-      "timestamp": "2026-08-31T10:45:00+00:00Z",
+      "timestamp": "2026-09-22T10:45:00+00:00Z",
       "confidence": 0.94,
       "severity": "high",
       "root_cause": "genuine_event",
@@ -160,7 +160,7 @@
       "id": 105,
       "station_id": 4,
       "station_name": "Delhi Palam (Western Plains Station)",
-      "timestamp": "2026-08-30T00:45:00+00:00Z",
+      "timestamp": "2026-09-21T00:45:00+00:00Z",
       "confidence": 0.91,
       "severity": "high",
       "root_cause": "sensor_fault",
@@ -174,9 +174,25 @@
     },
     {
       "id": 106,
+      "station_id": 6,
+      "station_name": "Bengaluru GKVK (Agricultural Campus Lab)",
+      "timestamp": "2026-09-22T20:00:00+00:00Z",
+      "confidence": 0.91,
+      "severity": "medium",
+      "root_cause": "sensor_fault",
+      "summary": "Isolated calibration drift detected on temperature (Bengaluru GKVK (Agricultural Campus Lab))",
+      "parameters_flagged": [
+        "temperature"
+      ],
+      "status": "active",
+      "event_type": "calibration_drift",
+      "magnitude": 0.9060281198272184
+    },
+    {
+      "id": 107,
       "station_id": 7,
       "station_name": "Chennai Nungambakkam (Central Coastal Base)",
-      "timestamp": "2026-08-31T05:15:00+00:00Z",
+      "timestamp": "2026-09-22T05:15:00+00:00Z",
       "confidence": 0.91,
       "severity": "high",
       "root_cause": "sensor_fault",
@@ -189,10 +205,10 @@
       "magnitude": 20.0
     },
     {
-      "id": 107,
+      "id": 108,
       "station_id": 8,
       "station_name": "Chennai Meenambakkam (Airport Plains Hub)",
-      "timestamp": "2026-08-30T16:30:00+00:00Z",
+      "timestamp": "2026-09-21T16:30:00+00:00Z",
       "confidence": 0.91,
       "severity": "high",
       "root_cause": "comms_error",
@@ -210,32 +226,32 @@
   "sensor_health": {
     "1": {
       "station_id": 1,
-      "health_score": 51,
+      "health_score": 49,
       "trend": "degrading",
-      "maintenance_forecast_days": 7,
-      "last_maintenance_at": "2026-08-08T20:00:27Z",
+      "maintenance_forecast_days": 6,
+      "last_maintenance_at": "2026-08-30T20:40:34Z",
       "diagnostics": [
         {
           "name": "RTD Temperature Probe",
-          "metric": "+0.28% (Drift)",
-          "status": "nominal",
-          "status_label": "Nominal"
+          "metric": "+2.10% (Drift)",
+          "status": "critical",
+          "status_label": "Transducer Fault"
         },
         {
           "name": "Barometric Capsule",
-          "metric": "96.8% Tension",
-          "status": "nominal",
-          "status_label": "Nominal"
+          "metric": "92.4% (Tension Loss)",
+          "status": "warning",
+          "status_label": "Degraded"
         },
         {
           "name": "Hygrometer Capacitance",
-          "metric": "+0.40% Capacitance Bias",
+          "metric": "Variable Bias",
           "status": "warning",
-          "status_label": "High Drift"
+          "status_label": "Needs Calibration"
         },
         {
           "name": "Telemetry Modem",
-          "metric": "100.0% Uplink",
+          "metric": "96.4% Uplink",
           "status": "nominal",
           "status_label": "Nominal"
         }
@@ -243,32 +259,32 @@
     },
     "2": {
       "station_id": 2,
-      "health_score": 53,
+      "health_score": 54,
       "trend": "degrading",
-      "maintenance_forecast_days": 7,
-      "last_maintenance_at": "2026-08-05T20:00:27Z",
+      "maintenance_forecast_days": 5,
+      "last_maintenance_at": "2026-08-27T20:40:34Z",
       "diagnostics": [
         {
           "name": "RTD Temperature Probe",
-          "metric": "+0.22% (Drift)",
-          "status": "nominal",
-          "status_label": "Nominal"
+          "metric": "+2.10% (Drift)",
+          "status": "critical",
+          "status_label": "Transducer Fault"
         },
         {
           "name": "Barometric Capsule",
-          "metric": "96.8% Tension",
-          "status": "nominal",
-          "status_label": "Nominal"
+          "metric": "92.4% (Tension Loss)",
+          "status": "warning",
+          "status_label": "Degraded"
         },
         {
           "name": "Hygrometer Capacitance",
-          "metric": "+0.34% Capacitance Bias",
+          "metric": "Variable Bias",
           "status": "warning",
-          "status_label": "High Drift"
+          "status_label": "Needs Calibration"
         },
         {
           "name": "Telemetry Modem",
-          "metric": "100.0% Uplink",
+          "metric": "96.4% Uplink",
           "status": "nominal",
           "status_label": "Nominal"
         }
@@ -276,32 +292,32 @@
     },
     "3": {
       "station_id": 3,
-      "health_score": 96,
+      "health_score": 93,
       "trend": "stable",
       "maintenance_forecast_days": null,
-      "last_maintenance_at": "2026-08-02T20:00:27Z",
+      "last_maintenance_at": "2026-08-24T20:40:34Z",
       "diagnostics": [
         {
           "name": "RTD Temperature Probe",
-          "metric": "+0.02% (Nominal)",
+          "metric": "+0.05% (Nominal)",
           "status": "nominal",
           "status_label": "Nominal"
         },
         {
           "name": "Barometric Capsule",
-          "metric": "97.3% Tension",
+          "metric": "99.1% (Nominal)",
           "status": "nominal",
           "status_label": "Nominal"
         },
         {
           "name": "Hygrometer Capacitance",
-          "metric": "+0.14% Capacitance Bias",
+          "metric": "Stable",
           "status": "nominal",
           "status_label": "Nominal"
         },
         {
           "name": "Telemetry Modem",
-          "metric": "100.0% Uplink",
+          "metric": "99.9% Uplink",
           "status": "nominal",
           "status_label": "Nominal"
         }
@@ -309,32 +325,32 @@
     },
     "4": {
       "station_id": 4,
-      "health_score": 44,
+      "health_score": 50,
       "trend": "degrading",
       "maintenance_forecast_days": 6,
-      "last_maintenance_at": "2026-07-30T20:00:27Z",
+      "last_maintenance_at": "2026-08-21T20:40:35Z",
       "diagnostics": [
         {
           "name": "RTD Temperature Probe",
-          "metric": "+0.02% (Nominal)",
-          "status": "nominal",
-          "status_label": "Nominal"
+          "metric": "+2.10% (Drift)",
+          "status": "critical",
+          "status_label": "Transducer Fault"
         },
         {
           "name": "Barometric Capsule",
-          "metric": "97.2% Tension",
-          "status": "nominal",
-          "status_label": "Nominal"
+          "metric": "92.4% (Tension Loss)",
+          "status": "warning",
+          "status_label": "Degraded"
         },
         {
           "name": "Hygrometer Capacitance",
-          "metric": "+0.11% Capacitance Bias",
-          "status": "nominal",
-          "status_label": "Nominal"
+          "metric": "Variable Bias",
+          "status": "warning",
+          "status_label": "Needs Calibration"
         },
         {
           "name": "Telemetry Modem",
-          "metric": "100.0% Uplink",
+          "metric": "96.4% Uplink",
           "status": "nominal",
           "status_label": "Nominal"
         }
@@ -342,43 +358,10 @@
     },
     "5": {
       "station_id": 5,
-      "health_score": 98,
-      "trend": "stable",
-      "maintenance_forecast_days": null,
-      "last_maintenance_at": "2026-07-27T20:00:28Z",
-      "diagnostics": [
-        {
-          "name": "RTD Temperature Probe",
-          "metric": "+0.08% (Nominal)",
-          "status": "nominal",
-          "status_label": "Nominal"
-        },
-        {
-          "name": "Barometric Capsule",
-          "metric": "97.4% Tension",
-          "status": "nominal",
-          "status_label": "Nominal"
-        },
-        {
-          "name": "Hygrometer Capacitance",
-          "metric": "+0.29% Capacitance Bias",
-          "status": "nominal",
-          "status_label": "Nominal"
-        },
-        {
-          "name": "Telemetry Modem",
-          "metric": "100.0% Uplink",
-          "status": "nominal",
-          "status_label": "Nominal"
-        }
-      ]
-    },
-    "6": {
-      "station_id": 6,
       "health_score": 96,
       "trend": "stable",
       "maintenance_forecast_days": null,
-      "last_maintenance_at": "2026-07-24T20:00:28Z",
+      "last_maintenance_at": "2026-08-18T20:40:35Z",
       "diagnostics": [
         {
           "name": "RTD Temperature Probe",
@@ -388,19 +371,52 @@
         },
         {
           "name": "Barometric Capsule",
-          "metric": "97.3% Tension",
+          "metric": "99.7% (Nominal)",
           "status": "nominal",
           "status_label": "Nominal"
         },
         {
           "name": "Hygrometer Capacitance",
-          "metric": "+0.26% Capacitance Bias",
+          "metric": "Stable",
           "status": "nominal",
           "status_label": "Nominal"
         },
         {
           "name": "Telemetry Modem",
-          "metric": "100.0% Uplink",
+          "metric": "99.9% Uplink",
+          "status": "nominal",
+          "status_label": "Nominal"
+        }
+      ]
+    },
+    "6": {
+      "station_id": 6,
+      "health_score": 71,
+      "trend": "degrading",
+      "maintenance_forecast_days": 14,
+      "last_maintenance_at": "2026-08-15T20:40:35Z",
+      "diagnostics": [
+        {
+          "name": "RTD Temperature Probe",
+          "metric": "+0.78% (Drift)",
+          "status": "warning",
+          "status_label": "Drift Detected"
+        },
+        {
+          "name": "Barometric Capsule",
+          "metric": "96.2% Tension",
+          "status": "nominal",
+          "status_label": "Nominal"
+        },
+        {
+          "name": "Hygrometer Capacitance",
+          "metric": "+0.45% Bias",
+          "status": "warning",
+          "status_label": "Minor Drift"
+        },
+        {
+          "name": "Telemetry Modem",
+          "metric": "98.5% Uplink",
           "status": "nominal",
           "status_label": "Nominal"
         }
@@ -408,32 +424,32 @@
     },
     "7": {
       "station_id": 7,
-      "health_score": 45,
+      "health_score": 53,
       "trend": "degrading",
       "maintenance_forecast_days": 6,
-      "last_maintenance_at": "2026-07-21T20:00:28Z",
+      "last_maintenance_at": "2026-08-12T20:40:35Z",
       "diagnostics": [
         {
           "name": "RTD Temperature Probe",
-          "metric": "+0.13% (Drift)",
-          "status": "nominal",
-          "status_label": "Nominal"
+          "metric": "+2.10% (Drift)",
+          "status": "critical",
+          "status_label": "Transducer Fault"
         },
         {
           "name": "Barometric Capsule",
-          "metric": "97.5% Tension",
-          "status": "nominal",
-          "status_label": "Nominal"
+          "metric": "92.4% (Tension Loss)",
+          "status": "warning",
+          "status_label": "Degraded"
         },
         {
           "name": "Hygrometer Capacitance",
-          "metric": "+0.33% Capacitance Bias",
+          "metric": "Variable Bias",
           "status": "warning",
-          "status_label": "High Drift"
+          "status_label": "Needs Calibration"
         },
         {
           "name": "Telemetry Modem",
-          "metric": "100.0% Uplink",
+          "metric": "96.4% Uplink",
           "status": "nominal",
           "status_label": "Nominal"
         }
@@ -441,65 +457,65 @@
     },
     "8": {
       "station_id": 8,
-      "health_score": 23,
+      "health_score": 38,
       "trend": "degrading",
-      "maintenance_forecast_days": 3,
-      "last_maintenance_at": "2026-07-18T20:00:28Z",
+      "maintenance_forecast_days": 2,
+      "last_maintenance_at": "2026-08-09T20:40:35Z",
       "diagnostics": [
         {
           "name": "RTD Temperature Probe",
-          "metric": "+0.17% (Drift)",
-          "status": "nominal",
-          "status_label": "Nominal"
+          "metric": "Signal Loss",
+          "status": "critical",
+          "status_label": "Offline"
         },
         {
           "name": "Barometric Capsule",
-          "metric": "97.9% Tension",
-          "status": "nominal",
-          "status_label": "Nominal"
+          "metric": "No Telemetry",
+          "status": "critical",
+          "status_label": "Offline"
         },
         {
           "name": "Hygrometer Capacitance",
-          "metric": "+0.42% Capacitance Bias",
-          "status": "warning",
-          "status_label": "High Drift"
+          "metric": "Signal Loss",
+          "status": "critical",
+          "status_label": "Offline"
         },
         {
           "name": "Telemetry Modem",
-          "metric": "96.3% Uplink",
-          "status": "nominal",
-          "status_label": "Nominal"
+          "metric": "0.0% Uplink",
+          "status": "critical",
+          "status_label": "Blackout"
         }
       ]
     },
     "9": {
       "station_id": 9,
-      "health_score": 97,
+      "health_score": 92,
       "trend": "stable",
       "maintenance_forecast_days": null,
-      "last_maintenance_at": "2026-08-09T20:00:28Z",
+      "last_maintenance_at": "2026-08-31T20:40:35Z",
       "diagnostics": [
         {
           "name": "RTD Temperature Probe",
-          "metric": "+0.16% (Drift)",
+          "metric": "+0.03% (Nominal)",
           "status": "nominal",
           "status_label": "Nominal"
         },
         {
           "name": "Barometric Capsule",
-          "metric": "96.7% Tension",
+          "metric": "99.1% (Nominal)",
           "status": "nominal",
           "status_label": "Nominal"
         },
         {
           "name": "Hygrometer Capacitance",
-          "metric": "+0.45% Capacitance Bias",
-          "status": "warning",
-          "status_label": "High Drift"
+          "metric": "Stable",
+          "status": "nominal",
+          "status_label": "Nominal"
         },
         {
           "name": "Telemetry Modem",
-          "metric": "100.0% Uplink",
+          "metric": "99.9% Uplink",
           "status": "nominal",
           "status_label": "Nominal"
         }
@@ -507,32 +523,32 @@
     },
     "10": {
       "station_id": 10,
-      "health_score": 98,
+      "health_score": 96,
       "trend": "stable",
       "maintenance_forecast_days": null,
-      "last_maintenance_at": "2026-08-06T20:00:28Z",
+      "last_maintenance_at": "2026-08-28T20:40:35Z",
       "diagnostics": [
         {
           "name": "RTD Temperature Probe",
-          "metric": "+0.13% (Drift)",
+          "metric": "+0.04% (Nominal)",
           "status": "nominal",
           "status_label": "Nominal"
         },
         {
           "name": "Barometric Capsule",
-          "metric": "96.7% Tension",
+          "metric": "99.4% (Nominal)",
           "status": "nominal",
           "status_label": "Nominal"
         },
         {
           "name": "Hygrometer Capacitance",
-          "metric": "+0.41% Capacitance Bias",
-          "status": "warning",
-          "status_label": "High Drift"
+          "metric": "Stable",
+          "status": "nominal",
+          "status_label": "Nominal"
         },
         {
           "name": "Telemetry Modem",
-          "metric": "100.0% Uplink",
+          "metric": "99.9% Uplink",
           "status": "nominal",
           "status_label": "Nominal"
         }
@@ -1352,6 +1368,168 @@
       "alert_id": 106,
       "top_features": [
         {
+          "feature": "temperature",
+          "contribution": 0.44,
+          "direction": "increases_anomaly"
+        },
+        {
+          "feature": "pressure",
+          "contribution": 0.44,
+          "direction": "increases_anomaly"
+        },
+        {
+          "feature": "humidity",
+          "contribution": 0.12,
+          "direction": "increases_anomaly"
+        }
+      ],
+      "contributing_factors": [
+        {
+          "name": "Temperature Deviation",
+          "category": "atmospheric_parameter",
+          "feature": "temperature",
+          "contribution": 0.44,
+          "direction": "increases_anomaly",
+          "observed_value": "28.8\u00b0C",
+          "baseline_value": "18.0\u00b0C",
+          "deviation": "+10.8\u00b0C",
+          "description": "Observed 28.8\u00b0C vs historical nominal baseline 18.0\u00b0C (Delta: +10.8\u00b0C)"
+        },
+        {
+          "name": "Pressure Deviation",
+          "category": "atmospheric_parameter",
+          "feature": "pressure",
+          "contribution": 0.44,
+          "direction": "increases_anomaly",
+          "observed_value": "946.5hPa",
+          "baseline_value": "840.0hPa",
+          "deviation": "+106.5hPa",
+          "description": "Observed 946.5hPa vs historical nominal baseline 840.0hPa (Delta: +106.5hPa)"
+        },
+        {
+          "name": "Humidity Deviation",
+          "category": "atmospheric_parameter",
+          "feature": "humidity",
+          "contribution": 0.12,
+          "direction": "increases_anomaly",
+          "observed_value": "47.5%",
+          "baseline_value": "45.0%",
+          "deviation": "+2.5%",
+          "description": "Observed 47.5% vs historical nominal baseline 45.0% (Delta: +2.5%)"
+        },
+        {
+          "name": "Spatial Neighbor Correlation",
+          "category": "spatial_network",
+          "feature": "spatial_cluster",
+          "contribution": 0.42,
+          "direction": "increases_anomaly",
+          "observed_value": "0/2 Agreeing",
+          "baseline_value": "2/2 Synchronized",
+          "deviation": "-2 Uncorroborated",
+          "description": "Isolated divergence: 0 of 2 nearest stations within 35km radius showed matching trends"
+        },
+        {
+          "name": "Temporal Rate-of-Change",
+          "category": "temporal_dynamics",
+          "feature": "derivative",
+          "contribution": 0.22,
+          "direction": "increases_anomaly",
+          "observed_value": "+1.8 sigma/hr",
+          "baseline_value": "\u00b10.5 sigma/hr",
+          "deviation": "Elevated Gradient",
+          "description": "Progressive baseline ramp exceeding diurnal solar heating curve"
+        },
+        {
+          "name": "Multivariate Physics Consistency",
+          "category": "physics_model",
+          "feature": "mahalanobis",
+          "contribution": 0.28,
+          "direction": "increases_anomaly",
+          "observed_value": "Covariance Breach",
+          "baseline_value": "Clausius-Clapeyron Bound",
+          "deviation": "3.4 sigma Mahalanobis",
+          "description": "Cross-parameter covariance check evaluating temperature-pressure-humidity thermodynamic consistency"
+        }
+      ],
+      "reasoning_chain": [
+        {
+          "step_number": 1,
+          "title": "Sensor Variance Trigger",
+          "evidence": "Anomalous unphysical reading on temperature (28.8\u00b0C) triggered single-station STL residual and statistical Z-score detectors (> 3.2 sigma).",
+          "status": "flagged"
+        },
+        {
+          "step_number": 2,
+          "title": "Spatial Network Cross-Validation",
+          "evidence": "0 of 2 nearest neighboring stations within 35km corroborated the reading, establishing that the anomaly is strictly isolated to this transducer.",
+          "status": "isolated"
+        },
+        {
+          "step_number": 3,
+          "title": "Multivariate Covariance Violation",
+          "evidence": "Coupled atmospheric channels (pressure and humidity) failed to exhibit corresponding adiabatic thermodynamic shifts, violating physical atmospheric constraints.",
+          "status": "unphysical"
+        },
+        {
+          "step_number": 4,
+          "title": "Ensemble Verdict & Classification",
+          "evidence": "Classified as Isolated Sensor Fault on temperature. Transducer recalibration or hardware probe replacement required.",
+          "status": "verdict"
+        }
+      ],
+      "detector_breakdown": [
+        {
+          "detector_name": "Statistical STL & Z-Score Filter",
+          "score": 0.78,
+          "threshold": 0.6,
+          "flagged": true,
+          "description": "Monitors robust median seasonal-trend decomposition residuals and rolling 3-sigma limits."
+        },
+        {
+          "detector_name": "LSTM Autoencoder Temporal Reconstruction",
+          "score": 0.85,
+          "threshold": 0.55,
+          "flagged": true,
+          "description": "Deep sequence model evaluating temporal dynamics and multi-step prediction error."
+        },
+        {
+          "detector_name": "Isolation Forest Multivariate Anomaly",
+          "score": 0.74,
+          "threshold": 0.5,
+          "flagged": true,
+          "description": "Non-parametric tree ensemble isolating multivariate out-of-distribution feature spaces."
+        },
+        {
+          "detector_name": "Spatial & Mahalanobis Consistency Engine",
+          "score": 0.95,
+          "threshold": 0.5,
+          "flagged": true,
+          "description": "Gaussian kernel spatial interpolation and covariance matrix cross-validation across neighboring stations."
+        }
+      ],
+      "neighbor_corroboration": [
+        {
+          "station_id": 5,
+          "station_name": "Bengaluru Whitefield (Tech Park Station)",
+          "distance_km": 22.1,
+          "reading": "18.3\u00b0C",
+          "expected": "28.8\u00b0C",
+          "is_corroborating": false,
+          "status": "Normal (Divergent)"
+        }
+      ],
+      "recommendations": [
+        "Execute remote offset zero-calibration routine on temperature sensor probe.",
+        "Verify aspirator radiation shield fan operation to prevent solar thermal trapping.",
+        "Schedule physical field inspection or transducer replacement if drift exceeds 48 hours.",
+        "Temporarily down-weight temperature channel from spatial weather interpolation grid."
+      ],
+      "narrative": "Isolated MEDIUM-severity sensor fault identified at Bengaluru GKVK (Agricultural Campus Lab). The anomaly is heavily driven by unphysical behavior in temperature (44% contribution) with observed value of 28.8\u00b0C, which was not corroborated by any neighboring stations in the network cluster. Field calibration or transducer replacement advised."
+    },
+    "107": {
+      "alert_id": 107,
+      "top_features": [
+        {
           "feature": "humidity",
           "contribution": 0.48,
           "direction": "increases_anomaly"
@@ -1510,8 +1688,8 @@
       ],
       "narrative": "Isolated HIGH-severity sensor fault identified at Chennai Nungambakkam (Central Coastal Base). The anomaly is heavily driven by unphysical behavior in humidity (48% contribution) with observed value of 93.8%, which was not corroborated by any neighboring stations in the network cluster. Field calibration or transducer replacement advised."
     },
-    "107": {
-      "alert_id": 107,
+    "108": {
+      "alert_id": 108,
       "top_features": [
         {
           "feature": "pressure",
