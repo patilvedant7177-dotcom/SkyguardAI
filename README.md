@@ -143,8 +143,11 @@ pytest tests/ -v
 
 ## 📄 Documentation
 
+- Complete Project & UI Architecture Guide: [PROJECT_AND_UI_OVERVIEW.md](PROJECT_AND_UI_OVERVIEW.md)
+- Product Requirements Document (PRD): [PRD.md](PRD.md)
 - Full Platform Architecture: [DOCUMENTATION.md](DOCUMENTATION.md)
 - Technology Stack & Methodology: [TECHSTACK.md](TECHSTACK.md)
 - UI & Frontend Deep-Dive: [FRONTEND_ARCHITECTURE.md](FRONTEND_ARCHITECTURE.md)
-- Microsoft Word Reports: `SkyguardAI_Documentation.docx`, `SkyguardAI_Frontend_Documentation.docx`, & `SkyguardAI_TechStack_Documentation.docx`
+- Microsoft Word Reports: `SkyguardAI_PRD.docx`, `SkyguardAI_Documentation.docx`, `SkyguardAI_Frontend_Documentation.docx`, & `SkyguardAI_TechStack_Documentation.docx`
+
 

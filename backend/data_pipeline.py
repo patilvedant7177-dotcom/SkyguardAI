@@ -415,40 +415,43 @@ def ingest_station_files(
     longitude: float,
     elevation: float,
     raw_csv_path: Path | str,
-    raw_nc_path: Path | str,
+    raw_nc_path: Optional[Path | str] = None,
     slug: Optional[str] = None,
 ) -> Dict[str, Any]:
     """
-    End-to-end ingestion pipeline for manually uploaded AWS station CSV and NetCDF datasets.
-    Profiles both formats, aligns column mappings, removes anomalies/missingness,
+    End-to-end ingestion pipeline for manually uploaded AWS station CSV (standalone) or CSV + NetCDF datasets.
+    Profiles available formats, aligns column mappings, removes anomalies/missingness,
     engineers causal temporal features, and exports standardized clean and feature datasets.
     """
     PROCESSED_DIR.mkdir(parents=True, exist_ok=True)
     raw_csv_path = Path(raw_csv_path)
-    raw_nc_path = Path(raw_nc_path)
 
     if slug is None:
         clean_name = re.sub(r"[^a-zA-Z0-9]+", "_", station_name.lower().strip()).strip("_")
         slug = f"station_{clean_name}_{station_id}" if clean_name else f"station_{station_id}"
 
-    # 1. Profile NetCDF
+    # 1. Profile NetCDF if provided
     nc_dims = {}
     nc_attrs = {}
     nc_vars = {}
-    try:
-        if raw_nc_path.exists() and raw_nc_path.stat().st_size > 0:
-            ds_nc = xr.open_dataset(raw_nc_path)
-            nc_dims = {str(k): int(v) for k, v in ds_nc.sizes.items()}
-            nc_attrs = {str(k): str(v) for k, v in ds_nc.attrs.items()}
-            for var_name in ds_nc.data_vars:
-                var_obj = ds_nc[var_name]
-                nc_vars[str(var_name)] = {
-                    "dims": [str(d) for d in var_obj.dims],
-                    "shape": list(var_obj.shape),
-                    "dtype": str(var_obj.dtype),
-                }
-    except Exception as exc:
-        print(f"NetCDF profiling note for {station_name}: {exc}")
+    has_nc = False
+    if raw_nc_path is not None:
+        try:
+            raw_nc_path = Path(raw_nc_path)
+            if raw_nc_path.exists() and raw_nc_path.stat().st_size > 0:
+                ds_nc = xr.open_dataset(raw_nc_path)
+                nc_dims = {str(k): int(v) for k, v in ds_nc.sizes.items()}
+                nc_attrs = {str(k): str(v) for k, v in ds_nc.attrs.items()}
+                for var_name in ds_nc.data_vars:
+                    var_obj = ds_nc[var_name]
+                    nc_vars[str(var_name)] = {
+                        "dims": [str(d) for d in var_obj.dims],
+                        "shape": list(var_obj.shape),
+                        "dtype": str(var_obj.dtype),
+                    }
+                has_nc = True
+        except Exception as exc:
+            print(f"NetCDF profiling note for {station_name}: {exc}")
 
     # 2. Read CSV and intelligently detect/map columns
     sample_df = pd.read_csv(raw_csv_path, nrows=5)
@@ -559,6 +562,7 @@ def ingest_station_files(
     feat_df.to_parquet(features_parquet_path, index=False)
 
     profiling_summary = {
+        "upload_type": "csv_nc" if has_nc else "csv_only",
         "csv_rows": int(len(df)),
         "csv_columns": [str(c) for c in df.columns],
         "date_range": {

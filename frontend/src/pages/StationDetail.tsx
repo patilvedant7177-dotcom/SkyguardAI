@@ -230,16 +230,13 @@ const StationDetail: React.FC = () => {
       >
         <div>
           <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
-            <h1 style={{ fontSize: "1.75rem", fontWeight: 700, letterSpacing: "-0.02em" }}>
+            <h1 style={{ fontSize: "1.75rem", fontWeight: 700, letterSpacing: "-0.02em", margin: 0 }}>
               {currentStation?.name || `Station #${stationId}`} Telemetry
             </h1>
             {currentStation && (
               <span className={`badge badge-${currentStation.status}`}>{currentStation.status}</span>
             )}
           </div>
-          <p style={{ color: "var(--text-secondary)", fontSize: "0.9rem", marginTop: "4px" }}>
-            High-frequency atmospheric sensor array · 72-Hour continuous stream
-          </p>
         </div>
 
         {/* Controls & Nav */}

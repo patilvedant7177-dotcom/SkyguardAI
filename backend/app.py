@@ -258,6 +258,7 @@ def _register_custom_station(
     feat_df: pd.DataFrame,
     clean_df: pd.DataFrame,
     profiling_summary: Dict[str, Any],
+    dataset_type: str = "csv_only",
 ) -> Dict[str, Any]:
     """
     Registers a custom uploaded station into the active PIPELINE_STATE:
@@ -356,6 +357,7 @@ def _register_custom_station(
         "elevation": elevation,
         "status": station_status,
         "source": "real",
+        "dataset_type": dataset_type,
     }
 
     # Register into PIPELINE_STATE (deduplicate if station_id exists)
@@ -709,11 +711,12 @@ async def upload_station(
     longitude: float = Form(...),
     elevation: float = Form(...),
     station_id: Optional[int] = Form(None),
+    upload_type: Optional[str] = Form("csv_only"),
     csv_file: UploadFile = File(...),
-    nc_file: UploadFile = File(...),
+    nc_file: Optional[UploadFile] = File(None),
 ):
     """
-    Manually add an AWS Station with CSV and NetCDF datasets:
+    Manually add an AWS Station with CSV (standalone) or CSV + NetCDF datasets:
     1. Validates input parameters and saves raw datasets to data/raw/.
     2. Runs automated profiling, schema cross-matching, cleaning, and causal feature engineering.
     3. Runs anomaly detection, spatial/statistical fusion, and prognostic health evaluation.
@@ -737,22 +740,34 @@ async def upload_station(
 
     RAW_DIR.mkdir(parents=True, exist_ok=True)
     raw_csv_path = RAW_DIR / f"{clean_slug}.csv"
-    raw_nc_path = RAW_DIR / f"{clean_slug}.nc"
+    raw_nc_path = None
 
     try:
-        # Save uploaded files to disk
+        # Save CSV file
         csv_bytes = await csv_file.read()
-        nc_bytes = await nc_file.read()
-
         if len(csv_bytes) == 0:
             raise HTTPException(status_code=400, detail="Uploaded CSV file is empty.")
-        if len(nc_bytes) == 0:
-            raise HTTPException(status_code=400, detail="Uploaded NetCDF file is empty.")
 
         with open(raw_csv_path, "wb") as f:
             f.write(csv_bytes)
-        with open(raw_nc_path, "wb") as f:
-            f.write(nc_bytes)
+
+        # Handle NetCDF file if provided
+        has_nc = False
+        if nc_file is not None and getattr(nc_file, "filename", None) and nc_file.filename.strip():
+            nc_bytes = await nc_file.read()
+            if len(nc_bytes) > 0:
+                raw_nc_path = RAW_DIR / f"{clean_slug}.nc"
+                with open(raw_nc_path, "wb") as f:
+                    f.write(nc_bytes)
+                has_nc = True
+
+        mode = upload_type if upload_type in ("csv_only", "csv_nc") else ("csv_nc" if has_nc else "csv_only")
+
+        if mode == "csv_nc" and not has_nc:
+            raise HTTPException(
+                status_code=400,
+                detail="NetCDF file (.nc) is required when Dual Ingestion (CSV + NetCDF) mode is selected.",
+            )
 
         # Run ingestion pipeline
         ingest_result = ingest_station_files(
@@ -762,7 +777,7 @@ async def upload_station(
             longitude=longitude,
             elevation=elevation,
             raw_csv_path=raw_csv_path,
-            raw_nc_path=raw_nc_path,
+            raw_nc_path=raw_nc_path if mode == "csv_nc" else None,
             slug=clean_slug,
         )
 
@@ -776,13 +791,20 @@ async def upload_station(
             feat_df=ingest_result["features_df"],
             clean_df=ingest_result["clean_df"],
             profiling_summary=ingest_result["profiling_summary"],
+            dataset_type=mode,
         )
 
-        logger.info("Successfully uploaded and registered AWS station: %s (ID: %d)", name, station_id)
+        logger.info(
+            "Successfully uploaded and registered AWS station: %s (ID: %d, Mode: %s)",
+            name,
+            station_id,
+            mode,
+        )
 
+        mode_label = "CSV Only" if mode == "csv_only" else "CSV + NetCDF"
         return {
             "status": "success",
-            "message": f"Station '{name}' successfully ingested and registered.",
+            "message": f"Station '{name}' successfully ingested and registered ({mode_label}).",
             "station": reg_result["station"],
             "profiling_summary": ingest_result["profiling_summary"],
             "health": reg_result["health"],

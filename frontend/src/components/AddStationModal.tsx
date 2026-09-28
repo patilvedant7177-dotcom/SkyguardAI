@@ -12,6 +12,7 @@ import {
   Upload,
   X,
   FileText,
+  FileSpreadsheet,
   Database,
   CheckCircle2,
   AlertCircle,
@@ -22,6 +23,9 @@ import {
   ArrowRight,
   Sparkles,
   Map as MapIcon,
+  Layers,
+  Check,
+  Info,
 } from "lucide-react";
 import { uploadStation } from "../api";
 import type { AddStationResponse } from "../types";
@@ -34,11 +38,12 @@ interface AddStationModalProps {
 
 const PRESETS = [
   {
-    name: "Bharati Research Station",
-    lat: -69.4075,
-    lon: 76.1906,
-    elev: 35,
-    region: "Antarctica (Larsemann Hills)",
+    name: "IMD Pune Central Observatory",
+    lat: 18.5204,
+    lon: 73.8567,
+    elev: 560,
+    region: "Maharashtra, India",
+    uploadType: "csv_only" as const,
   },
   {
     name: "Himansh High-Altitude AWS",
@@ -46,13 +51,15 @@ const PRESETS = [
     lon: 77.6167,
     elev: 4080,
     region: "Himalayas (Spiti Valley)",
+    uploadType: "csv_only" as const,
   },
   {
-    name: "IMD Pune Central Observatory",
-    lat: 18.5204,
-    lon: 73.8567,
-    elev: 560,
-    region: "Maharashtra, India",
+    name: "Bharati Research Station",
+    lat: -69.4075,
+    lon: 76.1906,
+    elev: 35,
+    region: "Antarctica (Larsemann Hills)",
+    uploadType: "csv_nc" as const,
   },
   {
     name: "Maitri Station AWS-2",
@@ -60,6 +67,7 @@ const PRESETS = [
     lon: 11.7400,
     elev: 120,
     region: "Antarctica (Schirmacher Oasis)",
+    uploadType: "csv_nc" as const,
   },
 ];
 
@@ -159,9 +167,12 @@ export const AddStationModal: React.FC<AddStationModalProps> = ({
     zoom: number;
   } | null>(null);
 
-  // Files
+  // Files & Dataset Format Type
+  const [uploadType, setUploadType] = useState<"csv_only" | "csv_nc">("csv_only");
   const [csvFile, setCsvFile] = useState<File | null>(null);
   const [ncFile, setNcFile] = useState<File | null>(null);
+  const [isDraggingCsv, setIsDraggingCsv] = useState(false);
+  const [isDraggingNc, setIsDraggingNc] = useState(false);
 
   // Status & Progress
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -200,6 +211,9 @@ export const AddStationModal: React.FC<AddStationModalProps> = ({
     setLongitude(preset.lon.toString());
     setElevation(preset.elev.toString());
     setMapRegionTarget({ center: [preset.lat, preset.lon], zoom: 6 });
+    if (preset.uploadType) {
+      setUploadType(preset.uploadType);
+    }
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -230,35 +244,54 @@ export const AddStationModal: React.FC<AddStationModalProps> = ({
       setErrorMsg("Please select a valid CSV telemetry dataset file (.csv).");
       return;
     }
-    if (!ncFile) {
-      setErrorMsg("Please select a valid NetCDF dataset file (.nc).");
+    if (uploadType === "csv_nc" && !ncFile) {
+      setErrorMsg("Please select a valid NetCDF dataset file (.nc) for Dual Ingestion mode.");
       return;
     }
 
     try {
       setIsSubmitting(true);
-      setCurrentStep("Uploading telemetry datasets (.csv & .nc)...");
+      if (uploadType === "csv_only") {
+        setCurrentStep("Uploading station telemetry dataset (.csv)...");
+      } else {
+        setCurrentStep("Uploading telemetry datasets (.csv & .nc)...");
+      }
 
       const formData = new FormData();
       formData.append("name", stationName.trim());
       formData.append("latitude", lat.toString());
       formData.append("longitude", lon.toString());
       formData.append("elevation", elev.toString());
+      formData.append("upload_type", uploadType);
       if (stationId.trim()) {
         formData.append("station_id", stationId.trim());
       }
       formData.append("csv_file", csvFile);
-      formData.append("nc_file", ncFile);
+      if (uploadType === "csv_nc" && ncFile) {
+        formData.append("nc_file", ncFile);
+      }
 
-      setTimeout(() => {
-        if (isSubmitting) setCurrentStep("Cross-profiling CSV schema & NetCDF coordinates...");
-      }, 700);
-      setTimeout(() => {
-        if (isSubmitting) setCurrentStep("Cleaning records & validating physical atmospheric bounds...");
-      }, 1400);
-      setTimeout(() => {
-        if (isSubmitting) setCurrentStep("Engineering causal lag/rolling features & evaluating anomalies...");
-      }, 2100);
+      if (uploadType === "csv_only") {
+        setTimeout(() => {
+          if (isSubmitting) setCurrentStep("Profiling CSV schema & validating physical atmospheric bounds...");
+        }, 700);
+        setTimeout(() => {
+          if (isSubmitting) setCurrentStep("Cleaning timestamps, deduplicating, and engineering temporal features...");
+        }, 1400);
+        setTimeout(() => {
+          if (isSubmitting) setCurrentStep("Evaluating anomalies & registering station into network...");
+        }, 2100);
+      } else {
+        setTimeout(() => {
+          if (isSubmitting) setCurrentStep("Cross-profiling CSV schema & NetCDF spatial coordinates...");
+        }, 700);
+        setTimeout(() => {
+          if (isSubmitting) setCurrentStep("Cleaning records & validating physical atmospheric bounds...");
+        }, 1400);
+        setTimeout(() => {
+          if (isSubmitting) setCurrentStep("Engineering causal lag/rolling features & evaluating anomalies...");
+        }, 2100);
+      }
 
       const resp = await uploadStation(formData);
       setResult(resp);
@@ -271,6 +304,7 @@ export const AddStationModal: React.FC<AddStationModalProps> = ({
   };
 
   const handleReset = () => {
+    setUploadType("csv_only");
     setStationName("");
     setStationId("");
     setLatitude("");
@@ -342,7 +376,7 @@ export const AddStationModal: React.FC<AddStationModalProps> = ({
                 Register New AWS Ground Station
               </h2>
               <p style={{ fontSize: "0.8rem", color: "var(--text-muted)", marginTop: "2px" }}>
-                Add telemetry sensor node with NetCDF grid dataset and timeseries
+                Ingest weather station telemetry via standalone CSV or dual CSV + NetCDF grid
               </p>
             </div>
           </div>
@@ -428,9 +462,19 @@ export const AddStationModal: React.FC<AddStationModalProps> = ({
                   </div>
                 </div>
                 <div>
-                  <span style={{ color: "var(--text-muted)" }}>NetCDF Vars:</span>
-                  <div style={{ fontWeight: 600, color: "var(--accent-cyan)", marginTop: "2px" }}>
-                    {result.profiling_summary.nc_variables.join(", ") || "Standard"}
+                  <span style={{ color: "var(--text-muted)" }}>Dataset Format:</span>
+                  <div
+                    style={{
+                      fontWeight: 600,
+                      color: result.profiling_summary.upload_type === "csv_only" ? "#38bdf8" : "#c084fc",
+                      marginTop: "2px",
+                    }}
+                  >
+                    {result.profiling_summary.upload_type === "csv_only"
+                      ? "CSV Only (Standalone)"
+                      : result.profiling_summary.nc_variables.length > 0
+                      ? `CSV + NetCDF (${result.profiling_summary.nc_variables.length} vars)`
+                      : "CSV + NetCDF"}
                   </div>
                 </div>
                 <div>
@@ -733,23 +777,225 @@ export const AddStationModal: React.FC<AddStationModalProps> = ({
               </div>
             </div>
 
-            {/* Dual File Upload Dropzones */}
-            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "1rem" }}>
-              {/* CSV Upload Dropzone */}
-              <div>
-                <label style={{ display: "block", fontSize: "0.8rem", color: "var(--text-secondary)", marginBottom: "4px" }}>
-                  Telemetry CSV File (.csv) *
+            {/* Dataset Type Selector (Option for CSV Only vs CSV + NetCDF) */}
+            <div style={{ display: "flex", flexDirection: "column", gap: "0.5rem" }}>
+              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                <label style={{ fontSize: "0.82rem", fontWeight: 600, color: "var(--text-primary)", display: "flex", alignItems: "center", gap: "6px" }}>
+                  <Layers size={14} color="var(--accent-cyan)" />
+                  <span>Station Dataset Ingestion Type *</span>
                 </label>
+                <span style={{ fontSize: "0.72rem", color: "var(--text-muted)" }}>
+                  {uploadType === "csv_only" ? "Only CSV file required" : "Both CSV and NetCDF files required"}
+                </span>
+              </div>
+
+              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "0.75rem" }}>
+                {/* Option 1: CSV Only */}
                 <div
+                  onClick={() => !isSubmitting && setUploadType("csv_only")}
+                  style={{
+                    borderRadius: "10px",
+                    padding: "0.85rem 1rem",
+                    cursor: isSubmitting ? "not-allowed" : "pointer",
+                    border: uploadType === "csv_only" ? "2px solid #0284c7" : "1px solid var(--border-card)",
+                    background: uploadType === "csv_only" ? "rgba(2, 132, 199, 0.12)" : "var(--bg-card)",
+                    boxShadow: uploadType === "csv_only" ? "0 0 16px rgba(2, 132, 199, 0.25)" : "none",
+                    transition: "all 0.2s ease",
+                    display: "flex",
+                    flexDirection: "column",
+                    gap: "6px",
+                  }}
+                >
+                  <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                    <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+                      <div
+                        style={{
+                          width: "28px",
+                          height: "28px",
+                          borderRadius: "8px",
+                          background: uploadType === "csv_only" ? "rgba(56, 189, 248, 0.2)" : "rgba(100, 116, 139, 0.15)",
+                          display: "flex",
+                          alignItems: "center",
+                          justifyContent: "center",
+                        }}
+                      >
+                        <FileSpreadsheet size={16} color={uploadType === "csv_only" ? "#38bdf8" : "#94a3b8"} />
+                      </div>
+                      <div>
+                        <div style={{ fontWeight: 600, fontSize: "0.85rem", color: uploadType === "csv_only" ? "#38bdf8" : "var(--text-primary)" }}>
+                          CSV Only
+                        </div>
+                        <div style={{ fontSize: "0.7rem", color: "var(--text-muted)" }}>Standalone Telemetry</div>
+                      </div>
+                    </div>
+                    <div
+                      style={{
+                        width: "18px",
+                        height: "18px",
+                        borderRadius: "50%",
+                        border: uploadType === "csv_only" ? "5px solid #0284c7" : "2px solid var(--border-card)",
+                        background: "#ffffff",
+                      }}
+                    />
+                  </div>
+                  <div style={{ fontSize: "0.72rem", color: "var(--text-secondary)", lineHeight: "1.35", marginTop: "2px" }}>
+                    Includes all observations (temp, pressure, humidity, wind). <strong>No NetCDF file needed.</strong>
+                  </div>
+                  <div style={{ display: "flex", gap: "6px", marginTop: "2px" }}>
+                    <span
+                      style={{
+                        fontSize: "0.68rem",
+                        padding: "2px 6px",
+                        borderRadius: "4px",
+                        background: "rgba(56, 189, 248, 0.15)",
+                        color: "#38bdf8",
+                        fontWeight: 600,
+                      }}
+                    >
+                      Most Common
+                    </span>
+                    <span
+                      style={{
+                        fontSize: "0.68rem",
+                        padding: "2px 6px",
+                        borderRadius: "4px",
+                        background: "rgba(16, 185, 129, 0.15)",
+                        color: "#34d399",
+                        fontWeight: 500,
+                      }}
+                    >
+                      Single File Ingestion
+                    </span>
+                  </div>
+                </div>
+
+                {/* Option 2: CSV + NetCDF */}
+                <div
+                  onClick={() => !isSubmitting && setUploadType("csv_nc")}
+                  style={{
+                    borderRadius: "10px",
+                    padding: "0.85rem 1rem",
+                    cursor: isSubmitting ? "not-allowed" : "pointer",
+                    border: uploadType === "csv_nc" ? "2px solid #a855f7" : "1px solid var(--border-card)",
+                    background: uploadType === "csv_nc" ? "rgba(168, 85, 247, 0.12)" : "var(--bg-card)",
+                    boxShadow: uploadType === "csv_nc" ? "0 0 16px rgba(168, 85, 247, 0.25)" : "none",
+                    transition: "all 0.2s ease",
+                    display: "flex",
+                    flexDirection: "column",
+                    gap: "6px",
+                  }}
+                >
+                  <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                    <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+                      <div
+                        style={{
+                          width: "28px",
+                          height: "28px",
+                          borderRadius: "8px",
+                          background: uploadType === "csv_nc" ? "rgba(168, 85, 247, 0.2)" : "rgba(100, 116, 139, 0.15)",
+                          display: "flex",
+                          alignItems: "center",
+                          justifyContent: "center",
+                        }}
+                      >
+                        <Database size={16} color={uploadType === "csv_nc" ? "#c084fc" : "#94a3b8"} />
+                      </div>
+                      <div>
+                        <div style={{ fontWeight: 600, fontSize: "0.85rem", color: uploadType === "csv_nc" ? "#c084fc" : "var(--text-primary)" }}>
+                          CSV + NetCDF
+                        </div>
+                        <div style={{ fontSize: "0.7rem", color: "var(--text-muted)" }}>Dual Spatial Grid</div>
+                      </div>
+                    </div>
+                    <div
+                      style={{
+                        width: "18px",
+                        height: "18px",
+                        borderRadius: "50%",
+                        border: uploadType === "csv_nc" ? "5px solid #a855f7" : "2px solid var(--border-card)",
+                        background: "#ffffff",
+                      }}
+                    />
+                  </div>
+                  <div style={{ fontSize: "0.72rem", color: "var(--text-secondary)", lineHeight: "1.35", marginTop: "2px" }}>
+                    Pairs station telemetry CSV with a multi-dimensional NetCDF (.nc) weather grid tensor.
+                  </div>
+                  <div style={{ display: "flex", gap: "6px", marginTop: "2px" }}>
+                    <span
+                      style={{
+                        fontSize: "0.68rem",
+                        padding: "2px 6px",
+                        borderRadius: "4px",
+                        background: "rgba(168, 85, 247, 0.15)",
+                        color: "#c084fc",
+                        fontWeight: 600,
+                      }}
+                    >
+                      Spatial Grid
+                    </span>
+                    <span
+                      style={{
+                        fontSize: "0.68rem",
+                        padding: "2px 6px",
+                        borderRadius: "4px",
+                        background: "rgba(100, 116, 139, 0.2)",
+                        color: "var(--text-secondary)",
+                        fontWeight: 500,
+                      }}
+                    >
+                      Dual Files
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* File Upload Dropzone(s) */}
+            {uploadType === "csv_only" ? (
+              /* Standalone CSV Single Dropzone */
+              <div>
+                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "4px" }}>
+                  <label style={{ fontSize: "0.8rem", color: "var(--text-secondary)", fontWeight: 500 }}>
+                    Telemetry CSV File (.csv) *
+                  </label>
+                  <span style={{ fontSize: "0.72rem", color: "#38bdf8", display: "flex", alignItems: "center", gap: "4px" }}>
+                    <Check size={12} />
+                    <span>No NetCDF file required</span>
+                  </span>
+                </div>
+                <div
+                  onDragOver={(e) => {
+                    e.preventDefault();
+                    if (!isSubmitting) setIsDraggingCsv(true);
+                  }}
+                  onDragLeave={() => setIsDraggingCsv(false)}
+                  onDrop={(e) => {
+                    e.preventDefault();
+                    setIsDraggingCsv(false);
+                    if (!isSubmitting && e.dataTransfer.files && e.dataTransfer.files[0]) {
+                      setCsvFile(e.dataTransfer.files[0]);
+                    }
+                  }}
                   onClick={() => !isSubmitting && csvInputRef.current?.click()}
                   style={{
-                    border: `2px dashed ${csvFile ? "#38bdf8" : "var(--border-card)"}`,
+                    border: `2px dashed ${
+                      isDraggingCsv
+                        ? "#0284c7"
+                        : csvFile
+                        ? "#38bdf8"
+                        : "var(--border-card)"
+                    }`,
                     borderRadius: "10px",
-                    padding: "1rem",
+                    padding: "1.5rem",
                     textAlign: "center",
                     cursor: isSubmitting ? "not-allowed" : "pointer",
-                    background: csvFile ? "rgba(56, 189, 248, 0.08)" : "var(--bg-card)",
+                    background: isDraggingCsv
+                      ? "rgba(2, 132, 199, 0.16)"
+                      : csvFile
+                      ? "rgba(56, 189, 248, 0.08)"
+                      : "var(--bg-card)",
                     transition: "all 0.2s ease",
+                    position: "relative",
                   }}
                 >
                   <input
@@ -763,88 +1009,299 @@ export const AddStationModal: React.FC<AddStationModalProps> = ({
                       }
                     }}
                   />
-                  <FileText
-                    size={24}
+
+                  {csvFile && !isSubmitting && (
+                    <button
+                      type="button"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setCsvFile(null);
+                        if (csvInputRef.current) csvInputRef.current.value = "";
+                      }}
+                      style={{
+                        position: "absolute",
+                        top: "10px",
+                        right: "10px",
+                        background: "rgba(244, 63, 94, 0.15)",
+                        border: "1px solid rgba(244, 63, 94, 0.3)",
+                        borderRadius: "50%",
+                        width: "24px",
+                        height: "24px",
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        color: "#fb7185",
+                        cursor: "pointer",
+                      }}
+                      title="Remove CSV file"
+                    >
+                      <X size={13} />
+                    </button>
+                  )}
+
+                  <FileSpreadsheet
+                    size={32}
                     color={csvFile ? "#38bdf8" : "var(--text-muted)"}
-                    style={{ margin: "0 auto 6px" }}
+                    style={{ margin: "0 auto 8px" }}
                   />
                   {csvFile ? (
                     <div>
-                      <div style={{ fontSize: "0.82rem", fontWeight: 600, color: "var(--text-primary)" }}>
+                      <div style={{ fontSize: "0.9rem", fontWeight: 600, color: "var(--text-primary)" }}>
                         {csvFile.name}
                       </div>
-                      <div style={{ fontSize: "0.72rem", color: "var(--text-muted)", marginTop: "2px" }}>
-                        {(csvFile.size / 1024 / 1024).toFixed(2)} MB
+                      <div style={{ fontSize: "0.75rem", color: "var(--text-muted)", marginTop: "3px" }}>
+                        {(csvFile.size / 1024 / 1024).toFixed(2)} MB &bull; Ready for automated profiling
                       </div>
                     </div>
                   ) : (
                     <div>
-                      <div style={{ fontSize: "0.82rem", fontWeight: 500, color: "var(--text-secondary)" }}>
-                        Click to select CSV
+                      <div style={{ fontSize: "0.88rem", fontWeight: 500, color: "var(--text-secondary)" }}>
+                        Click to select or drag & drop AWS telemetry CSV
                       </div>
-                      <div style={{ fontSize: "0.68rem", color: "var(--text-muted)", marginTop: "2px" }}>
-                        Contains obstime, temp, pressure, wind, rh
+                      <div style={{ fontSize: "0.72rem", color: "var(--text-muted)", marginTop: "4px" }}>
+                        Auto-extracts timestamps and atmospheric features (temperature, pressure, humidity, wind)
                       </div>
                     </div>
                   )}
                 </div>
-              </div>
 
-              {/* NetCDF Upload Dropzone */}
-              <div>
-                <label style={{ display: "block", fontSize: "0.8rem", color: "var(--text-secondary)", marginBottom: "4px" }}>
-                  NetCDF File (.nc) *
-                </label>
+                {/* CSV-only notice banner */}
                 <div
-                  onClick={() => !isSubmitting && ncInputRef.current?.click()}
                   style={{
-                    border: `2px dashed ${ncFile ? "#a855f7" : "var(--border-card)"}`,
-                    borderRadius: "10px",
-                    padding: "1rem",
-                    textAlign: "center",
-                    cursor: isSubmitting ? "not-allowed" : "pointer",
-                    background: ncFile ? "rgba(168, 85, 247, 0.08)" : "var(--bg-card)",
-                    transition: "all 0.2s ease",
+                    marginTop: "8px",
+                    padding: "8px 12px",
+                    borderRadius: "6px",
+                    background: "rgba(56, 189, 248, 0.06)",
+                    border: "1px solid rgba(56, 189, 248, 0.2)",
+                    fontSize: "0.73rem",
+                    color: "var(--text-secondary)",
+                    display: "flex",
+                    alignItems: "center",
+                    gap: "8px",
                   }}
                 >
-                  <input
-                    ref={ncInputRef}
-                    type="file"
-                    accept=".nc,application/x-netcdf"
-                    style={{ display: "none" }}
-                    onChange={(e) => {
-                      if (e.target.files && e.target.files[0]) {
-                        setNcFile(e.target.files[0]);
-                      }
-                    }}
-                  />
-                  <Database
-                    size={24}
-                    color={ncFile ? "#a855f7" : "var(--text-muted)"}
-                    style={{ margin: "0 auto 6px" }}
-                  />
-                  {ncFile ? (
-                    <div>
-                      <div style={{ fontSize: "0.82rem", fontWeight: 600, color: "var(--text-primary)" }}>
-                        {ncFile.name}
-                      </div>
-                      <div style={{ fontSize: "0.72rem", color: "var(--text-muted)", marginTop: "2px" }}>
-                        {(ncFile.size / 1024 / 1024).toFixed(2)} MB
-                      </div>
-                    </div>
-                  ) : (
-                    <div>
-                      <div style={{ fontSize: "0.82rem", fontWeight: 500, color: "var(--text-secondary)" }}>
-                        Click to select NetCDF
-                      </div>
-                      <div style={{ fontSize: "0.68rem", color: "var(--text-muted)", marginTop: "2px" }}>
-                        Spatial weather grid tensor
-                      </div>
-                    </div>
-                  )}
+                  <Info size={14} color="#38bdf8" style={{ flexShrink: 0 }} />
+                  <span>
+                    <strong>CSV-Only Mode Active:</strong> All station telemetry and diagnostics will be processed directly from this CSV without needing any NetCDF (.nc) tensor.
+                  </span>
                 </div>
               </div>
-            </div>
+            ) : (
+              /* Dual File Upload Dropzones (CSV + NetCDF) */
+              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "1rem" }}>
+                {/* CSV Upload Dropzone */}
+                <div>
+                  <label style={{ display: "block", fontSize: "0.8rem", color: "var(--text-secondary)", marginBottom: "4px" }}>
+                    Telemetry CSV File (.csv) *
+                  </label>
+                  <div
+                    onDragOver={(e) => {
+                      e.preventDefault();
+                      if (!isSubmitting) setIsDraggingCsv(true);
+                    }}
+                    onDragLeave={() => setIsDraggingCsv(false)}
+                    onDrop={(e) => {
+                      e.preventDefault();
+                      setIsDraggingCsv(false);
+                      if (!isSubmitting && e.dataTransfer.files && e.dataTransfer.files[0]) {
+                        setCsvFile(e.dataTransfer.files[0]);
+                      }
+                    }}
+                    onClick={() => !isSubmitting && csvInputRef.current?.click()}
+                    style={{
+                      border: `2px dashed ${
+                        isDraggingCsv
+                          ? "#0284c7"
+                          : csvFile
+                          ? "#38bdf8"
+                          : "var(--border-card)"
+                      }`,
+                      borderRadius: "10px",
+                      padding: "1rem",
+                      textAlign: "center",
+                      cursor: isSubmitting ? "not-allowed" : "pointer",
+                      background: isDraggingCsv
+                        ? "rgba(2, 132, 199, 0.16)"
+                        : csvFile
+                        ? "rgba(56, 189, 248, 0.08)"
+                        : "var(--bg-card)",
+                      transition: "all 0.2s ease",
+                      position: "relative",
+                    }}
+                  >
+                    <input
+                      ref={csvInputRef}
+                      type="file"
+                      accept=".csv,text/csv"
+                      style={{ display: "none" }}
+                      onChange={(e) => {
+                        if (e.target.files && e.target.files[0]) {
+                          setCsvFile(e.target.files[0]);
+                        }
+                      }}
+                    />
+                    {csvFile && !isSubmitting && (
+                      <button
+                        type="button"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          setCsvFile(null);
+                          if (csvInputRef.current) csvInputRef.current.value = "";
+                        }}
+                        style={{
+                          position: "absolute",
+                          top: "6px",
+                          right: "6px",
+                          background: "rgba(244, 63, 94, 0.15)",
+                          border: "1px solid rgba(244, 63, 94, 0.3)",
+                          borderRadius: "50%",
+                          width: "22px",
+                          height: "22px",
+                          display: "flex",
+                          alignItems: "center",
+                          justifyContent: "center",
+                          color: "#fb7185",
+                          cursor: "pointer",
+                        }}
+                        title="Remove CSV file"
+                      >
+                        <X size={12} />
+                      </button>
+                    )}
+                    <FileText
+                      size={24}
+                      color={csvFile ? "#38bdf8" : "var(--text-muted)"}
+                      style={{ margin: "0 auto 6px" }}
+                    />
+                    {csvFile ? (
+                      <div>
+                        <div style={{ fontSize: "0.82rem", fontWeight: 600, color: "var(--text-primary)" }}>
+                          {csvFile.name}
+                        </div>
+                        <div style={{ fontSize: "0.72rem", color: "var(--text-muted)", marginTop: "2px" }}>
+                          {(csvFile.size / 1024 / 1024).toFixed(2)} MB
+                        </div>
+                      </div>
+                    ) : (
+                      <div>
+                        <div style={{ fontSize: "0.82rem", fontWeight: 500, color: "var(--text-secondary)" }}>
+                          Click or drag CSV
+                        </div>
+                        <div style={{ fontSize: "0.68rem", color: "var(--text-muted)", marginTop: "2px" }}>
+                          Contains obstime, temp, pressure, wind
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                </div>
+
+                {/* NetCDF Upload Dropzone */}
+                <div>
+                  <label style={{ display: "block", fontSize: "0.8rem", color: "var(--text-secondary)", marginBottom: "4px" }}>
+                    NetCDF File (.nc) *
+                  </label>
+                  <div
+                    onDragOver={(e) => {
+                      e.preventDefault();
+                      if (!isSubmitting) setIsDraggingNc(true);
+                    }}
+                    onDragLeave={() => setIsDraggingNc(false)}
+                    onDrop={(e) => {
+                      e.preventDefault();
+                      setIsDraggingNc(false);
+                      if (!isSubmitting && e.dataTransfer.files && e.dataTransfer.files[0]) {
+                        setNcFile(e.dataTransfer.files[0]);
+                      }
+                    }}
+                    onClick={() => !isSubmitting && ncInputRef.current?.click()}
+                    style={{
+                      border: `2px dashed ${
+                        isDraggingNc
+                          ? "#a855f7"
+                          : ncFile
+                          ? "#a855f7"
+                          : "var(--border-card)"
+                      }`,
+                      borderRadius: "10px",
+                      padding: "1rem",
+                      textAlign: "center",
+                      cursor: isSubmitting ? "not-allowed" : "pointer",
+                      background: isDraggingNc
+                        ? "rgba(168, 85, 247, 0.16)"
+                        : ncFile
+                        ? "rgba(168, 85, 247, 0.08)"
+                        : "var(--bg-card)",
+                      transition: "all 0.2s ease",
+                      position: "relative",
+                    }}
+                  >
+                    <input
+                      ref={ncInputRef}
+                      type="file"
+                      accept=".nc,application/x-netcdf"
+                      style={{ display: "none" }}
+                      onChange={(e) => {
+                        if (e.target.files && e.target.files[0]) {
+                          setNcFile(e.target.files[0]);
+                        }
+                      }}
+                    />
+                    {ncFile && !isSubmitting && (
+                      <button
+                        type="button"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          setNcFile(null);
+                          if (ncInputRef.current) ncInputRef.current.value = "";
+                        }}
+                        style={{
+                          position: "absolute",
+                          top: "6px",
+                          right: "6px",
+                          background: "rgba(244, 63, 94, 0.15)",
+                          border: "1px solid rgba(244, 63, 94, 0.3)",
+                          borderRadius: "50%",
+                          width: "22px",
+                          height: "22px",
+                          display: "flex",
+                          alignItems: "center",
+                          justifyContent: "center",
+                          color: "#fb7185",
+                          cursor: "pointer",
+                        }}
+                        title="Remove NetCDF file"
+                      >
+                        <X size={12} />
+                      </button>
+                    )}
+                    <Database
+                      size={24}
+                      color={ncFile ? "#a855f7" : "var(--text-muted)"}
+                      style={{ margin: "0 auto 6px" }}
+                    />
+                    {ncFile ? (
+                      <div>
+                        <div style={{ fontSize: "0.82rem", fontWeight: 600, color: "var(--text-primary)" }}>
+                          {ncFile.name}
+                        </div>
+                        <div style={{ fontSize: "0.72rem", color: "var(--text-muted)", marginTop: "2px" }}>
+                          {(ncFile.size / 1024 / 1024).toFixed(2)} MB
+                        </div>
+                      </div>
+                    ) : (
+                      <div>
+                        <div style={{ fontSize: "0.82rem", fontWeight: 500, color: "var(--text-secondary)" }}>
+                          Click or drag NetCDF
+                        </div>
+                        <div style={{ fontSize: "0.68rem", color: "var(--text-muted)", marginTop: "2px" }}>
+                          Spatial weather grid tensor
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              </div>
+            )}
 
 
             {/* Submitting Progress Indicator */}

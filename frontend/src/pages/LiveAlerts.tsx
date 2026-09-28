@@ -73,7 +73,7 @@ const LiveAlerts: React.FC = () => {
       >
         <div>
           <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
-            <h1 style={{ fontSize: "1.75rem", fontWeight: 700, letterSpacing: "-0.02em" }}>
+            <h1 style={{ fontSize: "1.75rem", fontWeight: 700, letterSpacing: "-0.02em", margin: 0 }}>
               Live Telemetry Alerts
             </h1>
             <div
@@ -84,9 +84,6 @@ const LiveAlerts: React.FC = () => {
               {isConnected ? "SSE STREAM ACTIVE (5s)" : "STREAM DISCONNECTED"}
             </div>
           </div>
-          <p style={{ color: "var(--text-secondary)", fontSize: "0.9rem", marginTop: "4px" }}>
-            Real-time anomaly ingestion engine with automated root-cause classification
-          </p>
         </div>
 
         {/* Search and Filters */}

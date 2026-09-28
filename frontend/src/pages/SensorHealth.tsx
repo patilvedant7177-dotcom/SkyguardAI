@@ -80,16 +80,13 @@ const SensorHealth: React.FC = () => {
       >
         <div>
           <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
-            <h1 style={{ fontSize: "1.75rem", fontWeight: 700, letterSpacing: "-0.02em" }}>
+            <h1 style={{ fontSize: "1.75rem", fontWeight: 700, letterSpacing: "-0.02em", margin: 0 }}>
               Sensor Health & Reliability
             </h1>
             <span className={`badge badge-${currentStation?.status || "normal"}`}>
               Station #{stationId} {currentStation ? `• ${currentStation.status.toUpperCase()}` : ""}
             </span>
           </div>
-          <p style={{ color: "var(--text-secondary)", fontSize: "0.9rem", marginTop: "4px" }}>
-            Predictive calibration metrics, hardware degradation indices, and maintenance scheduling
-          </p>
         </div>
 
         {/* Station switcher */}

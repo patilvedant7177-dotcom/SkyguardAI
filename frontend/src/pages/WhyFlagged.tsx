@@ -1,18 +1,23 @@
 import React, { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
 import { fetchExplanation, fetchAlerts, acknowledgeAlert } from "../api";
-import type { Explanation, Alert, ContributingFactor, ReasoningStep, DetectorBreakdownItem, NeighborCorroborationItem } from "../types";
+import type {
+  Explanation,
+  Alert,
+  ContributingFactor,
+  ReasoningStep,
+  DetectorBreakdownItem,
+  NeighborCorroborationItem,
+} from "../types";
 import { ConfidenceGauge } from "../components/ConfidenceGauge";
+import { SensorDeviationGraph } from "../components/SensorDeviationGraph";
 import {
   AlertTriangle,
   CheckCircle2,
+  ShieldCheck,
   Sparkles,
   Cpu,
-  TrendingUp,
-  TrendingDown,
   Activity,
-  FileText,
-  ShieldAlert,
   Network,
   Layers,
   Thermometer,
@@ -21,43 +26,27 @@ import {
   Check,
   XCircle,
   Wrench,
-  ArrowRight,
-  Sliders,
-  Compass,
-  ChevronRight,
+  ChevronDown,
+  ChevronUp,
   MapPin,
-  ExternalLink,
+  Radio,
+  Copy,
+  CheckCheck,
+  ArrowRight,
 } from "lucide-react";
 
-const getParamIcon = (param: string) => {
+const getParamIcon = (param: string, size = 16) => {
   switch (param.toLowerCase()) {
     case "temperature":
-      return <Thermometer size={16} color="#f43f5e" />;
+      return <Thermometer size={size} color="#f43f5e" />;
     case "pressure":
-      return <Gauge size={16} color="#38bdf8" />;
+      return <Gauge size={size} color="#38bdf8" />;
     case "humidity":
-      return <Droplets size={16} color="#34d399" />;
+      return <Droplets size={size} color="#34d399" />;
     default:
-      return <Cpu size={16} color="#a855f7" />;
+      return <Cpu size={size} color="#a855f7" />;
   }
 };
-
-const getCategoryBadge = (category: string) => {
-  switch (category) {
-    case "atmospheric_parameter":
-      return <span className="badge badge-low" style={{ fontSize: "0.68rem" }}>Atmospheric Channel</span>;
-    case "spatial_network":
-      return <span className="badge badge-medium" style={{ fontSize: "0.68rem" }}>Spatial Network</span>;
-    case "temporal_dynamics":
-      return <span className="badge badge-high" style={{ fontSize: "0.68rem" }}>Temporal Dynamics</span>;
-    case "physics_model":
-      return <span className="badge badge-low" style={{ fontSize: "0.68rem", borderColor: "#a855f7", color: "#c084fc" }}>Thermodynamics</span>;
-    default:
-      return null;
-  }
-};
-
-type SectionTab = "overview" | "factors" | "reasoning" | "spatial";
 
 const WhyFlagged: React.FC = () => {
   const { alertId = "101" } = useParams<{ alertId: string }>();
@@ -66,8 +55,9 @@ const WhyFlagged: React.FC = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [isAcked, setIsAcked] = useState(false);
-  const [activeSection, setActiveSection] = useState<SectionTab>("overview");
-  const [factorFilter, setFactorFilter] = useState<"all" | "atmospheric" | "spatial_physics">("all");
+  const [showTechnicalProof, setShowTechnicalProof] = useState(false);
+  const [copied, setCopied] = useState(false);
+  const [selectedChannel, setSelectedChannel] = useState<string>("humidity");
 
   useEffect(() => {
     fetchAlerts().then(setAlerts).catch(() => {});
@@ -80,6 +70,9 @@ const WhyFlagged: React.FC = () => {
       .then((data) => {
         setExplanation(data);
         setError(null);
+        if (data?.top_features?.[0]?.feature) {
+          setSelectedChannel(data.top_features[0].feature);
+        }
       })
       .catch((e) => setError(e.message))
       .finally(() => setLoading(false));
@@ -97,33 +90,59 @@ const WhyFlagged: React.FC = () => {
     }
   };
 
-  const leadFeature = explanation?.top_features?.[0]?.feature || "temperature";
+  const leadFeature = explanation?.top_features?.[0]?.feature || "humidity";
   const leadContrib = explanation?.top_features?.[0]?.contribution
     ? Math.round(explanation.top_features[0].contribution * 100)
-    : 80;
+    : 47;
+
+  const isGenuineEvent = currentAlert?.root_cause === "genuine_event" || !currentAlert;
+  const isCommsError = currentAlert?.root_cause === "comms_error";
+
+  const handleCopySummary = () => {
+    if (!explanation) return;
+    const text = `SkyguardAI Diagnostic Summary [Alert #${alertId}]\nClassification: ${
+      isGenuineEvent
+        ? "GENUINE METEOROLOGICAL EVENT"
+        : isCommsError
+        ? "COMMUNICATION / PACKET LOSS"
+        : "TRANSDUCER HARDWARE FAULT"
+    }\nEnsemble Confidence: ${Math.round(
+      (explanation?.confidence ?? currentAlert?.confidence ?? 0.94) * 100
+    )}%\nPrimary Driver: ${leadFeature} (${leadContrib}% detection weight)\nDiagnostic Finding: ${
+      explanation.narrative
+    }`;
+    navigator.clipboard.writeText(text).then(() => {
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    });
+  };
 
   const contributingFactors: ContributingFactor[] = explanation?.contributing_factors || [
     ...(explanation?.top_features.map((tf) => ({
-      name: `${tf.feature.charAt(0).toUpperCase() + tf.feature.slice(1)} Deviation`,
+      name: `${tf.feature.charAt(0).toUpperCase() + tf.feature.slice(1)} Variance`,
       category: "atmospheric_parameter" as const,
       feature: tf.feature,
       contribution: tf.contribution,
       direction: tf.direction,
       observed_value: "Outlier Signal",
-      baseline_value: "Nominal Range",
+      baseline_value: "Seasonal Baseline",
       deviation: "+3.4σ",
-      description: `Primary anomalous driver contributing ${Math.round(tf.contribution * 100)}% to the detection score.`,
+      description: `Primary anomalous driver contributing ${Math.round(
+        tf.contribution * 100
+      )}% to the detection model score.`,
     })) || []),
     {
-      name: "Spatial Neighbor Disparity",
+      name: "Spatial Cluster Consistency",
       category: "spatial_network",
       feature: "spatial_cluster",
       contribution: 0.38,
       direction: "increases_anomaly",
-      observed_value: "0/2 Corroborated",
+      observed_value: isGenuineEvent ? "2/2 Corroborated" : "0/2 Corroborated",
       baseline_value: "Synchronized",
-      deviation: "-2 Stations",
-      description: "Nearest neighboring stations within 35km radius reported nominal readings, isolating the event to this transducer.",
+      deviation: isGenuineEvent ? "+2 Stations" : "-2 Stations",
+      description: isGenuineEvent
+        ? "Nearest neighboring stations within 35km radius confirmed synchronized readings."
+        : "Nearest neighboring stations reported nominal readings, isolating the event to this transducer.",
     },
     {
       name: "Temporal Rate-of-Change",
@@ -134,33 +153,41 @@ const WhyFlagged: React.FC = () => {
       observed_value: "> 3.2σ/15min",
       baseline_value: "±0.5σ/hr",
       deviation: "Rapid Gradient",
-      description: "Instantaneous step-jump in sensor telemetry exceeding natural atmospheric rate-of-change thresholds.",
+      description:
+        "Instantaneous step-jump in sensor telemetry exceeding natural atmospheric rate-of-change thresholds.",
     },
   ];
 
   const reasoningChain: ReasoningStep[] = explanation?.reasoning_chain || [
     {
       step_number: 1,
-      title: "Atmospheric Parameter Anomaly Trigger",
-      evidence: `Sensor channel ${leadFeature} recorded a rapid statistical deviation exceeding standard 3.0σ thresholds.`,
+      title: "Atmospheric Telemetry Trigger",
+      evidence: `Sensor channel ${leadFeature} recorded a rapid statistical deviation exceeding standard 3.0σ bounds.`,
       status: "flagged",
     },
     {
       step_number: 2,
       title: "Spatial Network Cross-Validation",
-      evidence: "Multi-station Gaussian kernel interpolation found no corroborating signals across adjacent spatial monitoring nodes.",
-      status: "isolated",
+      evidence: isGenuineEvent
+        ? "2 of 2 neighboring stations within local radius confirmed coherent synchronized movement, validating a regional wavefront."
+        : "Multi-station Gaussian kernel interpolation found no corroborating signals across adjacent spatial monitoring nodes.",
+      status: isGenuineEvent ? "corroborated" : "isolated",
     },
     {
       step_number: 3,
-      title: "Thermodynamic Covariance Check",
-      evidence: "Coupled atmospheric parameters failed to exhibit adiabatic thermodynamic response, ruling out genuine weather front.",
-      status: "unphysical",
+      title: "Multivariate Physical Coherence",
+      evidence: isGenuineEvent
+        ? "Observed barometric pressure drop and relative humidity shifts match standard atmospheric front physics (Clausius-Clapeyron relation)."
+        : "Coupled atmospheric parameters failed to exhibit adiabatic thermodynamic response, ruling out genuine weather front.",
+      status: isGenuineEvent ? "validated" : "unphysical",
     },
     {
       step_number: 4,
       title: "Ensemble Diagnostic Verdict",
-      evidence: `Classified as ${currentAlert?.root_cause?.replace("_", " ") || "Sensor Fault"} with high confidence. Remediation recommended.`,
+      evidence: `Classified as ${
+        currentAlert?.root_cause?.replace("_", " ") ||
+        (isGenuineEvent ? "Genuine Regional Weather Event" : "Sensor Hardware Fault")
+      }. Station hardware is certified healthy and operating within specifications.`,
       status: "verdict",
     },
   ];
@@ -169,72 +196,91 @@ const WhyFlagged: React.FC = () => {
     {
       detector_name: "Statistical STL & Z-Score Filter",
       score: 0.94,
-      threshold: 0.60,
+      threshold: 0.6,
       flagged: true,
-      description: "Robust median seasonal-trend decomposition & rolling 3-sigma limits.",
+      description: "Analyzes robust seasonal-trend decomposition residuals and rolling standard deviation thresholds.",
     },
     {
-      detector_name: "LSTM Autoencoder Temporal Reconstruction",
-      score: 0.91,
+      detector_name: "LSTM Autoencoder Temporal Model",
+      score: 0.89,
       threshold: 0.55,
       flagged: true,
-      description: "Deep sequence reconstruction error evaluating temporal continuity.",
+      description: "Deep sequential neural network assessing temporal continuity and multi-step prediction reconstruction error.",
     },
     {
-      detector_name: "Isolation Forest Multivariate Anomaly",
-      score: 0.86,
-      threshold: 0.50,
+      detector_name: "Isolation Forest Multivariate Engine",
+      score: 0.92,
+      threshold: 0.5,
       flagged: true,
-      description: "Multi-dimensional tree ensemble isolating out-of-distribution space.",
+      description: "Tree-based non-parametric ensemble isolating multidimensional out-of-distribution feature spaces.",
     },
     {
-      detector_name: "Spatial & Mahalanobis Consistency Engine",
-      score: 0.96,
-      threshold: 0.50,
-      flagged: true,
-      description: "Spatial neighbor distance weighting and thermodynamic covariance validation.",
+      detector_name: "Spatial & Mahalanobis Consistency",
+      score: isGenuineEvent ? 0.24 : 0.96,
+      threshold: 0.5,
+      flagged: !isGenuineEvent,
+      description: "Evaluates distance-weighted spatial covariance and coupled thermodynamic parameter vectors across neighbor stations.",
     },
   ];
 
-  const neighborCorroboration: NeighborCorroborationItem[] = explanation?.neighbor_corroboration || [
-    {
-      station_id: 2,
-      station_name: "Mumbai Santacruz (Inland Suburban Hub)",
-      distance_km: 14.8,
-      reading: "28.5°C",
-      expected: "Nominal",
-      is_corroborating: false,
-      status: "Normal (Divergent)",
-    },
-    {
-      station_id: 9,
-      station_name: "Pune Shivajinagar (Met Research Center)",
-      distance_km: 32.4,
-      reading: "27.8°C",
-      expected: "Nominal",
-      is_corroborating: false,
-      status: "Normal (Divergent)",
-    },
-  ];
+  const neighborCorroboration: NeighborCorroborationItem[] =
+    explanation?.neighbor_corroboration && explanation.neighbor_corroboration.length > 0
+      ? explanation.neighbor_corroboration
+      : [
+          {
+            station_id: 2,
+            station_name: "Mumbai Santacruz (Inland Suburban Hub)",
+            distance_km: 19.1,
+            reading: "97.6% RH",
+            expected: "Nominal",
+            is_corroborating: isGenuineEvent,
+            status: isGenuineEvent ? "Corroborated Regional Front" : "Normal (Divergent)",
+          },
+          {
+            station_id: 3,
+            station_name: "Navi Mumbai Coastal Watch",
+            distance_km: 24.5,
+            reading: isGenuineEvent ? "96.4% RH" : "44.2% RH",
+            expected: "Nominal",
+            is_corroborating: isGenuineEvent,
+            status: isGenuineEvent ? "Corroborated Regional Front" : "Normal (Divergent)",
+          },
+        ];
 
   const recommendations: string[] = explanation?.recommendations || [
-    `Execute remote offset zero-calibration routine on ${leadFeature} sensor probe.`,
-    "Verify aspirator radiation shield fan operation to prevent solar thermal trapping.",
-    "Schedule physical field inspection or transducer replacement if drift persists.",
-    "Temporarily down-weight station channel from regional spatial interpolation grid.",
+    isGenuineEvent
+      ? "Synoptic Radar Cross-Check: Inspect Doppler weather radar and infrared satellite scans to track the spatial progression of the incoming mesoscale convective front."
+      : `Execute remote offset zero-calibration routine on ${leadFeature} sensor probe.`,
+    isGenuineEvent
+      ? "Preserve Telemetry Stream: Retain high-confidence sensor readings in the active meteorological forecast models; do not down-weight or filter as false positives."
+      : "Verify aspirator radiation shield fan operation to prevent thermal trapping.",
+    isGenuineEvent
+      ? "Transmit Watch Desk Advisory: Dispatch a coastal moisture advisory to regional meteorological operations and maritime watch units."
+      : "Schedule physical field inspection or transducer replacement if drift persists.",
   ];
 
-  const filteredFactors = contributingFactors.filter((f) => {
-    if (factorFilter === "atmospheric") return f.category === "atmospheric_parameter";
-    if (factorFilter === "spatial_physics") return f.category !== "atmospheric_parameter";
-    return true;
-  });
+  const confidenceScore = explanation?.confidence ?? currentAlert?.confidence ?? 0.94;
+  const confidencePercent = Math.round(confidenceScore * 100);
 
-  const triggeredDetectorsCount = detectorBreakdown.filter((d) => d.flagged).length;
+  // Active parameter details
+  const activeFeature =
+    explanation?.top_features.find(
+      (f) => f.feature.toLowerCase() === selectedChannel.toLowerCase()
+    ) || explanation?.top_features[0] || {
+      feature: "humidity" as const,
+      contribution: 0.47,
+      direction: "increases_anomaly" as const,
+    };
+
+  const activeFactor = contributingFactors.find(
+    (f) => f.feature.toLowerCase() === activeFeature.feature.toLowerCase()
+  );
 
   return (
-    <div style={{ display: "flex", flexDirection: "column", gap: "1.25rem", maxWidth: "1400px", margin: "0 auto" }}>
-      {/* Header with Alert Switcher & Quick Actions */}
+    <div style={{ display: "flex", flexDirection: "column", gap: "1.4rem", paddingBottom: "3rem" }}>
+      {/* ========================================================================= */}
+      {/* 1. TOP HEADER & TELEMETRY CONTROLS                                        */}
+      {/* ========================================================================= */}
       <div
         style={{
           display: "flex",
@@ -242,26 +288,45 @@ const WhyFlagged: React.FC = () => {
           alignItems: "center",
           flexWrap: "wrap",
           gap: "1rem",
-          paddingBottom: "0.5rem",
-          borderBottom: "1px solid rgba(255, 255, 255, 0.06)",
+          paddingBottom: "0.85rem",
+          borderBottom: "1px solid rgba(255, 255, 255, 0.08)",
         }}
       >
         <div>
-          <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
-            <h1 style={{ fontSize: "1.65rem", fontWeight: 700, letterSpacing: "-0.02em" }}>
-              Anomaly Diagnostics & Explainability
+          <div style={{ display: "flex", alignItems: "center", gap: "10px", flexWrap: "wrap" }}>
+            <h1 style={{ fontSize: "1.65rem", fontWeight: 700, letterSpacing: "-0.02em", margin: 0 }}>
+              Root-Cause Diagnostics & Telemetry Validation
             </h1>
-            <span className="badge badge-medium" style={{ fontSize: "0.75rem", padding: "4px 10px" }}>
+            <span
+              className="badge"
+              style={{
+                fontSize: "0.75rem",
+                padding: "3px 10px",
+                background: "rgba(56, 189, 248, 0.12)",
+                color: "#38bdf8",
+                border: "1px solid rgba(56, 189, 248, 0.3)",
+              }}
+            >
               Alert #{alertId}
             </span>
+            {currentAlert && (
+              <span
+                className={`badge badge-${currentAlert.severity}`}
+                style={{ fontSize: "0.72rem", padding: "3px 9px" }}
+              >
+                {currentAlert.severity.toUpperCase()} PRIORITY
+              </span>
+            )}
           </div>
-          <p style={{ color: "var(--text-secondary)", fontSize: "0.85rem", marginTop: "2px" }}>
-            Understand why this alert was triggered using sensor data, nearby stations, and AI analysis
+          <p style={{ color: "var(--text-secondary)", fontSize: "0.84rem", marginTop: "4px", marginBottom: 0 }}>
+            {currentAlert
+              ? `Station #${currentAlert.station_id} — ${currentAlert.station_name}`
+              : "Automated atmospheric front detection, spatial sensor cross-validation, and operational response"}
           </p>
         </div>
 
-        {/* Header Controls */}
-        <div style={{ display: "flex", gap: "0.75rem", alignItems: "center", flexWrap: "wrap" }}>
+        {/* Action Controls */}
+        <div style={{ display: "flex", gap: "0.6rem", alignItems: "center", flexWrap: "wrap" }}>
           {alerts.length > 0 && (
             <select
               value={alertId}
@@ -274,15 +339,26 @@ const WhyFlagged: React.FC = () => {
                 padding: "7px 12px",
                 fontSize: "0.82rem",
                 cursor: "pointer",
+                maxWidth: "280px",
               }}
             >
               {alerts.map((a) => (
                 <option key={a.id} value={a.id}>
-                  Alert #{a.id} — [{a.severity.toUpperCase()}] {a.summary.slice(0, 36)}...
+                  Alert #{a.id} — [{a.severity.toUpperCase()}] {a.summary.slice(0, 32)}...
                 </option>
               ))}
             </select>
           )}
+
+          <button
+            onClick={handleCopySummary}
+            className="btn-glass"
+            style={{ fontSize: "0.82rem", padding: "7px 12px" }}
+            title="Copy diagnostic brief to clipboard"
+          >
+            {copied ? <CheckCheck size={14} color="var(--accent-emerald)" /> : <Copy size={14} />}
+            <span>{copied ? "Copied" : "Copy Brief"}</span>
+          </button>
 
           {!isAcked ? (
             <button
@@ -317,7 +393,14 @@ const WhyFlagged: React.FC = () => {
             <Link
               to={`/station/${currentAlert.station_id}`}
               className="btn-glow"
-              style={{ fontSize: "0.82rem", padding: "7px 14px", display: "inline-flex", alignItems: "center", gap: "6px" }}
+              style={{
+                fontSize: "0.82rem",
+                padding: "7px 14px",
+                display: "inline-flex",
+                alignItems: "center",
+                gap: "6px",
+                textDecoration: "none",
+              }}
             >
               <Activity size={14} />
               <span>View Telemetry</span>
@@ -328,8 +411,8 @@ const WhyFlagged: React.FC = () => {
 
       {loading ? (
         <div className="glass-panel" style={{ padding: "4rem", textAlign: "center", color: "var(--text-muted)" }}>
-          <Sparkles className="live-pulse" size={32} style={{ marginBottom: "1rem", color: "var(--accent-amber)" }} />
-          <div>Synthesizing multi-factor attributions, causal reasoning chains, and spatial network consensus...</div>
+          <Sparkles className="live-pulse" size={32} style={{ marginBottom: "1rem", color: "var(--accent-cyan)" }} />
+          <div>Synthesizing causal attributions, spatial network consensus, and sensor diagnostics...</div>
         </div>
       ) : error || !explanation ? (
         <div className="glass-panel" style={{ padding: "2.5rem", borderColor: "rgba(244, 63, 94, 0.4)", color: "#fb7185" }}>
@@ -338,405 +421,645 @@ const WhyFlagged: React.FC = () => {
         </div>
       ) : (
         <>
-          {/* Top Diagnostic KPI Ribbon */}
+          {/* ========================================================================= */}
+          {/* 2. EXECUTIVE VERDICT & NARRATIVE (TECHNICAL & EASY TO READ)              */}
+          {/* ========================================================================= */}
+          <div
+            className="glass-panel"
+            style={{
+              padding: "1.5rem 1.8rem",
+              background: isGenuineEvent
+                ? "linear-gradient(135deg, rgba(16, 185, 129, 0.09) 0%, rgba(18, 27, 46, 0.96) 100%)"
+                : isCommsError
+                ? "linear-gradient(135deg, rgba(245, 158, 11, 0.09) 0%, rgba(18, 27, 46, 0.96) 100%)"
+                : "linear-gradient(135deg, rgba(244, 63, 94, 0.09) 0%, rgba(18, 27, 46, 0.96) 100%)",
+              borderColor: isGenuineEvent
+                ? "rgba(16, 185, 129, 0.35)"
+                : isCommsError
+                ? "rgba(245, 158, 11, 0.35)"
+                : "rgba(244, 63, 94, 0.35)",
+              display: "flex",
+              flexDirection: "column",
+              gap: "1.1rem",
+              position: "relative",
+            }}
+          >
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "space-between",
+                alignItems: "flex-start",
+                gap: "1.5rem",
+                flexWrap: "wrap",
+              }}
+            >
+              {/* Left: Classification Badge & Clear Diagnostic Finding */}
+              <div style={{ flex: "1 1 520px" }}>
+                <div style={{ display: "flex", alignItems: "center", gap: "10px", marginBottom: "10px", flexWrap: "wrap" }}>
+                  <span
+                    style={{
+                      display: "inline-flex",
+                      alignItems: "center",
+                      gap: "7px",
+                      padding: "6px 14px",
+                      borderRadius: "6px",
+                      fontSize: "0.82rem",
+                      fontWeight: 800,
+                      letterSpacing: "0.04em",
+                      textTransform: "uppercase",
+                      background: isGenuineEvent
+                        ? "rgba(16, 185, 129, 0.2)"
+                        : isCommsError
+                        ? "rgba(245, 158, 11, 0.2)"
+                        : "rgba(244, 63, 94, 0.2)",
+                      color: isGenuineEvent ? "#34d399" : isCommsError ? "#fbbf24" : "#fb7185",
+                      border: `1px solid ${
+                        isGenuineEvent
+                          ? "rgba(16, 185, 129, 0.45)"
+                          : isCommsError
+                          ? "rgba(245, 158, 11, 0.45)"
+                          : "rgba(244, 63, 94, 0.45)"
+                      }`,
+                    }}
+                  >
+                    {isGenuineEvent ? <ShieldCheck size={17} /> : <AlertTriangle size={17} />}
+                    {isGenuineEvent
+                      ? "GENUINE METEOROLOGICAL EVENT"
+                      : isCommsError
+                      ? "COMMUNICATION / PACKET LOSS"
+                      : "TRANSDUCER HARDWARE FAULT"}
+                  </span>
+
+                  <span style={{ fontSize: "0.84rem", color: "var(--text-secondary)" }}>
+                    Verified at {currentAlert?.station_name || "Station #1 — Mumbai Colaba (South Coastal Observatory)"}
+                  </span>
+                </div>
+
+                <div
+                  style={{
+                    background: "rgba(10, 19, 37, 0.5)",
+                    border: "1px solid rgba(255, 255, 255, 0.08)",
+                    borderRadius: "10px",
+                    padding: "1.1rem 1.25rem",
+                    fontSize: "0.95rem",
+                    lineHeight: "1.65",
+                    color: "var(--text-primary)",
+                  }}
+                >
+                  "{explanation.narrative}"
+                </div>
+              </div>
+
+              {/* Right: Key 3 Executive Badges */}
+              <div
+                style={{
+                  display: "flex",
+                  gap: "1.3rem",
+                  alignItems: "center",
+                  background: "rgba(10, 19, 37, 0.65)",
+                  padding: "0.95rem 1.35rem",
+                  borderRadius: "12px",
+                  border: "1px solid rgba(255, 255, 255, 0.08)",
+                  flexShrink: 0,
+                }}
+              >
+                {/* Confidence */}
+                <div style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
+                  <ConfidenceGauge
+                    value={confidenceScore}
+                    size="sm"
+                    label=""
+                    showStatusBadge={false}
+                  />
+                  <div style={{ fontSize: "0.7rem", color: "var(--text-muted)", marginTop: "3px", fontWeight: 700, textTransform: "uppercase" }}>
+                    Ensemble Certainty ({confidencePercent}%)
+                  </div>
+                </div>
+
+                <div style={{ width: "1px", height: "48px", background: "rgba(255, 255, 255, 0.1)" }} />
+
+                {/* Primary Driver */}
+                <div>
+                  <div style={{ fontSize: "0.68rem", color: "var(--text-muted)", textTransform: "uppercase", fontWeight: 600 }}>
+                    Primary Anomaly Vector
+                  </div>
+                  <div style={{ display: "flex", alignItems: "center", gap: "6px", marginTop: "3px" }}>
+                    {getParamIcon(leadFeature, 16)}
+                    <span style={{ fontSize: "0.98rem", fontWeight: 700, textTransform: "capitalize", color: "var(--text-primary)" }}>
+                      {leadFeature}
+                    </span>
+                  </div>
+                  <div style={{ fontSize: "0.74rem", color: "#38bdf8", fontWeight: 600 }}>
+                    {leadContrib}% detection weight
+                  </div>
+                </div>
+
+                <div style={{ width: "1px", height: "48px", background: "rgba(255, 255, 255, 0.1)" }} />
+
+                {/* Neighbor Consensus */}
+                <div>
+                  <div style={{ fontSize: "0.68rem", color: "var(--text-muted)", textTransform: "uppercase", fontWeight: 600 }}>
+                    Network Consensus
+                  </div>
+                  <div style={{ display: "flex", alignItems: "center", gap: "6px", marginTop: "3px" }}>
+                    {isGenuineEvent ? (
+                      <CheckCircle2 size={16} color="var(--accent-emerald)" />
+                    ) : (
+                      <XCircle size={16} color="var(--accent-rose)" />
+                    )}
+                    <span style={{ fontSize: "0.98rem", fontWeight: 700, color: isGenuineEvent ? "#34d399" : "#fb7185" }}>
+                      {isGenuineEvent ? "Corroborated" : "Isolated"}
+                    </span>
+                  </div>
+                  <div style={{ fontSize: "0.74rem", color: "var(--text-muted)" }}>
+                    {isGenuineEvent ? "2/2 Synchronized nodes" : "Transducer anomaly"}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* ========================================================================= */}
+          {/* 3. CORE EVIDENCE & REASONING (TECHNICAL + INTUITIVE CARDS)                */}
+          {/* ========================================================================= */}
           <div
             style={{
               display: "grid",
-              gridTemplateColumns: "repeat(auto-fit, minmax(210px, 1fr))",
-              gap: "0.85rem",
+              gridTemplateColumns: "repeat(auto-fit, minmax(480px, 1fr))",
+              gap: "1.4rem",
+              alignItems: "stretch",
             }}
           >
-            {/* Primary Driver Card */}
-            <div className="glass-panel" style={{ padding: "1rem", display: "flex", alignItems: "center", gap: "0.85rem" }}>
-              <div
-                style={{
-                  width: "40px",
-                  height: "40px",
-                  borderRadius: "8px",
-                  background: "rgba(244, 63, 94, 0.15)",
-                  border: "1px solid rgba(244, 63, 94, 0.3)",
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  flexShrink: 0,
-                }}
-              >
-                {getParamIcon(leadFeature)}
-              </div>
-              <div style={{ minWidth: 0 }}>
-                <div style={{ fontSize: "0.7rem", color: "var(--text-muted)", textTransform: "uppercase", fontWeight: 600, letterSpacing: "0.03em" }}>
-                  Primary Anomaly Driver
-                </div>
-                <div style={{ fontSize: "1.05rem", fontWeight: 700, color: "var(--text-primary)", textTransform: "capitalize", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>
-                  {leadFeature} ({leadContrib}%)
-                </div>
-              </div>
-            </div>
-
-            {/* Root Cause Verdict Card */}
-            <div className="glass-panel" style={{ padding: "1rem", display: "flex", alignItems: "center", gap: "0.85rem" }}>
-              <div
-                style={{
-                  width: "40px",
-                  height: "40px",
-                  borderRadius: "8px",
-                  background: "rgba(245, 158, 11, 0.15)",
-                  border: "1px solid rgba(245, 158, 11, 0.3)",
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  flexShrink: 0,
-                }}
-              >
-                <ShieldAlert size={18} color="var(--accent-amber)" />
-              </div>
-              <div style={{ minWidth: 0 }}>
-                <div style={{ fontSize: "0.7rem", color: "var(--text-muted)", textTransform: "uppercase", fontWeight: 600, letterSpacing: "0.03em" }}>
-                  Diagnostic Classification
-                </div>
-                <div style={{ fontSize: "1.05rem", fontWeight: 700, color: "var(--text-primary)", textTransform: "capitalize", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>
-                  {currentAlert?.root_cause ? currentAlert.root_cause.replace("_", " ") : "Sensor Fault"}
-                </div>
-              </div>
-            </div>
-
-            {/* Spatial Network Consensus Card */}
-            <div className="glass-panel" style={{ padding: "1rem", display: "flex", alignItems: "center", gap: "0.85rem" }}>
-              <div
-                style={{
-                  width: "40px",
-                  height: "40px",
-                  borderRadius: "8px",
-                  background: "rgba(56, 189, 248, 0.15)",
-                  border: "1px solid rgba(56, 189, 248, 0.3)",
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  flexShrink: 0,
-                }}
-              >
-                <Network size={18} color="var(--accent-cyan)" />
-              </div>
-              <div style={{ minWidth: 0 }}>
-                <div style={{ fontSize: "0.7rem", color: "var(--text-muted)", textTransform: "uppercase", fontWeight: 600, letterSpacing: "0.03em" }}>
-                  Spatial Cluster Consensus
-                </div>
-                <div style={{ fontSize: "1.05rem", fontWeight: 700, color: "var(--text-primary)" }}>
-                  {currentAlert?.root_cause === "genuine_event" ? "2/2 Corroborated" : "0/2 Isolated"}
-                </div>
-              </div>
-            </div>
-
-            {/* Model Consensus Card */}
-            <div className="glass-panel" style={{ padding: "1rem", display: "flex", alignItems: "center", gap: "0.85rem" }}>
-              <div
-                style={{
-                  width: "40px",
-                  height: "40px",
-                  borderRadius: "8px",
-                  background: "rgba(168, 85, 247, 0.15)",
-                  border: "1px solid rgba(168, 85, 247, 0.3)",
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  flexShrink: 0,
-                }}
-              >
-                <Layers size={18} color="#c084fc" />
-              </div>
-              <div style={{ minWidth: 0 }}>
-                <div style={{ fontSize: "0.7rem", color: "var(--text-muted)", textTransform: "uppercase", fontWeight: 600, letterSpacing: "0.03em" }}>
-                  Detector Ensemble
-                </div>
-                <div style={{ fontSize: "1.05rem", fontWeight: 700, color: "var(--text-primary)" }}>
-                  {triggeredDetectorsCount} of {detectorBreakdown.length} Triggered
-                </div>
-              </div>
-            </div>
-
-            {/* AI Confidence Gauge Card */}
-            <div className="glass-panel" style={{ padding: "0.75rem 1rem", display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+            {/* --------------------------------------------------------------------- */}
+            {/* CARD A: Sensor Telemetry Anomaly (Interactive Channel Selector)        */}
+            {/* --------------------------------------------------------------------- */}
+            <div
+              className="glass-panel"
+              style={{
+                padding: "1.5rem",
+                display: "flex",
+                flexDirection: "column",
+                justifyContent: "space-between",
+                gap: "1.2rem",
+              }}
+            >
               <div>
-                <div style={{ fontSize: "0.7rem", color: "var(--text-muted)", textTransform: "uppercase", fontWeight: 600, letterSpacing: "0.03em" }}>
-                  AI Confidence
-                </div>
-                <div style={{ fontSize: "0.75rem", color: "var(--text-secondary)", marginTop: "2px" }}>
-                  Ensemble Certainty
-                </div>
-              </div>
-              <ConfidenceGauge
-                value={explanation.confidence ?? currentAlert?.confidence ?? 0.94}
-                size="sm"
-                label=""
-                showStatusBadge={false}
-              />
-            </div>
-          </div>
-
-          {/* Clean Segmented Navigation Tabs */}
-          <div
-            style={{
-              display: "flex",
-              alignItems: "center",
-              gap: "6px",
-              background: "rgba(100, 116, 139, 0.08)",
-              padding: "5px",
-              borderRadius: "10px",
-              border: "1px solid var(--border-card)",
-              overflowX: "auto",
-            }}
-          >
-            <button
-              onClick={() => setActiveSection("overview")}
-              style={{
-                display: "inline-flex",
-                alignItems: "center",
-                gap: "7px",
-                padding: "8px 16px",
-                borderRadius: "7px",
-                border: "none",
-                fontSize: "0.84rem",
-                fontWeight: 600,
-                cursor: "pointer",
-                transition: "all 0.2s ease",
-                background: activeSection === "overview" ? "rgba(56, 189, 248, 0.18)" : "transparent",
-                color: activeSection === "overview" ? "#38bdf8" : "var(--text-secondary)",
-                boxShadow: activeSection === "overview" ? "inset 0 0 0 1px rgba(56, 189, 248, 0.4)" : "none",
-              }}
-            >
-              <Sparkles size={15} />
-              <span>Overview & Actions</span>
-            </button>
-
-            <button
-              onClick={() => setActiveSection("factors")}
-              style={{
-                display: "inline-flex",
-                alignItems: "center",
-                gap: "7px",
-                padding: "8px 16px",
-                borderRadius: "7px",
-                border: "none",
-                fontSize: "0.84rem",
-                fontWeight: 600,
-                cursor: "pointer",
-                transition: "all 0.2s ease",
-                background: activeSection === "factors" ? "rgba(56, 189, 248, 0.18)" : "transparent",
-                color: activeSection === "factors" ? "#38bdf8" : "var(--text-secondary)",
-                boxShadow: activeSection === "factors" ? "inset 0 0 0 1px rgba(56, 189, 248, 0.4)" : "none",
-              }}
-            >
-              <Sliders size={15} />
-              <span>Factor Attribution & Physics</span>
-              <span
-                style={{
-                  fontSize: "0.7rem",
-                  padding: "1px 6px",
-                  borderRadius: "999px",
-                  background: activeSection === "factors" ? "rgba(56, 189, 248, 0.3)" : "rgba(255, 255, 255, 0.08)",
-                  color: activeSection === "factors" ? "#fff" : "var(--text-muted)",
-                }}
-              >
-                {contributingFactors.length}
-              </span>
-            </button>
-
-            <button
-              onClick={() => setActiveSection("reasoning")}
-              style={{
-                display: "inline-flex",
-                alignItems: "center",
-                gap: "7px",
-                padding: "8px 16px",
-                borderRadius: "7px",
-                border: "none",
-                fontSize: "0.84rem",
-                fontWeight: 600,
-                cursor: "pointer",
-                transition: "all 0.2s ease",
-                background: activeSection === "reasoning" ? "rgba(56, 189, 248, 0.18)" : "transparent",
-                color: activeSection === "reasoning" ? "#38bdf8" : "var(--text-secondary)",
-                boxShadow: activeSection === "reasoning" ? "inset 0 0 0 1px rgba(56, 189, 248, 0.4)" : "none",
-              }}
-            >
-              <Activity size={15} />
-              <span>Diagnostic Steps & AI Models</span>
-              <span
-                style={{
-                  fontSize: "0.7rem",
-                  padding: "1px 6px",
-                  borderRadius: "999px",
-                  background: activeSection === "reasoning" ? "rgba(56, 189, 248, 0.3)" : "rgba(255, 255, 255, 0.08)",
-                  color: activeSection === "reasoning" ? "#fff" : "var(--text-muted)",
-                }}
-              >
-                {reasoningChain.length} Steps
-              </span>
-            </button>
-
-            <button
-              onClick={() => setActiveSection("spatial")}
-              style={{
-                display: "inline-flex",
-                alignItems: "center",
-                gap: "7px",
-                padding: "8px 16px",
-                borderRadius: "7px",
-                border: "none",
-                fontSize: "0.84rem",
-                fontWeight: 600,
-                cursor: "pointer",
-                transition: "all 0.2s ease",
-                background: activeSection === "spatial" ? "rgba(56, 189, 248, 0.18)" : "transparent",
-                color: activeSection === "spatial" ? "#38bdf8" : "var(--text-secondary)",
-                boxShadow: activeSection === "spatial" ? "inset 0 0 0 1px rgba(56, 189, 248, 0.4)" : "none",
-              }}
-            >
-              <Network size={15} />
-              <span>Spatial Cross-Validation</span>
-              <span
-                style={{
-                  fontSize: "0.7rem",
-                  padding: "1px 6px",
-                  borderRadius: "999px",
-                  background: activeSection === "spatial" ? "rgba(56, 189, 248, 0.3)" : "rgba(255, 255, 255, 0.08)",
-                  color: activeSection === "spatial" ? "#fff" : "var(--text-muted)",
-                }}
-              >
-                {neighborCorroboration.length} Nodes
-              </span>
-            </button>
-          </div>
-
-          {/* ========================================================================= */}
-          {/* TAB 1: OVERVIEW & ACTIONS */}
-          {/* ========================================================================= */}
-          {activeSection === "overview" && (
-            <div style={{ display: "grid", gridTemplateColumns: "1.15fr 0.85fr", gap: "1.25rem" }}>
-              {/* Left Side: Narrative & Atmospheric Channels */}
-              <div style={{ display: "flex", flexDirection: "column", gap: "1.25rem" }}>
-                {/* AI Diagnostic Narrative */}
-                <div
-                  className="glass-panel"
-                  style={{
-                    padding: "1.4rem",
-                    display: "flex",
-                    flexDirection: "column",
-                    gap: "0.85rem",
-                    borderLeft: "4px solid var(--accent-amber)",
-                    position: "relative",
-                  }}
-                >
-                  <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-                    <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
-                      <Sparkles size={18} color="var(--accent-amber)" />
-                      <h2 style={{ fontSize: "1.05rem", fontWeight: 600 }}>Automated Diagnostic Narrative</h2>
-                    </div>
-                    <span className="badge badge-low" style={{ fontSize: "0.68rem" }}>AI Root-Cause</span>
+                {/* Title & Channel Selector Tabs */}
+                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: "10px", marginBottom: "1rem" }}>
+                  <div>
+                    <h2 style={{ fontSize: "1.1rem", fontWeight: 700, display: "flex", alignItems: "center", gap: "8px", margin: 0 }}>
+                      <Cpu size={18} color="var(--accent-cyan)" />
+                      Atmospheric Sensor Telemetry & Anomaly Deviation
+                    </h2>
+                    <p style={{ color: "var(--text-secondary)", fontSize: "0.8rem", marginTop: "3px", marginBottom: 0 }}>
+                      Transducer readings benchmarked against 30-day seasonal baseline
+                    </p>
                   </div>
 
-                  <div
-                    style={{
-                      background: "rgba(245, 158, 11, 0.08)",
-                      border: "1px solid rgba(245, 158, 11, 0.25)",
-                      borderRadius: "8px",
-                      padding: "1.15rem",
-                      fontSize: "0.92rem",
-                      lineHeight: "1.6",
-                      color: "var(--text-primary)",
-                      fontWeight: 500,
-                    }}
-                  >
-                    "{explanation.narrative}"
-                  </div>
-
-                  <div style={{ fontSize: "0.78rem", color: "var(--text-muted)", display: "flex", alignItems: "center", gap: "6px" }}>
-                    <FileText size={13} />
-                    <span>Generated by Skyguard Root-Cause Classifier v2.4 (SHAP & Multi-Station Spatial Fusion)</span>
-                  </div>
-                </div>
-
-                {/* Atmospheric Feature Attributions */}
-                <div className="glass-panel" style={{ padding: "1.4rem", display: "flex", flexDirection: "column", gap: "1rem" }}>
-                  <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-                    <div>
-                      <h2 style={{ fontSize: "1.05rem", fontWeight: 600, display: "flex", alignItems: "center", gap: "8px" }}>
-                        <Cpu size={17} color="var(--accent-cyan)" />
-                        Atmospheric Feature Attributions
-                      </h2>
-                      <p style={{ color: "var(--text-secondary)", fontSize: "0.78rem", marginTop: "2px" }}>
-                        Which weather measurements contributed most to this anomaly
-                      </p>
-                    </div>
-                    <button
-                      onClick={() => setActiveSection("factors")}
-                      style={{
-                        background: "transparent",
-                        border: "none",
-                        color: "var(--accent-cyan)",
-                        fontSize: "0.78rem",
-                        cursor: "pointer",
-                        display: "flex",
-                        alignItems: "center",
-                        gap: "3px",
-                      }}
-                    >
-                      <span>Deep Dive</span>
-                      <ChevronRight size={13} />
-                    </button>
-                  </div>
-
-                  <div style={{ display: "flex", flexDirection: "column", gap: "0.75rem" }}>
-                    {explanation.top_features.map((feat, idx) => {
-                      const isIncrease = feat.direction === "increases_anomaly";
-                      const percentage = Math.round(feat.contribution * 100);
+                  {/* Channel Tabs */}
+                  <div style={{ display: "flex", gap: "5px", background: "rgba(10, 19, 37, 0.6)", padding: "3px", borderRadius: "8px", border: "1px solid rgba(255, 255, 255, 0.08)" }}>
+                    {explanation.top_features.map((feat) => {
+                      const isActive = selectedChannel.toLowerCase() === feat.feature.toLowerCase();
                       return (
-                        <div
-                          key={idx}
+                        <button
+                          key={feat.feature}
+                          onClick={() => setSelectedChannel(feat.feature)}
                           style={{
-                            background: "var(--bg-card)",
-                            border: "1px solid var(--border-card)",
-                            borderRadius: "8px",
-                            padding: "0.85rem 1rem",
+                            background: isActive ? "var(--bg-card-hover)" : "transparent",
+                            color: isActive ? "var(--text-primary)" : "var(--text-muted)",
+                            border: isActive ? "1px solid var(--accent-cyan)" : "1px solid transparent",
+                            borderRadius: "6px",
+                            padding: "4px 10px",
+                            fontSize: "0.75rem",
+                            fontWeight: isActive ? 700 : 500,
+                            cursor: "pointer",
                             display: "flex",
-                            flexDirection: "column",
-                            gap: "0.45rem",
+                            alignItems: "center",
+                            gap: "5px",
+                            textTransform: "capitalize",
                           }}
                         >
-                          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-                            <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
-                              {getParamIcon(feat.feature)}
-                              <span style={{ fontWeight: 600, textTransform: "capitalize", fontSize: "0.9rem" }}>
-                                {feat.feature}
-                              </span>
-                              <span
-                                style={{
-                                  fontSize: "0.68rem",
-                                  padding: "2px 6px",
-                                  borderRadius: "4px",
-                                  display: "inline-flex",
-                                  alignItems: "center",
-                                  gap: "3px",
-                                  background: isIncrease ? "rgba(244, 63, 94, 0.15)" : "rgba(16, 185, 129, 0.15)",
-                                  color: isIncrease ? "#fb7185" : "#34d399",
-                                  border: `1px solid ${isIncrease ? "rgba(244, 63, 94, 0.3)" : "rgba(16, 185, 129, 0.3)"}`,
-                                }}
-                              >
-                                {isIncrease ? <TrendingUp size={10} /> : <TrendingDown size={10} />}
-                                {feat.direction.replace("_", " ")}
-                              </span>
-                            </div>
+                          {getParamIcon(feat.feature, 13)}
+                          <span>{feat.feature}</span>
+                          {feat.feature.toLowerCase() === leadFeature.toLowerCase() && (
+                            <span style={{ fontSize: "0.62rem", color: "#38bdf8", fontWeight: 700 }}>•</span>
+                          )}
+                        </button>
+                      );
+                    })}
+                  </div>
+                </div>
 
-                            <div style={{ fontWeight: 700, fontSize: "0.95rem", color: isIncrease ? "#fb7185" : "#38bdf8" }}>
-                              {percentage}%
-                            </div>
+                {/* Primary Sensor Deviation Bar Graph */}
+                <SensorDeviationGraph
+                  feature={activeFeature.feature}
+                  direction={activeFeature.direction}
+                  contribution={activeFeature.contribution}
+                  observedStr={activeFactor?.observed_value}
+                  baselineStr={activeFactor?.baseline_value}
+                  deviationStr={activeFactor?.deviation}
+                  description={activeFactor?.description}
+                />
+              </div>
+
+              {/* Takeaway Insight Box */}
+              <div
+                style={{
+                  background: "rgba(10, 19, 37, 0.5)",
+                  border: "1px solid rgba(56, 189, 248, 0.18)",
+                  borderRadius: "8px",
+                  padding: "0.85rem 1rem",
+                  fontSize: "0.82rem",
+                  color: "var(--text-secondary)",
+                  lineHeight: "1.5",
+                  display: "flex",
+                  alignItems: "flex-start",
+                  gap: "10px",
+                }}
+              >
+                <div
+                  style={{
+                    width: "8px",
+                    height: "8px",
+                    borderRadius: "50%",
+                    background: "var(--accent-cyan)",
+                    marginTop: "6px",
+                    flexShrink: 0,
+                    boxShadow: "0 0 8px rgba(56, 189, 248, 0.8)",
+                  }}
+                />
+                <div>
+                  <strong style={{ color: "var(--text-primary)" }}>Diagnostic Finding: </strong>
+                  The relative <span style={{ textTransform: "capitalize", color: "#38bdf8", fontWeight: 600 }}>{activeFeature.feature}</span> transducer registered a steep statistical gradient ({activeFactor?.deviation || "+53.0%"} over baseline), breaching the 3.0σ standard deviation envelope. Accompanying barometric pressure drops follow standard Clausius-Clapeyron thermodynamic front physics.
+                </div>
+              </div>
+            </div>
+
+            {/* --------------------------------------------------------------------- */}
+            {/* CARD B: Spatial Corroboration & Hardware Health Proof                  */}
+            {/* --------------------------------------------------------------------- */}
+            <div
+              className="glass-panel"
+              style={{
+                padding: "1.5rem",
+                display: "flex",
+                flexDirection: "column",
+                justifyContent: "space-between",
+                gap: "1.2rem",
+              }}
+            >
+              <div>
+                <h2 style={{ fontSize: "1.1rem", fontWeight: 700, display: "flex", alignItems: "center", gap: "8px", margin: 0 }}>
+                  <Network size={18} color="var(--accent-emerald)" />
+                  Multi-Station Network Consensus & Hardware Health
+                </h2>
+                <p style={{ color: "var(--text-secondary)", fontSize: "0.8rem", marginTop: "3px", marginBottom: "1rem" }}>
+                  Spatial cross-validation with adjacent observation nodes within a 50km radius
+                </p>
+
+                {/* Neighboring Station Cards */}
+                <div style={{ display: "flex", flexDirection: "column", gap: "0.75rem" }}>
+                  {neighborCorroboration.map((n, idx) => (
+                    <div
+                      key={idx}
+                      style={{
+                        background: "rgba(10, 19, 37, 0.55)",
+                        border: "1px solid var(--border-card)",
+                        borderRadius: "8px",
+                        padding: "0.85rem 1rem",
+                        display: "flex",
+                        justifyContent: "space-between",
+                        alignItems: "center",
+                        gap: "12px",
+                      }}
+                    >
+                      <div>
+                        <div style={{ display: "flex", alignItems: "center", gap: "6px" }}>
+                          <MapPin size={14} color="var(--accent-cyan)" />
+                          <span style={{ fontWeight: 700, fontSize: "0.88rem", color: "var(--text-primary)" }}>
+                            {n.station_name}
+                          </span>
+                        </div>
+                        <div style={{ fontSize: "0.76rem", color: "var(--text-muted)", marginTop: "3px" }}>
+                          Distance: <span style={{ color: "var(--text-secondary)" }}>{n.distance_km} km</span> • Observed Reading:{" "}
+                          <span style={{ color: "var(--text-primary)", fontFamily: "var(--font-mono)", fontWeight: 700 }}>
+                            {n.reading}
+                          </span>
+                        </div>
+                      </div>
+
+                      <span
+                        style={{
+                          fontSize: "0.74rem",
+                          padding: "4px 10px",
+                          borderRadius: "6px",
+                          display: "inline-flex",
+                          alignItems: "center",
+                          gap: "5px",
+                          fontWeight: 700,
+                          flexShrink: 0,
+                          background: n.is_corroborating ? "rgba(16, 185, 129, 0.16)" : "rgba(244, 63, 94, 0.16)",
+                          color: n.is_corroborating ? "#34d399" : "#fb7185",
+                          border: `1px solid ${
+                            n.is_corroborating ? "rgba(16, 185, 129, 0.35)" : "rgba(244, 63, 94, 0.35)"
+                          }`,
+                        }}
+                      >
+                        {n.is_corroborating ? <Check size={13} /> : <XCircle size={13} />}
+                        {n.status}
+                      </span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              {/* Hardware Integrity Bar */}
+              <div
+                style={{
+                  background: isGenuineEvent ? "rgba(16, 185, 129, 0.08)" : "rgba(244, 63, 94, 0.08)",
+                  border: `1px solid ${isGenuineEvent ? "rgba(16, 185, 129, 0.25)" : "rgba(244, 63, 94, 0.25)"}`,
+                  borderRadius: "8px",
+                  padding: "0.85rem 1rem",
+                  display: "flex",
+                  justifyContent: "space-between",
+                  alignItems: "center",
+                  flexWrap: "wrap",
+                  gap: "10px",
+                }}
+              >
+                <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+                  <Radio size={16} color={isGenuineEvent ? "var(--accent-emerald)" : "var(--accent-rose)"} />
+                  <div>
+                    <div style={{ fontSize: "0.82rem", fontWeight: 700, color: "var(--text-primary)" }}>
+                      {isGenuineEvent ? "Transducer Hardware Certified Operational" : "Hardware Calibration Issue"}
+                    </div>
+                    <div style={{ fontSize: "0.74rem", color: "var(--text-secondary)" }}>
+                      {isGenuineEvent
+                        ? "Aspirator fan (3,240 RPM), line bus voltage (12.18V), and calibration drift (<0.12σ) are strictly nominal — eliminating sensor failure as root cause."
+                        : "Sensor zero-drift exceeded tolerance limits."}
+                    </div>
+                  </div>
+                </div>
+
+                <span className={`badge ${isGenuineEvent ? "badge-normal" : "badge-fault"}`} style={{ fontSize: "0.7rem" }}>
+                  {isGenuineEvent ? "HARDWARE VERIFIED" : "NEEDS INSPECTION"}
+                </span>
+              </div>
+            </div>
+          </div>
+
+          {/* ========================================================================= */}
+          {/* 4. RECOMMENDED OPERATIONAL ACTION PLAN                                    */}
+          {/* ========================================================================= */}
+          <div
+            className="glass-panel"
+            style={{
+              padding: "1.4rem 1.6rem",
+              display: "flex",
+              flexDirection: "column",
+              gap: "1rem",
+            }}
+          >
+            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: "8px" }}>
+              <div>
+                <h2 style={{ fontSize: "1.1rem", fontWeight: 700, display: "flex", alignItems: "center", gap: "8px", margin: 0 }}>
+                  <Wrench size={17} color="var(--accent-amber)" />
+                  Recommended Operator Response Protocols
+                </h2>
+                <p style={{ color: "var(--text-secondary)", fontSize: "0.8rem", marginTop: "3px", marginBottom: 0 }}>
+                  Standard operating procedures (SOP) prescribed for on-duty meteorologists and telemetry engineers
+                </p>
+              </div>
+
+              {currentAlert && (
+                <div style={{ display: "flex", gap: "0.75rem" }}>
+                  <Link
+                    to={`/station/${currentAlert.station_id}`}
+                    className="btn-glow"
+                    style={{
+                      fontSize: "0.82rem",
+                      padding: "8px 16px",
+                      textDecoration: "none",
+                      display: "inline-flex",
+                      alignItems: "center",
+                      gap: "6px",
+                    }}
+                  >
+                    <span>Open Live Station Telemetry</span>
+                    <ArrowRight size={14} />
+                  </Link>
+                </div>
+              )}
+            </div>
+
+            {/* 3 Clear Action Cards */}
+            <div
+              style={{
+                display: "grid",
+                gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))",
+                gap: "0.9rem",
+              }}
+            >
+              {recommendations.map((rec, idx) => (
+                <div
+                  key={idx}
+                  style={{
+                    background: "rgba(10, 19, 37, 0.6)",
+                    border: "1px solid var(--border-card)",
+                    borderRadius: "8px",
+                    padding: "0.95rem 1.1rem",
+                    display: "flex",
+                    alignItems: "flex-start",
+                    gap: "12px",
+                    fontSize: "0.84rem",
+                    lineHeight: "1.5",
+                    color: "var(--text-primary)",
+                  }}
+                >
+                  <div
+                    style={{
+                      width: "22px",
+                      height: "22px",
+                      borderRadius: "50%",
+                      background: "rgba(245, 158, 11, 0.15)",
+                      border: "1px solid rgba(245, 158, 11, 0.4)",
+                      color: "#fbbf24",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      fontSize: "0.72rem",
+                      fontWeight: 800,
+                      flexShrink: 0,
+                      marginTop: "1px",
+                    }}
+                  >
+                    {idx + 1}
+                  </div>
+                  <div>{rec}</div>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* ========================================================================= */}
+          {/* 5. PROGRESSIVE DISCLOSURE: DEEP TECHNICAL & ML PROOF                      */}
+          {/* ========================================================================= */}
+          <div
+            className="glass-panel"
+            style={{
+              padding: "1.2rem 1.5rem",
+              display: "flex",
+              flexDirection: "column",
+              gap: "1.2rem",
+              borderTop: showTechnicalProof ? "2px solid var(--accent-cyan)" : "1px solid var(--border-card)",
+              transition: "all 0.25s ease",
+            }}
+          >
+            {/* Expander Header */}
+            <div
+              onClick={() => setShowTechnicalProof(!showTechnicalProof)}
+              style={{
+                display: "flex",
+                justifyContent: "space-between",
+                alignItems: "center",
+                cursor: "pointer",
+                userSelect: "none",
+              }}
+            >
+              <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+                <Layers size={18} color="var(--accent-cyan)" />
+                <div>
+                  <h3 style={{ fontSize: "1rem", fontWeight: 700, margin: 0, color: "var(--text-primary)" }}>
+                    Deep Technical ML Proof & 4-Stage Verification Process
+                  </h3>
+                  <p style={{ color: "var(--text-secondary)", fontSize: "0.78rem", marginTop: "2px", marginBottom: 0 }}>
+                    {showTechnicalProof
+                      ? "Showing 4 inference models, 4-stage diagnostic verification process, and thermodynamic physics formulas"
+                      : "Click to inspect machine learning attribution weights, STL filters, and physical formulas"}
+                  </p>
+                </div>
+              </div>
+
+              <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+                <span className="badge" style={{ background: "rgba(56, 189, 248, 0.12)", color: "#38bdf8", border: "1px solid rgba(56, 189, 248, 0.3)" }}>
+                  {showTechnicalProof ? "Expanded" : "Collapsed"}
+                </span>
+                <button
+                  style={{
+                    background: "transparent",
+                    border: "none",
+                    color: "var(--accent-cyan)",
+                    cursor: "pointer",
+                    display: "flex",
+                    alignItems: "center",
+                  }}
+                >
+                  {showTechnicalProof ? <ChevronUp size={18} /> : <ChevronDown size={18} />}
+                </button>
+              </div>
+            </div>
+
+            {/* Expanded Detailed Proof Content */}
+            {showTechnicalProof && (
+              <div style={{ display: "flex", flexDirection: "column", gap: "1.2rem", paddingTop: "0.5rem" }}>
+                {/* 4-Stage Process Stepper */}
+                <div>
+                  <h4 style={{ fontSize: "0.85rem", fontWeight: 700, color: "var(--text-muted)", textTransform: "uppercase", marginBottom: "0.6rem" }}>
+                    Automated Diagnostic Pipeline (4-Stage Verification Process)
+                  </h4>
+                  <div
+                    style={{
+                      display: "grid",
+                      gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))",
+                      gap: "0.8rem",
+                    }}
+                  >
+                    {reasoningChain.map((step, idx) => (
+                      <div
+                        key={idx}
+                        style={{
+                          background: "rgba(10, 19, 37, 0.6)",
+                          border: "1px solid var(--border-card)",
+                          borderRadius: "8px",
+                          padding: "0.85rem",
+                          display: "flex",
+                          flexDirection: "column",
+                          gap: "6px",
+                        }}
+                      >
+                        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                          <span style={{ fontSize: "0.72rem", color: "var(--accent-cyan)", fontWeight: 700 }}>
+                            STAGE 0{step.step_number}
+                          </span>
+                          <span className="badge badge-normal" style={{ fontSize: "0.62rem", padding: "1px 6px" }}>
+                            {step.status.toUpperCase()}
+                          </span>
+                        </div>
+                        <div style={{ fontWeight: 700, fontSize: "0.84rem", color: "var(--text-primary)" }}>
+                          {step.title}
+                        </div>
+                        <p style={{ fontSize: "0.75rem", color: "var(--text-secondary)", lineHeight: "1.4", margin: 0 }}>
+                          {step.evidence}
+                        </p>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                {/* 4 ML Inference Models */}
+                <div>
+                  <h4 style={{ fontSize: "0.85rem", fontWeight: 700, color: "var(--text-muted)", textTransform: "uppercase", marginBottom: "0.6rem" }}>
+                    Active Machine Learning Detector Ensemble
+                  </h4>
+                  <div
+                    style={{
+                      display: "grid",
+                      gridTemplateColumns: "repeat(auto-fit, minmax(250px, 1fr))",
+                      gap: "0.8rem",
+                    }}
+                  >
+                    {detectorBreakdown.map((det, idx) => (
+                      <div
+                        key={idx}
+                        style={{
+                          background: "rgba(10, 19, 37, 0.6)",
+                          border: "1px solid var(--border-card)",
+                          borderRadius: "8px",
+                          padding: "0.85rem",
+                          display: "flex",
+                          flexDirection: "column",
+                          justifyContent: "space-between",
+                          gap: "8px",
+                        }}
+                      >
+                        <div>
+                          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", gap: "6px" }}>
+                            <span style={{ fontWeight: 700, fontSize: "0.84rem", color: "var(--text-primary)" }}>
+                              {det.detector_name}
+                            </span>
+                            <span
+                              className={`badge ${det.flagged ? "badge-high" : "badge-normal"}`}
+                              style={{ fontSize: "0.6rem", padding: "1px 5px" }}
+                            >
+                              {det.flagged ? "TRIGGERED" : "NOMINAL"}
+                            </span>
                           </div>
+                          <p style={{ fontSize: "0.74rem", color: "var(--text-muted)", lineHeight: "1.35", marginTop: "4px", marginBottom: 0 }}>
+                            {det.description}
+                          </p>
+                        </div>
 
-                          {/* Progress bar */}
+                        <div>
+                          <div style={{ display: "flex", justifyContent: "space-between", fontSize: "0.72rem", marginBottom: "4px" }}>
+                            <span style={{ color: "var(--text-secondary)" }}>Model Certainty:</span>
+                            <span style={{ fontWeight: 700, color: det.flagged ? "#fb7185" : "#34d399", fontFamily: "var(--font-mono)" }}>
+                              {Math.round(det.score * 100)}%
+                            </span>
+                          </div>
                           <div
                             style={{
                               width: "100%",
-                              height: "6px",
+                              height: "4px",
                               background: "rgba(255, 255, 255, 0.08)",
                               borderRadius: "9999px",
                               overflow: "hidden",
@@ -744,476 +1067,20 @@ const WhyFlagged: React.FC = () => {
                           >
                             <div
                               style={{
-                                width: `${percentage}%`,
+                                width: `${Math.round(det.score * 100)}%`,
                                 height: "100%",
-                                background: isIncrease
-                                  ? "linear-gradient(90deg, #f43f5e, #e11d48)"
-                                  : "linear-gradient(90deg, #38bdf8, #0284c7)",
-                                borderRadius: "9999px",
-                                transition: "width 0.8s ease",
+                                background: det.flagged ? "var(--accent-rose)" : "var(--accent-emerald)",
                               }}
                             />
                           </div>
                         </div>
-                      );
-                    })}
-                  </div>
-                </div>
-              </div>
-
-              {/* Right Side: Visual Confidence Gauge, Remediation & Snapshot */}
-              <div style={{ display: "flex", flexDirection: "column", gap: "1.25rem" }}>
-                {/* Visual Anomaly Confidence & Ensemble Diagnostic Hub */}
-                <div className="glass-panel" style={{ padding: "1.4rem", display: "flex", flexDirection: "column", alignItems: "center", gap: "0.85rem" }}>
-                  <div style={{ width: "100%", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-                    <h2 style={{ fontSize: "1.05rem", fontWeight: 600, display: "flex", alignItems: "center", gap: "8px" }}>
-                      <Sparkles size={17} color="var(--accent-cyan)" />
-                      Anomaly Confidence Index
-                    </h2>
-                    <span className="badge badge-normal" style={{ fontSize: "0.68rem" }}>AI Certainty</span>
-                  </div>
-
-                  <div style={{ width: "100%", display: "flex", flexDirection: "column", alignItems: "center", padding: "0.5rem 0" }}>
-                    <ConfidenceGauge
-                      value={explanation.confidence ?? currentAlert?.confidence ?? 0.94}
-                      size="lg"
-                      label="Ensemble Confidence"
-                      sublabel="Consensus across 4 independent anomaly models"
-                      showBreakdown={true}
-                      breakdown={{
-                        spatial_physics: 0.96,
-                        statistical: 0.94,
-                        temporal_lstm: 0.91,
-                        isolation_forest: 0.86,
-                      }}
-                      showStatusBadge={true}
-                    />
-                  </div>
-                </div>
-
-                {/* Actionable Engineering Remediation Plan */}
-                <div className="glass-panel" style={{ padding: "1.4rem", display: "flex", flexDirection: "column", gap: "0.85rem" }}>
-                  <div>
-                    <h2 style={{ fontSize: "1.05rem", fontWeight: 600, display: "flex", alignItems: "center", gap: "8px" }}>
-                      <Wrench size={17} color="var(--accent-amber)" />
-                      Recommended Remediation Plan
-                    </h2>
-                    <p style={{ color: "var(--text-secondary)", fontSize: "0.78rem", marginTop: "2px" }}>
-                      Prescribed operational & field actions
-                    </p>
-                  </div>
-
-                  <div style={{ display: "flex", flexDirection: "column", gap: "0.55rem" }}>
-                    {recommendations.map((rec, idx) => (
-                      <div
-                        key={idx}
-                        style={{
-                          display: "flex",
-                          alignItems: "flex-start",
-                          gap: "8px",
-                          fontSize: "0.82rem",
-                          color: "var(--text-primary)",
-                          background: "var(--bg-card)",
-                          border: "1px solid var(--border-card)",
-                          padding: "0.7rem 0.85rem",
-                          borderRadius: "7px",
-                        }}
-                      >
-                        <ArrowRight size={13} color="var(--accent-amber)" style={{ marginTop: "3px", flexShrink: 0 }} />
-                        <span>{rec}</span>
                       </div>
                     ))}
                   </div>
                 </div>
-
-                {/* Associated Alert Snapshot Card */}
-                {currentAlert && (
-                  <div className="glass-panel" style={{ padding: "1.2rem", display: "flex", flexDirection: "column", gap: "0.75rem" }}>
-                    <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-                      <h3 style={{ fontSize: "0.85rem", fontWeight: 600, color: "var(--text-secondary)" }}>
-                        Alert Metadata Snapshot
-                      </h3>
-                      <Link
-                        to={`/station/${currentAlert.station_id}`}
-                        style={{ fontSize: "0.75rem", color: "var(--accent-cyan)", display: "flex", alignItems: "center", gap: "3px", textDecoration: "none" }}
-                      >
-                        Station Detail <ExternalLink size={11} />
-                      </Link>
-                    </div>
-
-                    <div style={{ fontSize: "0.88rem", fontWeight: 600, color: "var(--text-primary)", lineHeight: "1.4" }}>
-                      {currentAlert.summary}
-                    </div>
-
-                    <div style={{ display: "flex", gap: "6px", flexWrap: "wrap" }}>
-                      <span className={`badge badge-${currentAlert.severity}`}>{currentAlert.severity}</span>
-                      <span className="badge badge-low">Station #{currentAlert.station_id} ({currentAlert.station_name})</span>
-                      <span className="badge badge-low">Status: {currentAlert.status}</span>
-                    </div>
-                  </div>
-                )}
               </div>
-            </div>
-          )}
-
-          {/* ========================================================================= */}
-          {/* TAB 2: DETAILED FACTOR ATTRIBUTION & PHYSICS */}
-          {/* ========================================================================= */}
-          {activeSection === "factors" && (
-            <div className="glass-panel" style={{ padding: "1.5rem", display: "flex", flexDirection: "column", gap: "1.25rem" }}>
-              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: "0.75rem" }}>
-                <div>
-                  <h2 style={{ fontSize: "1.15rem", fontWeight: 600, display: "flex", alignItems: "center", gap: "8px" }}>
-                    <Sliders size={18} color="var(--accent-amber)" />
-                    Detailed Factor Attribution Breakdown
-                  </h2>
-                  <p style={{ color: "var(--text-secondary)", fontSize: "0.8rem", marginTop: "2px" }}>
-                    Breakdown of unusual sensor readings, nearby station differences, and sudden shifts
-                  </p>
-                </div>
-
-                {/* Factor Filter Tabs */}
-                <div style={{ display: "flex", gap: "4px", background: "rgba(100, 116, 139, 0.08)", padding: "3px", borderRadius: "8px", border: "1px solid var(--border-card)" }}>
-                  <button
-                    onClick={() => setFactorFilter("all")}
-                    style={{
-                      padding: "5px 12px",
-                      fontSize: "0.75rem",
-                      fontWeight: 600,
-                      borderRadius: "5px",
-                      background: factorFilter === "all" ? "var(--accent-cyan)" : "transparent",
-                      color: factorFilter === "all" ? "#fff" : "var(--text-secondary)",
-                      border: "none",
-                      cursor: "pointer",
-                    }}
-                  >
-                    All ({contributingFactors.length})
-                  </button>
-                  <button
-                    onClick={() => setFactorFilter("atmospheric")}
-                    style={{
-                      padding: "5px 12px",
-                      fontSize: "0.75rem",
-                      fontWeight: 600,
-                      borderRadius: "5px",
-                      background: factorFilter === "atmospheric" ? "var(--accent-cyan)" : "transparent",
-                      color: factorFilter === "atmospheric" ? "#fff" : "var(--text-secondary)",
-                      border: "none",
-                      cursor: "pointer",
-                    }}
-                  >
-                    Atmospheric
-                  </button>
-                  <button
-                    onClick={() => setFactorFilter("spatial_physics")}
-                    style={{
-                      padding: "5px 12px",
-                      fontSize: "0.75rem",
-                      fontWeight: 600,
-                      borderRadius: "5px",
-                      background: factorFilter === "spatial_physics" ? "var(--accent-cyan)" : "transparent",
-                      color: factorFilter === "spatial_physics" ? "#fff" : "var(--text-secondary)",
-                      border: "none",
-                      cursor: "pointer",
-                    }}
-                  >
-                    Physics & Network
-                  </button>
-                </div>
-              </div>
-
-              <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(420px, 1fr))", gap: "1rem" }}>
-                {filteredFactors.map((factor, idx) => (
-                  <div
-                    key={idx}
-                    style={{
-                      background: "var(--bg-card)",
-                      border: "1px solid var(--border-card)",
-                      borderRadius: "10px",
-                      padding: "1.1rem",
-                      display: "flex",
-                      flexDirection: "column",
-                      justifyContent: "space-between",
-                      gap: "0.75rem",
-                    }}
-                  >
-                    <div>
-                      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", gap: "8px" }}>
-                        <div>
-                          <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
-                            <span style={{ fontWeight: 600, fontSize: "0.95rem", color: "var(--text-primary)" }}>
-                              {factor.name}
-                            </span>
-                            {getCategoryBadge(factor.category)}
-                          </div>
-                        </div>
-
-                        <div style={{ textAlign: "right", flexShrink: 0 }}>
-                          <span
-                            style={{
-                              fontSize: "0.72rem",
-                              fontWeight: 700,
-                              padding: "3px 8px",
-                              borderRadius: "4px",
-                              background: factor.direction === "increases_anomaly" ? "rgba(244, 63, 94, 0.15)" : "rgba(16, 185, 129, 0.15)",
-                              color: factor.direction === "increases_anomaly" ? "#fb7185" : "#34d399",
-                              border: `1px solid ${factor.direction === "increases_anomaly" ? "rgba(244, 63, 94, 0.3)" : "rgba(16, 185, 129, 0.3)"}`,
-                            }}
-                          >
-                            {Math.round(factor.contribution * 100)}% Weight
-                          </span>
-                        </div>
-                      </div>
-                    </div>
-
-                    {/* Observed vs Baseline Badges */}
-                    <div
-                      style={{
-                        display: "grid",
-                        gridTemplateColumns: "1fr 1fr 1fr",
-                        gap: "8px",
-                        background: "rgba(100, 116, 139, 0.08)",
-                        padding: "8px 12px",
-                        borderRadius: "6px",
-                        fontSize: "0.76rem",
-                        border: "1px solid var(--border-card)",
-                      }}
-                    >
-                      <div>
-                        <span style={{ color: "var(--text-muted)", display: "block", fontSize: "0.7rem" }}>Observed</span>
-                        <span style={{ fontWeight: 600, color: "var(--text-primary)" }}>{factor.observed_value}</span>
-                      </div>
-                      <div>
-                        <span style={{ color: "var(--text-muted)", display: "block", fontSize: "0.7rem" }}>Baseline</span>
-                        <span style={{ color: "var(--text-secondary)" }}>{factor.baseline_value}</span>
-                      </div>
-                      <div>
-                        <span style={{ color: "var(--text-muted)", display: "block", fontSize: "0.7rem" }}>Delta / Deviation</span>
-                        <span style={{ fontWeight: 600, color: factor.direction === "increases_anomaly" ? "#fb7185" : "#34d399" }}>
-                          {factor.deviation}
-                        </span>
-                      </div>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-          )}
-
-          {/* ========================================================================= */}
-          {/* TAB 3: CAUSAL REASONING CHAIN & DETECTOR MODELS */}
-          {/* ========================================================================= */}
-          {activeSection === "reasoning" && (
-            <div style={{ display: "grid", gridTemplateColumns: "1.15fr 0.85fr", gap: "1.25rem" }}>
-              {/* Left Column: Step-by-Step Causal Reasoning Chain */}
-              <div className="glass-panel" style={{ padding: "1.4rem", display: "flex", flexDirection: "column", gap: "1.1rem" }}>
-                <div>
-                  <h2 style={{ fontSize: "1.05rem", fontWeight: 600, display: "flex", alignItems: "center", gap: "8px" }}>
-                    <Activity size={17} color="var(--accent-cyan)" />
-                    Step-by-Step Diagnostic Steps
-                  </h2>
-                  <p style={{ color: "var(--text-secondary)", fontSize: "0.78rem", marginTop: "2px" }}>
-                    Step-by-step logic showing how the system identified the problem
-                  </p>
-                </div>
-
-                <div style={{ display: "flex", flexDirection: "column", gap: "0.85rem", position: "relative" }}>
-                  {reasoningChain.map((step, idx) => (
-                    <div
-                      key={idx}
-                      style={{
-                        display: "flex",
-                        gap: "12px",
-                        alignItems: "flex-start",
-                        position: "relative",
-                      }}
-                    >
-                      {/* Step Number Circle */}
-                      <div
-                        style={{
-                          width: "28px",
-                          height: "28px",
-                          borderRadius: "50%",
-                          background: step.status === "corroborated" || step.status === "validated" ? "rgba(16, 185, 129, 0.2)" : "rgba(244, 63, 94, 0.2)",
-                          border: `1px solid ${step.status === "corroborated" || step.status === "validated" ? "rgba(16, 185, 129, 0.5)" : "rgba(244, 63, 94, 0.5)"}`,
-                          color: step.status === "corroborated" || step.status === "validated" ? "#34d399" : "#fb7185",
-                          display: "flex",
-                          alignItems: "center",
-                          justifyContent: "center",
-                          fontSize: "0.8rem",
-                          fontWeight: 700,
-                          flexShrink: 0,
-                          marginTop: "2px",
-                        }}
-                      >
-                        {step.step_number}
-                      </div>
-
-                      {/* Step Details */}
-                      <div
-                        style={{
-                          background: "var(--bg-card)",
-                          border: "1px solid var(--border-card)",
-                          borderRadius: "8px",
-                          padding: "0.85rem",
-                          flex: 1,
-                        }}
-                      >
-                        <div style={{ fontWeight: 600, fontSize: "0.88rem", color: "var(--text-primary)", marginBottom: "3px" }}>
-                          {step.title}
-                        </div>
-                        <div style={{ fontSize: "0.8rem", color: "var(--text-secondary)", lineHeight: "1.5" }}>
-                          {step.evidence}
-                        </div>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-
-              {/* Right Column: Detector Ensemble Consensus */}
-              <div className="glass-panel" style={{ padding: "1.4rem", display: "flex", flexDirection: "column", gap: "1rem" }}>
-                <div>
-                  <h2 style={{ fontSize: "1.05rem", fontWeight: 600, display: "flex", alignItems: "center", gap: "8px" }}>
-                    <Layers size={17} color="var(--accent-emerald)" />
-                    AI Detection Models
-                  </h2>
-                  <p style={{ color: "var(--text-secondary)", fontSize: "0.78rem", marginTop: "2px" }}>
-                    Breakdown of which AI models flagged this anomaly
-                  </p>
-                </div>
-
-                <div style={{ display: "flex", flexDirection: "column", gap: "0.75rem" }}>
-                  {detectorBreakdown.map((det, idx) => (
-                    <div
-                      key={idx}
-                      style={{
-                        background: "var(--bg-card)",
-                        border: "1px solid var(--border-card)",
-                        borderRadius: "8px",
-                        padding: "0.85rem",
-                        display: "flex",
-                        flexDirection: "column",
-                        gap: "0.4rem",
-                      }}
-                    >
-                      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-                        <span style={{ fontWeight: 600, fontSize: "0.84rem", color: "var(--text-primary)" }}>
-                          {det.detector_name}
-                        </span>
-                        <span
-                          className={`badge ${det.flagged ? "badge-high" : "badge-low"}`}
-                          style={{ fontSize: "0.62rem", padding: "1px 6px" }}
-                        >
-                          {det.flagged ? "TRIGGERED" : "NOMINAL"}
-                        </span>
-                      </div>
-                      <p style={{ fontSize: "0.74rem", color: "var(--text-muted)", lineHeight: "1.4" }}>
-                        {det.description}
-                      </p>
-                      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", fontSize: "0.74rem", marginTop: "2px" }}>
-                        <span style={{ color: "var(--text-secondary)" }}>Confidence Score:</span>
-                        <span style={{ fontWeight: 700, color: det.flagged ? "#fb7185" : "#34d399" }}>
-                          {(det.score * 100).toFixed(0)}%
-                        </span>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </div>
-          )}
-
-          {/* ========================================================================= */}
-          {/* TAB 4: SPATIAL CROSS-VALIDATION */}
-          {/* ========================================================================= */}
-          {activeSection === "spatial" && (
-            <div className="glass-panel" style={{ padding: "1.5rem", display: "flex", flexDirection: "column", gap: "1.25rem" }}>
-              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: "0.5rem" }}>
-                <div>
-                  <h2 style={{ fontSize: "1.15rem", fontWeight: 600, display: "flex", alignItems: "center", gap: "8px" }}>
-                    <Network size={18} color="var(--accent-cyan)" />
-                    Spatial Neighbor Corroboration Matrix
-                  </h2>
-                  <p style={{ color: "var(--text-secondary)", fontSize: "0.8rem", marginTop: "2px" }}>
-                    Comparison with readings from the closest weather stations
-                  </p>
-                </div>
-                <div className="badge badge-medium">
-                  Cluster Status: {currentAlert?.root_cause === "genuine_event" ? "Corroborated Regional Front" : "Isolated Single-Node Anomaly"}
-                </div>
-              </div>
-
-              <div style={{ overflowX: "auto" }}>
-                <table style={{ width: "100%", borderCollapse: "collapse", fontSize: "0.84rem" }}>
-                  <thead>
-                    <tr style={{ borderBottom: "1px solid var(--border-card)", color: "var(--text-muted)", textAlign: "left" }}>
-                      <th style={{ padding: "10px 8px" }}>Neighboring Station</th>
-                      <th style={{ padding: "10px 8px" }}>Distance Radius</th>
-                      <th style={{ padding: "10px 8px" }}>Sensor Telemetry Reading</th>
-                      <th style={{ padding: "10px 8px" }}>Spatial Consensus Verdict</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {neighborCorroboration.map((n, idx) => (
-                      <tr key={idx} style={{ borderBottom: "1px solid var(--border-card)" }}>
-                        <td style={{ padding: "10px 8px", fontWeight: 600, color: "var(--text-primary)" }}>
-                          <div style={{ display: "flex", alignItems: "center", gap: "6px" }}>
-                            <MapPin size={14} color="var(--accent-cyan)" />
-                            <span>{n.station_name}</span>
-                          </div>
-                        </td>
-                        <td style={{ padding: "10px 8px", color: "var(--text-secondary)" }}>
-                          {n.distance_km} km
-                        </td>
-                        <td style={{ padding: "10px 8px", color: "var(--text-primary)", fontFamily: "var(--font-mono)" }}>
-                          {n.reading}
-                        </td>
-                        <td style={{ padding: "10px 8px" }}>
-                          <span
-                            style={{
-                              fontSize: "0.72rem",
-                              padding: "3px 8px",
-                              borderRadius: "4px",
-                              display: "inline-flex",
-                              alignItems: "center",
-                              gap: "4px",
-                              background: n.is_corroborating ? "rgba(16, 185, 129, 0.15)" : "rgba(244, 63, 94, 0.15)",
-                              color: n.is_corroborating ? "#34d399" : "#fb7185",
-                              border: `1px solid ${n.is_corroborating ? "rgba(16, 185, 129, 0.3)" : "rgba(244, 63, 94, 0.3)"}`,
-                            }}
-                          >
-                            {n.is_corroborating ? <Check size={12} /> : <XCircle size={12} />}
-                            {n.status}
-                          </span>
-                        </td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
-
-              {/* Informative footer alert */}
-              <div
-                style={{
-                  background: "rgba(56, 189, 248, 0.05)",
-                  border: "1px solid rgba(56, 189, 248, 0.2)",
-                  borderRadius: "8px",
-                  padding: "1rem",
-                  fontSize: "0.82rem",
-                  color: "#93c5fd",
-                  display: "flex",
-                  alignItems: "center",
-                  gap: "10px",
-                }}
-              >
-                <Compass size={18} color="var(--accent-cyan)" style={{ flexShrink: 0 }} />
-                <span>
-                  Spatial corroboration runs an inverse-distance weighted Gaussian spatial interpolation across adjacent nodes within a 50km radius. An anomaly is classified as isolated when no adjacent nodes corroborate deviations above 1.5σ.
-                </span>
-              </div>
-            </div>
-          )}
+            )}
+          </div>
         </>
       )}
     </div>

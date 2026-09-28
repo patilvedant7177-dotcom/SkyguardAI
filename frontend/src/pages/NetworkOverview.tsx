@@ -154,7 +154,7 @@ const NetworkOverview: React.FC = () => {
         }}
       >
         <div>
-          <h1 style={{ fontSize: "1.75rem", fontWeight: 700, letterSpacing: "-0.02em" }}>
+          <h1 style={{ fontSize: "1.75rem", fontWeight: 700, letterSpacing: "-0.02em", margin: 0 }}>
             Network Overview
           </h1>
         </div>
@@ -347,9 +347,29 @@ const NetworkOverview: React.FC = () => {
                         <div style={{ fontWeight: 700, fontSize: "1rem", marginBottom: "4px" }}>
                           {station.name}
                         </div>
-                        <div style={{ display: "flex", gap: "6px", marginBottom: "8px" }}>
+                        <div style={{ display: "flex", gap: "6px", marginBottom: "8px", flexWrap: "wrap", alignItems: "center" }}>
                           <span className={`badge badge-${station.status}`}>{station.status}</span>
                           <span className="badge badge-low">{station.source}</span>
+                          {station.dataset_type && station.dataset_type !== "simulated" && (
+                            <span
+                              className="badge"
+                              style={{
+                                background:
+                                  station.dataset_type === "csv_only"
+                                    ? "rgba(56, 189, 248, 0.15)"
+                                    : "rgba(168, 85, 247, 0.15)",
+                                color: station.dataset_type === "csv_only" ? "#38bdf8" : "#c084fc",
+                                border: `1px solid ${
+                                  station.dataset_type === "csv_only"
+                                    ? "rgba(56, 189, 248, 0.3)"
+                                    : "rgba(168, 85, 247, 0.3)"
+                                }`,
+                                fontSize: "0.68rem",
+                              }}
+                            >
+                              {station.dataset_type === "csv_only" ? "CSV" : "CSV+NC"}
+                            </span>
+                          )}
                         </div>
                         <div style={{ fontSize: "0.8rem", color: "var(--text-secondary)", lineHeight: "1.4" }}>
                           <div>
@@ -440,9 +460,29 @@ const NetworkOverview: React.FC = () => {
                         Node ID: #{station.id}
                       </div>
                     </div>
-                    <div style={{ display: "flex", gap: "6px" }}>
+                    <div style={{ display: "flex", gap: "6px", flexWrap: "wrap", alignItems: "center" }}>
                       <span className={`badge badge-${station.status}`}>{station.status}</span>
                       <span className="badge badge-low">{station.source}</span>
+                      {station.dataset_type && station.dataset_type !== "simulated" && (
+                        <span
+                          className="badge"
+                          style={{
+                            background:
+                              station.dataset_type === "csv_only"
+                                ? "rgba(56, 189, 248, 0.15)"
+                                : "rgba(168, 85, 247, 0.15)",
+                            color: station.dataset_type === "csv_only" ? "#38bdf8" : "#c084fc",
+                            border: `1px solid ${
+                              station.dataset_type === "csv_only"
+                                ? "rgba(56, 189, 248, 0.3)"
+                                : "rgba(168, 85, 247, 0.3)"
+                            }`,
+                            fontSize: "0.68rem",
+                          }}
+                        >
+                          {station.dataset_type === "csv_only" ? "CSV" : "CSV+NC"}
+                        </span>
+                      )}
                     </div>
                   </div>
 

@@ -53,12 +53,9 @@ const History: React.FC = () => {
         }}
       >
         <div>
-          <h1 style={{ fontSize: "1.75rem", fontWeight: 700, letterSpacing: "-0.02em" }}>
+          <h1 style={{ fontSize: "1.75rem", fontWeight: 700, letterSpacing: "-0.02em", margin: 0 }}>
             Alert History Archive
           </h1>
-          <p style={{ color: "var(--text-secondary)", fontSize: "0.9rem", marginTop: "4px" }}>
-            Audit trail of acknowledged and resolved telemetry anomalies across all station nodes
-          </p>
         </div>
 
         {/* Tab Selection */}

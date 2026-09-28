@@ -1,4 +1,5 @@
 {
+  "upload_type": "csv_nc",
   "csv_rows": 155170,
   "csv_columns": [
     "obstime",

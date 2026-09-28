@@ -28,6 +28,7 @@ export interface Station {
   elevation: number;
   status: StationStatus;
   source: "real" | "simulated";
+  dataset_type?: "csv_only" | "csv_nc" | "simulated";
 }
 
 export interface SubsystemDiagnostic {
@@ -122,6 +123,7 @@ export interface ProfilingSummary {
   nc_variables: string[];
   nc_dims: Record<string, number>;
   matched_parameters: string[];
+  upload_type?: "csv_only" | "csv_nc";
 }
 
 export interface AddStationResponse {
