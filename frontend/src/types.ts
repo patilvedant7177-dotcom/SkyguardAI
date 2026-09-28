@@ -18,6 +18,8 @@ export interface Alert {
   summary: string;
   parameters_flagged: Parameter[];
   status: AlertStatus;
+  event_type?: string;
+  magnitude?: number;
 }
 
 export interface Station {
