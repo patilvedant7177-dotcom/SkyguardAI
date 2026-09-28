@@ -1,3 +1,12 @@
+---
+title: SkyguardAI Atmospheric Intelligence Platform
+emoji: 🛰️
+colorFrom: blue
+colorTo: indigo
+sdk: docker
+app_port: 7860
+---
+
 # 🛰️ SkyguardAI
 ### Atmospheric Sensor Anomaly Detection, Spatial Consensus & Explainability Platform
 
