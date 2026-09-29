@@ -40,7 +40,7 @@ const SensorHealth: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    fetchStations().then(setStations).catch(() => {});
+    fetchStations().then(setStations).catch(() => { });
   }, []);
 
   useEffect(() => {
@@ -282,14 +282,14 @@ const SensorHealth: React.FC = () => {
                       diag.status === "nominal"
                         ? "#10b981"
                         : diag.status === "warning"
-                        ? "#f59e0b"
-                        : "#f43f5e";
+                          ? "#f59e0b"
+                          : "#f43f5e";
                     const statusBg =
                       diag.status === "nominal"
                         ? "rgba(16, 185, 129, 0.12)"
                         : diag.status === "warning"
-                        ? "rgba(245, 158, 11, 0.12)"
-                        : "rgba(244, 63, 94, 0.12)";
+                          ? "rgba(245, 158, 11, 0.12)"
+                          : "rgba(244, 63, 94, 0.12)";
 
                     return (
                       <div

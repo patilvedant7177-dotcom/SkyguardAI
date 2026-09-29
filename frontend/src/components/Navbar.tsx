@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { NavLink, Link, useLocation } from "react-router-dom";
 import {
   Activity,
@@ -7,33 +7,17 @@ import {
   AlertTriangle,
   ShieldCheck,
   History as HistoryIcon,
-  Wifi,
-  WifiOff,
   Compass,
   Layers,
   Cpu,
   Home,
 } from "lucide-react";
-import { fetchHealth } from "../api";
 import { ThemeSwitcher } from "./ThemeSwitcher";
 import { BrandLogo } from "./BrandLogo";
 
 export const Navbar: React.FC = () => {
-  const [healthOk, setHealthOk] = useState<boolean | null>(null);
   const location = useLocation();
   const isCommandCenter = location.pathname === "/";
-
-  useEffect(() => {
-    const checkStatus = () => {
-      fetchHealth()
-        .then((res) => setHealthOk(res.status === "ok"))
-        .catch(() => setHealthOk(false));
-    };
-
-    checkStatus();
-    const interval = setInterval(checkStatus, 15000);
-    return () => clearInterval(interval);
-  }, []);
 
   const scrollToSection = (id: string) => {
     const element = document.getElementById(id);
@@ -64,32 +48,11 @@ export const Navbar: React.FC = () => {
   return (
     <header className="app-navbar-header">
       <div className="app-navbar-container">
-        {/* Brand & System Status */}
+        {/* Brand */}
         <div className="navbar-brand-section">
           <Link to="/" style={{ textDecoration: "none" }}>
             <BrandLogo size="sm" showSubtitle={false} />
           </Link>
-
-          <div
-            className={`navbar-status-badge ${
-              healthOk ? "online" : healthOk === false ? "unreachable" : "connecting"
-            }`}
-          >
-            {healthOk ? (
-              <Wifi size={12} style={{ animation: "pulse-glow 2s infinite" }} />
-            ) : healthOk === false ? (
-              <WifiOff size={12} />
-            ) : (
-              <span className="navbar-status-dot" />
-            )}
-            <span>
-              {healthOk
-                ? "CORE ONLINE"
-                : healthOk === false
-                ? "DISCONNECTED"
-                : "INITIALIZING"}
-            </span>
-          </div>
         </div>
 
         {/* Centered Navigation Tabs */}

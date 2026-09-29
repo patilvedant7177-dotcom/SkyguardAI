@@ -359,11 +359,10 @@ const NetworkOverview: React.FC = () => {
                                     ? "rgba(56, 189, 248, 0.15)"
                                     : "rgba(168, 85, 247, 0.15)",
                                 color: station.dataset_type === "csv_only" ? "#38bdf8" : "#c084fc",
-                                border: `1px solid ${
-                                  station.dataset_type === "csv_only"
+                                border: `1px solid ${station.dataset_type === "csv_only"
                                     ? "rgba(56, 189, 248, 0.3)"
                                     : "rgba(168, 85, 247, 0.3)"
-                                }`,
+                                  }`,
                                 fontSize: "0.68rem",
                               }}
                             >
@@ -472,11 +471,10 @@ const NetworkOverview: React.FC = () => {
                                 ? "rgba(56, 189, 248, 0.15)"
                                 : "rgba(168, 85, 247, 0.15)",
                             color: station.dataset_type === "csv_only" ? "#38bdf8" : "#c084fc",
-                            border: `1px solid ${
-                              station.dataset_type === "csv_only"
+                            border: `1px solid ${station.dataset_type === "csv_only"
                                 ? "rgba(56, 189, 248, 0.3)"
                                 : "rgba(168, 85, 247, 0.3)"
-                            }`,
+                              }`,
                             fontSize: "0.68rem",
                           }}
                         >

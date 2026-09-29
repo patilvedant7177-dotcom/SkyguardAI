@@ -3,14 +3,13 @@ import { Link } from "react-router-dom";
 import { createAlertEventSource, acknowledgeAlert, fetchAlerts } from "../api";
 import type { Alert } from "../types";
 import { ConfidenceGauge } from "../components/ConfidenceGauge";
-import { Radio, CheckCircle2, Search, ArrowRight, ShieldAlert, Cpu, Clock } from "lucide-react";
+import { CheckCircle2, Search, ArrowRight, ShieldAlert, Cpu, Clock } from "lucide-react";
 
 const LiveAlerts: React.FC = () => {
   const [alerts, setAlerts] = useState<Alert[]>([]);
   const [severityFilter, setSeverityFilter] = useState<string>("all");
   const [searchTerm, setSearchTerm] = useState("");
   const [acknowledgedIds, setAcknowledgedIds] = useState<Set<number>>(new Set());
-  const [isConnected, setIsConnected] = useState(true);
 
   // Initial load of alerts from REST + subscribe to SSE
   useEffect(() => {
@@ -25,12 +24,7 @@ const LiveAlerts: React.FC = () => {
         const filtered = prev.filter((a) => a.id !== newAlert.id);
         return [newAlert, ...filtered].slice(0, 50);
       });
-      setIsConnected(true);
     });
-
-    es.onerror = () => {
-      setIsConnected(false);
-    };
 
     return () => {
       es.close();
@@ -76,13 +70,6 @@ const LiveAlerts: React.FC = () => {
             <h1 style={{ fontSize: "1.75rem", fontWeight: 700, letterSpacing: "-0.02em", margin: 0 }}>
               Live Telemetry Alerts
             </h1>
-            <div
-              className={`badge ${isConnected ? "badge-normal live-pulse" : "badge-fault"}`}
-              style={{ fontSize: "0.7rem" }}
-            >
-              <Radio size={12} />
-              {isConnected ? "SSE STREAM ACTIVE (5s)" : "STREAM DISCONNECTED"}
-            </div>
           </div>
         </div>
 

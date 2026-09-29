@@ -473,8 +473,8 @@ export const AddStationModal: React.FC<AddStationModalProps> = ({
                     {result.profiling_summary.upload_type === "csv_only"
                       ? "CSV Only (Standalone)"
                       : result.profiling_summary.nc_variables.length > 0
-                      ? `CSV + NetCDF (${result.profiling_summary.nc_variables.length} vars)`
-                      : "CSV + NetCDF"}
+                        ? `CSV + NetCDF (${result.profiling_summary.nc_variables.length} vars)`
+                        : "CSV + NetCDF"}
                   </div>
                 </div>
                 <div>
@@ -978,13 +978,12 @@ export const AddStationModal: React.FC<AddStationModalProps> = ({
                   }}
                   onClick={() => !isSubmitting && csvInputRef.current?.click()}
                   style={{
-                    border: `2px dashed ${
-                      isDraggingCsv
+                    border: `2px dashed ${isDraggingCsv
                         ? "#0284c7"
                         : csvFile
-                        ? "#38bdf8"
-                        : "var(--border-card)"
-                    }`,
+                          ? "#38bdf8"
+                          : "var(--border-card)"
+                      }`,
                     borderRadius: "10px",
                     padding: "1.5rem",
                     textAlign: "center",
@@ -992,8 +991,8 @@ export const AddStationModal: React.FC<AddStationModalProps> = ({
                     background: isDraggingCsv
                       ? "rgba(2, 132, 199, 0.16)"
                       : csvFile
-                      ? "rgba(56, 189, 248, 0.08)"
-                      : "var(--bg-card)",
+                        ? "rgba(56, 189, 248, 0.08)"
+                        : "var(--bg-card)",
                     transition: "all 0.2s ease",
                     position: "relative",
                   }}
@@ -1109,13 +1108,12 @@ export const AddStationModal: React.FC<AddStationModalProps> = ({
                     }}
                     onClick={() => !isSubmitting && csvInputRef.current?.click()}
                     style={{
-                      border: `2px dashed ${
-                        isDraggingCsv
+                      border: `2px dashed ${isDraggingCsv
                           ? "#0284c7"
                           : csvFile
-                          ? "#38bdf8"
-                          : "var(--border-card)"
-                      }`,
+                            ? "#38bdf8"
+                            : "var(--border-card)"
+                        }`,
                       borderRadius: "10px",
                       padding: "1rem",
                       textAlign: "center",
@@ -1123,8 +1121,8 @@ export const AddStationModal: React.FC<AddStationModalProps> = ({
                       background: isDraggingCsv
                         ? "rgba(2, 132, 199, 0.16)"
                         : csvFile
-                        ? "rgba(56, 189, 248, 0.08)"
-                        : "var(--bg-card)",
+                          ? "rgba(56, 189, 248, 0.08)"
+                          : "var(--bg-card)",
                       transition: "all 0.2s ease",
                       position: "relative",
                     }}
@@ -1215,13 +1213,12 @@ export const AddStationModal: React.FC<AddStationModalProps> = ({
                     }}
                     onClick={() => !isSubmitting && ncInputRef.current?.click()}
                     style={{
-                      border: `2px dashed ${
-                        isDraggingNc
+                      border: `2px dashed ${isDraggingNc
                           ? "#a855f7"
                           : ncFile
-                          ? "#a855f7"
-                          : "var(--border-card)"
-                      }`,
+                            ? "#a855f7"
+                            : "var(--border-card)"
+                        }`,
                       borderRadius: "10px",
                       padding: "1rem",
                       textAlign: "center",
@@ -1229,8 +1226,8 @@ export const AddStationModal: React.FC<AddStationModalProps> = ({
                       background: isDraggingNc
                         ? "rgba(168, 85, 247, 0.16)"
                         : ncFile
-                        ? "rgba(168, 85, 247, 0.08)"
-                        : "var(--bg-card)",
+                          ? "rgba(168, 85, 247, 0.08)"
+                          : "var(--bg-card)",
                       transition: "all 0.2s ease",
                       position: "relative",
                     }}

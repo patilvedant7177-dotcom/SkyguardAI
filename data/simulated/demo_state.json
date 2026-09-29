@@ -60,7 +60,7 @@
       "latitude": 13.06,
       "longitude": 80.24,
       "elevation": 14,
-      "status": "fault",
+      "status": "normal",
       "source": "simulated"
     },
     {
@@ -96,7 +96,23 @@
       "id": 101,
       "station_id": 1,
       "station_name": "Mumbai Colaba (South Coastal Observatory)",
-      "timestamp": "2026-09-28T05:30:00+00:00Z",
+      "timestamp": "2026-09-28T13:00:00+00:00Z",
+      "confidence": 0.94,
+      "severity": "medium",
+      "root_cause": "genuine_event",
+      "summary": "Regional atmospheric front detected across 2 stations (corroborated by Mumbai Santacruz (Inland Suburban Hub))",
+      "parameters_flagged": [
+        "pressure"
+      ],
+      "status": "active",
+      "event_type": "spike",
+      "magnitude": 3.6346050789891486
+    },
+    {
+      "id": 102,
+      "station_id": 1,
+      "station_name": "Mumbai Colaba (South Coastal Observatory)",
+      "timestamp": "2026-09-28T07:00:00+00:00Z",
       "confidence": 0.94,
       "severity": "high",
       "root_cause": "genuine_event",
@@ -106,13 +122,29 @@
       ],
       "status": "active",
       "event_type": "frozen_sensor",
-      "magnitude": 38.0
+      "magnitude": 31.0
     },
     {
-      "id": 102,
+      "id": 103,
       "station_id": 2,
       "station_name": "Mumbai Santacruz (Inland Suburban Hub)",
-      "timestamp": "2026-09-28T05:15:00+00:00Z",
+      "timestamp": "2026-09-28T13:30:00+00:00Z",
+      "confidence": 0.94,
+      "severity": "medium",
+      "root_cause": "genuine_event",
+      "summary": "Regional atmospheric front detected across 2 stations (corroborated by Mumbai Colaba (South Coastal Observatory))",
+      "parameters_flagged": [
+        "pressure"
+      ],
+      "status": "active",
+      "event_type": "spike",
+      "magnitude": 3.516706722125084
+    },
+    {
+      "id": 104,
+      "station_id": 2,
+      "station_name": "Mumbai Santacruz (Inland Suburban Hub)",
+      "timestamp": "2026-09-28T06:45:00+00:00Z",
       "confidence": 0.94,
       "severity": "high",
       "root_cause": "genuine_event",
@@ -122,13 +154,13 @@
       ],
       "status": "active",
       "event_type": "frozen_sensor",
-      "magnitude": 35.0
+      "magnitude": 28.0
     },
     {
-      "id": 103,
+      "id": 105,
       "station_id": 4,
       "station_name": "Delhi Palam (Western Plains Station)",
-      "timestamp": "2026-09-26T16:45:00+00:00Z",
+      "timestamp": "2026-09-27T08:45:00+00:00Z",
       "confidence": 0.91,
       "severity": "high",
       "root_cause": "sensor_fault",
@@ -141,10 +173,10 @@
       "magnitude": 28.0
     },
     {
-      "id": 104,
+      "id": 106,
       "station_id": 6,
       "station_name": "Bengaluru GKVK (Agricultural Campus Lab)",
-      "timestamp": "2026-09-28T12:00:00+00:00Z",
+      "timestamp": "2026-09-29T04:00:00+00:00Z",
       "confidence": 0.91,
       "severity": "medium",
       "root_cause": "sensor_fault",
@@ -154,17 +186,17 @@
       ],
       "status": "active",
       "event_type": "calibration_drift",
-      "magnitude": 0.724932788029562
+      "magnitude": 0.6814184323527774
     },
     {
-      "id": 105,
+      "id": 107,
       "station_id": 7,
       "station_name": "Chennai Nungambakkam (Central Coastal Base)",
-      "timestamp": "2026-09-24T05:45:00+00:00Z",
-      "confidence": 0.91,
+      "timestamp": "2026-09-28T06:00:00+00:00Z",
+      "confidence": 0.94,
       "severity": "high",
-      "root_cause": "sensor_fault",
-      "summary": "Isolated frozen sensor detected on humidity (Chennai Nungambakkam (Central Coastal Base))",
+      "root_cause": "genuine_event",
+      "summary": "Regional atmospheric front detected across 2 stations (corroborated by Chennai Meenambakkam (Airport Plains Hub))",
       "parameters_flagged": [
         "humidity"
       ],
@@ -173,10 +205,10 @@
       "magnitude": 22.0
     },
     {
-      "id": 106,
+      "id": 108,
       "station_id": 8,
       "station_name": "Chennai Meenambakkam (Airport Plains Hub)",
-      "timestamp": "2026-09-27T08:30:00+00:00Z",
+      "timestamp": "2026-09-28T00:30:00+00:00Z",
       "confidence": 0.91,
       "severity": "high",
       "root_cause": "comms_error",
@@ -191,36 +223,52 @@
       "magnitude": 25.0
     },
     {
-      "id": 107,
-      "station_id": 9,
-      "station_name": "Pune Shivajinagar (Met Research Center)",
-      "timestamp": "2026-09-28T05:00:00+00:00Z",
+      "id": 109,
+      "station_id": 8,
+      "station_name": "Chennai Meenambakkam (Airport Plains Hub)",
+      "timestamp": "2026-09-28T05:45:00+00:00Z",
       "confidence": 0.94,
       "severity": "high",
+      "root_cause": "genuine_event",
+      "summary": "Regional atmospheric front detected across 2 stations (corroborated by Chennai Nungambakkam (Central Coastal Base))",
+      "parameters_flagged": [
+        "humidity"
+      ],
+      "status": "active",
+      "event_type": "frozen_sensor",
+      "magnitude": 20.0
+    },
+    {
+      "id": 110,
+      "station_id": 9,
+      "station_name": "Pune Shivajinagar (Met Research Center)",
+      "timestamp": "2026-09-28T14:00:00+00:00Z",
+      "confidence": 0.94,
+      "severity": "medium",
       "root_cause": "genuine_event",
       "summary": "Regional atmospheric front detected across 2 stations (corroborated by Pune Pashan (Atmospheric Science Lab))",
       "parameters_flagged": [
-        "humidity"
+        "pressure"
       ],
       "status": "active",
-      "event_type": "frozen_sensor",
-      "magnitude": 21.0
+      "event_type": "spike",
+      "magnitude": 3.5226534343225153
     },
     {
-      "id": 108,
+      "id": 111,
       "station_id": 10,
       "station_name": "Pune Pashan (Atmospheric Science Lab)",
-      "timestamp": "2026-09-28T05:30:00+00:00Z",
+      "timestamp": "2026-09-28T14:30:00+00:00Z",
       "confidence": 0.94,
-      "severity": "high",
+      "severity": "medium",
       "root_cause": "genuine_event",
       "summary": "Regional atmospheric front detected across 2 stations (corroborated by Pune Shivajinagar (Met Research Center))",
       "parameters_flagged": [
-        "humidity"
+        "pressure"
       ],
       "status": "active",
-      "event_type": "frozen_sensor",
-      "magnitude": 27.0
+      "event_type": "spike",
+      "magnitude": 3.5655700107748243
     }
   ],
   "sensor_health": {
@@ -229,7 +277,7 @@
       "health_score": 95,
       "trend": "stable",
       "maintenance_forecast_days": null,
-      "last_maintenance_at": "2026-09-05T12:56:37Z",
+      "last_maintenance_at": "2026-09-06T04:51:22Z",
       "diagnostics": [
         {
           "name": "RTD Temperature Probe",
@@ -262,7 +310,7 @@
       "health_score": 94,
       "trend": "stable",
       "maintenance_forecast_days": null,
-      "last_maintenance_at": "2026-09-02T12:56:37Z",
+      "last_maintenance_at": "2026-09-03T04:51:22Z",
       "diagnostics": [
         {
           "name": "RTD Temperature Probe",
@@ -295,7 +343,7 @@
       "health_score": 93,
       "trend": "stable",
       "maintenance_forecast_days": null,
-      "last_maintenance_at": "2026-08-30T12:56:37Z",
+      "last_maintenance_at": "2026-08-31T04:51:22Z",
       "diagnostics": [
         {
           "name": "RTD Temperature Probe",
@@ -328,7 +376,7 @@
       "health_score": 50,
       "trend": "degrading",
       "maintenance_forecast_days": 6,
-      "last_maintenance_at": "2026-08-27T12:56:37Z",
+      "last_maintenance_at": "2026-08-28T04:51:22Z",
       "diagnostics": [
         {
           "name": "RTD Temperature Probe",
@@ -361,7 +409,7 @@
       "health_score": 96,
       "trend": "stable",
       "maintenance_forecast_days": null,
-      "last_maintenance_at": "2026-08-24T12:56:37Z",
+      "last_maintenance_at": "2026-08-25T04:51:22Z",
       "diagnostics": [
         {
           "name": "RTD Temperature Probe",
@@ -394,7 +442,7 @@
       "health_score": 71,
       "trend": "degrading",
       "maintenance_forecast_days": 14,
-      "last_maintenance_at": "2026-08-21T12:56:37Z",
+      "last_maintenance_at": "2026-08-22T04:51:22Z",
       "diagnostics": [
         {
           "name": "RTD Temperature Probe",
@@ -410,7 +458,7 @@
         },
         {
           "name": "Hygrometer Capacitance",
-          "metric": "+1.05% Bias",
+          "metric": "+0.56% Bias",
           "status": "warning",
           "status_label": "Minor Drift"
         },
@@ -424,32 +472,32 @@
     },
     "7": {
       "station_id": 7,
-      "health_score": 53,
-      "trend": "degrading",
-      "maintenance_forecast_days": 6,
-      "last_maintenance_at": "2026-08-18T12:56:37Z",
+      "health_score": 94,
+      "trend": "stable",
+      "maintenance_forecast_days": null,
+      "last_maintenance_at": "2026-08-19T04:51:22Z",
       "diagnostics": [
         {
           "name": "RTD Temperature Probe",
-          "metric": "+2.10% (Drift)",
-          "status": "critical",
-          "status_label": "Transducer Fault"
+          "metric": "+0.05% (Nominal)",
+          "status": "nominal",
+          "status_label": "Nominal"
         },
         {
           "name": "Barometric Capsule",
-          "metric": "92.4% (Tension Loss)",
-          "status": "warning",
-          "status_label": "Degraded"
+          "metric": "99.4% (Nominal)",
+          "status": "nominal",
+          "status_label": "Nominal"
         },
         {
           "name": "Hygrometer Capacitance",
-          "metric": "Variable Bias",
-          "status": "warning",
-          "status_label": "Needs Calibration"
+          "metric": "Stable",
+          "status": "nominal",
+          "status_label": "Nominal"
         },
         {
           "name": "Telemetry Modem",
-          "metric": "96.4% Uplink",
+          "metric": "99.9% Uplink",
           "status": "nominal",
           "status_label": "Nominal"
         }
@@ -460,7 +508,7 @@
       "health_score": 38,
       "trend": "degrading",
       "maintenance_forecast_days": 2,
-      "last_maintenance_at": "2026-08-15T12:56:37Z",
+      "last_maintenance_at": "2026-08-16T04:51:22Z",
       "diagnostics": [
         {
           "name": "RTD Temperature Probe",
@@ -493,7 +541,7 @@
       "health_score": 92,
       "trend": "stable",
       "maintenance_forecast_days": null,
-      "last_maintenance_at": "2026-09-06T12:56:37Z",
+      "last_maintenance_at": "2026-09-07T04:51:22Z",
       "diagnostics": [
         {
           "name": "RTD Temperature Probe",
@@ -526,7 +574,7 @@
       "health_score": 96,
       "trend": "stable",
       "maintenance_forecast_days": null,
-      "last_maintenance_at": "2026-09-03T12:56:37Z",
+      "last_maintenance_at": "2026-09-04T04:51:22Z",
       "diagnostics": [
         {
           "name": "RTD Temperature Probe",
@@ -560,19 +608,180 @@
       "alert_id": 101,
       "top_features": [
         {
-          "feature": "humidity",
-          "contribution": 0.47,
-          "direction": "increases_anomaly"
-        },
-        {
           "feature": "pressure",
-          "contribution": 0.37,
+          "contribution": 0.62,
           "direction": "increases_anomaly"
         },
         {
           "feature": "temperature",
-          "contribution": 0.16,
-          "direction": "decreases_anomaly"
+          "contribution": 0.26,
+          "direction": "increases_anomaly"
+        },
+        {
+          "feature": "humidity",
+          "contribution": 0.12,
+          "direction": "increases_anomaly"
+        }
+      ],
+      "contributing_factors": [
+        {
+          "name": "Pressure Deviation",
+          "category": "atmospheric_parameter",
+          "feature": "pressure",
+          "contribution": 0.62,
+          "direction": "increases_anomaly",
+          "observed_value": "957.7hPa",
+          "baseline_value": "840.0hPa",
+          "deviation": "+117.7hPa",
+          "description": "Observed 957.7hPa vs historical nominal baseline 840.0hPa (Delta: +117.7hPa)"
+        },
+        {
+          "name": "Temperature Deviation",
+          "category": "atmospheric_parameter",
+          "feature": "temperature",
+          "contribution": 0.26,
+          "direction": "increases_anomaly",
+          "observed_value": "30.4\u00b0C",
+          "baseline_value": "18.0\u00b0C",
+          "deviation": "+12.4\u00b0C",
+          "description": "Observed 30.4\u00b0C vs historical nominal baseline 18.0\u00b0C (Delta: +12.4\u00b0C)"
+        },
+        {
+          "name": "Humidity Deviation",
+          "category": "atmospheric_parameter",
+          "feature": "humidity",
+          "contribution": 0.12,
+          "direction": "increases_anomaly",
+          "observed_value": "46.8%",
+          "baseline_value": "45.0%",
+          "deviation": "+1.8%",
+          "description": "Observed 46.8% vs historical nominal baseline 45.0% (Delta: +1.8%)"
+        },
+        {
+          "name": "Spatial Neighbor Correlation",
+          "category": "spatial_network",
+          "feature": "spatial_cluster",
+          "contribution": 0.35,
+          "direction": "decreases_anomaly",
+          "observed_value": "2/2 Agreeing",
+          "baseline_value": "2/2 Synchronized",
+          "deviation": "-0 Uncorroborated",
+          "description": "Synchronized regional movement confirmed: 2 of 2 nearby stations corroborated the event"
+        },
+        {
+          "name": "Temporal Rate-of-Change",
+          "category": "temporal_dynamics",
+          "feature": "derivative",
+          "contribution": 0.22,
+          "direction": "increases_anomaly",
+          "observed_value": "+1.8 sigma/hr",
+          "baseline_value": "\u00b10.5 sigma/hr",
+          "deviation": "Elevated Gradient",
+          "description": "Progressive baseline ramp exceeding diurnal solar heating curve"
+        },
+        {
+          "name": "Multivariate Physics Consistency",
+          "category": "physics_model",
+          "feature": "mahalanobis",
+          "contribution": 0.28,
+          "direction": "decreases_anomaly",
+          "observed_value": "Physically Consistent",
+          "baseline_value": "Clausius-Clapeyron Bound",
+          "deviation": "0.8 sigma Mahalanobis",
+          "description": "Cross-parameter covariance check evaluating temperature-pressure-humidity thermodynamic consistency"
+        }
+      ],
+      "reasoning_chain": [
+        {
+          "step_number": 1,
+          "title": "Primary Atmospheric Detection",
+          "evidence": "Significant meteorological variance detected in pressure (957.7hPa), exceeding baseline statistical thresholds with severity 'medium'.",
+          "status": "flagged"
+        },
+        {
+          "step_number": 2,
+          "title": "Spatial Network Cross-Validation",
+          "evidence": "2 of 2 neighboring stations within the local radius confirmed coherent synchronized movement, validating a regional wavefront.",
+          "status": "corroborated"
+        },
+        {
+          "step_number": 3,
+          "title": "Multivariate Thermodynamic Coherence",
+          "evidence": "Observed barometric pressure drop and relative humidity shifts match standard atmospheric front physics (Clausius-Clapeyron relation).",
+          "status": "validated"
+        },
+        {
+          "step_number": 4,
+          "title": "Ensemble Verdict & Classification",
+          "evidence": "Classified as Genuine Regional Weather Event. Station hardware and telemetry channels are performing within operational specifications.",
+          "status": "verdict"
+        }
+      ],
+      "detector_breakdown": [
+        {
+          "detector_name": "Statistical STL & Z-Score Filter",
+          "score": 0.94,
+          "threshold": 0.6,
+          "flagged": true,
+          "description": "Monitors robust median seasonal-trend decomposition residuals and rolling 3-sigma limits."
+        },
+        {
+          "detector_name": "LSTM Autoencoder Temporal Reconstruction",
+          "score": 0.9,
+          "threshold": 0.55,
+          "flagged": true,
+          "description": "Deep sequence model evaluating temporal dynamics and multi-step prediction error."
+        },
+        {
+          "detector_name": "Isolation Forest Multivariate Anomaly",
+          "score": 0.92,
+          "threshold": 0.5,
+          "flagged": true,
+          "description": "Non-parametric tree ensemble isolating multivariate out-of-distribution feature spaces."
+        },
+        {
+          "detector_name": "Spatial & Mahalanobis Consistency Engine",
+          "score": 0.3,
+          "threshold": 0.5,
+          "flagged": false,
+          "description": "Gaussian kernel spatial interpolation and covariance matrix cross-validation across neighboring stations."
+        }
+      ],
+      "neighbor_corroboration": [
+        {
+          "station_id": 2,
+          "station_name": "Mumbai Santacruz (Inland Suburban Hub)",
+          "distance_km": 19.1,
+          "reading": "957.3hPa",
+          "expected": "957.7hPa",
+          "is_corroborating": true,
+          "status": "Corroborated"
+        }
+      ],
+      "recommendations": [
+        "Confirm synoptic radar and satellite imagery for active mesoscale convective system or regional front.",
+        "Retain telemetry data in high-confidence meteorological dataset; do NOT filter or down-weight.",
+        "Notify regional meteorological watch desk of observed rapid variance in pressure."
+      ],
+      "narrative": "A MEDIUM-severity regional meteorological front was detected at Mumbai Colaba (South Coastal Observatory). The primary driver is pressure (62% contribution) with observed value of 957.7hPa, coherently corroborated across 2 neighboring stations within the spatial network. Station hardware is operating normally; alert reflects genuine localized atmospheric dynamics."
+    },
+    "102": {
+      "alert_id": 102,
+      "top_features": [
+        {
+          "feature": "humidity",
+          "contribution": 0.45,
+          "direction": "increases_anomaly"
+        },
+        {
+          "feature": "pressure",
+          "contribution": 0.42,
+          "direction": "increases_anomaly"
+        },
+        {
+          "feature": "temperature",
+          "contribution": 0.13,
+          "direction": "increases_anomaly"
         }
       ],
       "contributing_factors": [
@@ -580,34 +789,34 @@
           "name": "Humidity Deviation",
           "category": "atmospheric_parameter",
           "feature": "humidity",
-          "contribution": 0.47,
+          "contribution": 0.45,
           "direction": "increases_anomaly",
-          "observed_value": "98.0%",
+          "observed_value": "76.3%",
           "baseline_value": "45.0%",
-          "deviation": "+53.0%",
-          "description": "Observed 98.0% vs historical nominal baseline 45.0% (Delta: +53.0%)"
+          "deviation": "+31.3%",
+          "description": "Observed 76.3% vs historical nominal baseline 45.0% (Delta: +31.3%)"
         },
         {
           "name": "Pressure Deviation",
           "category": "atmospheric_parameter",
           "feature": "pressure",
-          "contribution": 0.37,
+          "contribution": 0.42,
           "direction": "increases_anomaly",
-          "observed_value": "961.0hPa",
+          "observed_value": "955.4hPa",
           "baseline_value": "840.0hPa",
-          "deviation": "+121.0hPa",
-          "description": "Observed 961.0hPa vs historical nominal baseline 840.0hPa (Delta: +121.0hPa)"
+          "deviation": "+115.4hPa",
+          "description": "Observed 955.4hPa vs historical nominal baseline 840.0hPa (Delta: +115.4hPa)"
         },
         {
           "name": "Temperature Deviation",
           "category": "atmospheric_parameter",
           "feature": "temperature",
-          "contribution": 0.16,
-          "direction": "decreases_anomaly",
-          "observed_value": "11.2\u00b0C",
+          "contribution": 0.13,
+          "direction": "increases_anomaly",
+          "observed_value": "20.1\u00b0C",
           "baseline_value": "18.0\u00b0C",
-          "deviation": "-6.8\u00b0C",
-          "description": "Observed 11.2\u00b0C vs historical nominal baseline 18.0\u00b0C (Delta: -6.8\u00b0C)"
+          "deviation": "+2.1\u00b0C",
+          "description": "Observed 20.1\u00b0C vs historical nominal baseline 18.0\u00b0C (Delta: +2.1\u00b0C)"
         },
         {
           "name": "Spatial Neighbor Correlation",
@@ -647,7 +856,7 @@
         {
           "step_number": 1,
           "title": "Primary Atmospheric Detection",
-          "evidence": "Significant meteorological variance detected in humidity (98.0%), exceeding baseline statistical thresholds with severity 'high'.",
+          "evidence": "Significant meteorological variance detected in humidity (76.3%), exceeding baseline statistical thresholds with severity 'high'.",
           "status": "flagged"
         },
         {
@@ -704,8 +913,8 @@
           "station_id": 2,
           "station_name": "Mumbai Santacruz (Inland Suburban Hub)",
           "distance_km": 19.1,
-          "reading": "97.6%",
-          "expected": "98.0%",
+          "reading": "75.9%",
+          "expected": "76.3%",
           "is_corroborating": true,
           "status": "Corroborated"
         }
@@ -715,25 +924,186 @@
         "Retain telemetry data in high-confidence meteorological dataset; do NOT filter or down-weight.",
         "Notify regional meteorological watch desk of observed rapid variance in humidity."
       ],
-      "narrative": "A HIGH-severity regional meteorological front was detected at Mumbai Colaba (South Coastal Observatory). The primary driver is humidity (47% contribution) with observed value of 98.0%, coherently corroborated across 2 neighboring stations within the spatial network. Station hardware is operating normally; alert reflects genuine localized atmospheric dynamics."
+      "narrative": "A HIGH-severity regional meteorological front was detected at Mumbai Colaba (South Coastal Observatory). The primary driver is humidity (45% contribution) with observed value of 76.3%, coherently corroborated across 2 neighboring stations within the spatial network. Station hardware is operating normally; alert reflects genuine localized atmospheric dynamics."
     },
-    "102": {
-      "alert_id": 102,
+    "103": {
+      "alert_id": 103,
       "top_features": [
         {
-          "feature": "humidity",
-          "contribution": 0.47,
-          "direction": "increases_anomaly"
-        },
-        {
           "feature": "pressure",
-          "contribution": 0.37,
+          "contribution": 0.61,
           "direction": "increases_anomaly"
         },
         {
           "feature": "temperature",
+          "contribution": 0.23,
+          "direction": "increases_anomaly"
+        },
+        {
+          "feature": "humidity",
           "contribution": 0.16,
-          "direction": "decreases_anomaly"
+          "direction": "increases_anomaly"
+        }
+      ],
+      "contributing_factors": [
+        {
+          "name": "Pressure Deviation",
+          "category": "atmospheric_parameter",
+          "feature": "pressure",
+          "contribution": 0.61,
+          "direction": "increases_anomaly",
+          "observed_value": "961.0hPa",
+          "baseline_value": "840.0hPa",
+          "deviation": "+121.0hPa",
+          "description": "Observed 961.0hPa vs historical nominal baseline 840.0hPa (Delta: +121.0hPa)"
+        },
+        {
+          "name": "Temperature Deviation",
+          "category": "atmospheric_parameter",
+          "feature": "temperature",
+          "contribution": 0.23,
+          "direction": "increases_anomaly",
+          "observed_value": "27.8\u00b0C",
+          "baseline_value": "18.0\u00b0C",
+          "deviation": "+9.8\u00b0C",
+          "description": "Observed 27.8\u00b0C vs historical nominal baseline 18.0\u00b0C (Delta: +9.8\u00b0C)"
+        },
+        {
+          "name": "Humidity Deviation",
+          "category": "atmospheric_parameter",
+          "feature": "humidity",
+          "contribution": 0.16,
+          "direction": "increases_anomaly",
+          "observed_value": "54.9%",
+          "baseline_value": "45.0%",
+          "deviation": "+9.9%",
+          "description": "Observed 54.9% vs historical nominal baseline 45.0% (Delta: +9.9%)"
+        },
+        {
+          "name": "Spatial Neighbor Correlation",
+          "category": "spatial_network",
+          "feature": "spatial_cluster",
+          "contribution": 0.35,
+          "direction": "decreases_anomaly",
+          "observed_value": "2/2 Agreeing",
+          "baseline_value": "2/2 Synchronized",
+          "deviation": "-0 Uncorroborated",
+          "description": "Synchronized regional movement confirmed: 2 of 2 nearby stations corroborated the event"
+        },
+        {
+          "name": "Temporal Rate-of-Change",
+          "category": "temporal_dynamics",
+          "feature": "derivative",
+          "contribution": 0.22,
+          "direction": "increases_anomaly",
+          "observed_value": "+1.8 sigma/hr",
+          "baseline_value": "\u00b10.5 sigma/hr",
+          "deviation": "Elevated Gradient",
+          "description": "Progressive baseline ramp exceeding diurnal solar heating curve"
+        },
+        {
+          "name": "Multivariate Physics Consistency",
+          "category": "physics_model",
+          "feature": "mahalanobis",
+          "contribution": 0.28,
+          "direction": "decreases_anomaly",
+          "observed_value": "Physically Consistent",
+          "baseline_value": "Clausius-Clapeyron Bound",
+          "deviation": "0.8 sigma Mahalanobis",
+          "description": "Cross-parameter covariance check evaluating temperature-pressure-humidity thermodynamic consistency"
+        }
+      ],
+      "reasoning_chain": [
+        {
+          "step_number": 1,
+          "title": "Primary Atmospheric Detection",
+          "evidence": "Significant meteorological variance detected in pressure (961.0hPa), exceeding baseline statistical thresholds with severity 'medium'.",
+          "status": "flagged"
+        },
+        {
+          "step_number": 2,
+          "title": "Spatial Network Cross-Validation",
+          "evidence": "2 of 2 neighboring stations within the local radius confirmed coherent synchronized movement, validating a regional wavefront.",
+          "status": "corroborated"
+        },
+        {
+          "step_number": 3,
+          "title": "Multivariate Thermodynamic Coherence",
+          "evidence": "Observed barometric pressure drop and relative humidity shifts match standard atmospheric front physics (Clausius-Clapeyron relation).",
+          "status": "validated"
+        },
+        {
+          "step_number": 4,
+          "title": "Ensemble Verdict & Classification",
+          "evidence": "Classified as Genuine Regional Weather Event. Station hardware and telemetry channels are performing within operational specifications.",
+          "status": "verdict"
+        }
+      ],
+      "detector_breakdown": [
+        {
+          "detector_name": "Statistical STL & Z-Score Filter",
+          "score": 0.94,
+          "threshold": 0.6,
+          "flagged": true,
+          "description": "Monitors robust median seasonal-trend decomposition residuals and rolling 3-sigma limits."
+        },
+        {
+          "detector_name": "LSTM Autoencoder Temporal Reconstruction",
+          "score": 0.91,
+          "threshold": 0.55,
+          "flagged": true,
+          "description": "Deep sequence model evaluating temporal dynamics and multi-step prediction error."
+        },
+        {
+          "detector_name": "Isolation Forest Multivariate Anomaly",
+          "score": 0.9,
+          "threshold": 0.5,
+          "flagged": true,
+          "description": "Non-parametric tree ensemble isolating multivariate out-of-distribution feature spaces."
+        },
+        {
+          "detector_name": "Spatial & Mahalanobis Consistency Engine",
+          "score": 0.28,
+          "threshold": 0.5,
+          "flagged": false,
+          "description": "Gaussian kernel spatial interpolation and covariance matrix cross-validation across neighboring stations."
+        }
+      ],
+      "neighbor_corroboration": [
+        {
+          "station_id": 1,
+          "station_name": "Mumbai Colaba (South Coastal Observatory)",
+          "distance_km": 19.1,
+          "reading": "960.6hPa",
+          "expected": "961.0hPa",
+          "is_corroborating": true,
+          "status": "Corroborated"
+        }
+      ],
+      "recommendations": [
+        "Confirm synoptic radar and satellite imagery for active mesoscale convective system or regional front.",
+        "Retain telemetry data in high-confidence meteorological dataset; do NOT filter or down-weight.",
+        "Notify regional meteorological watch desk of observed rapid variance in pressure."
+      ],
+      "narrative": "A MEDIUM-severity regional meteorological front was detected at Mumbai Santacruz (Inland Suburban Hub). The primary driver is pressure (61% contribution) with observed value of 961.0hPa, coherently corroborated across 2 neighboring stations within the spatial network. Station hardware is operating normally; alert reflects genuine localized atmospheric dynamics."
+    },
+    "104": {
+      "alert_id": 104,
+      "top_features": [
+        {
+          "feature": "humidity",
+          "contribution": 0.45,
+          "direction": "increases_anomaly"
+        },
+        {
+          "feature": "pressure",
+          "contribution": 0.42,
+          "direction": "increases_anomaly"
+        },
+        {
+          "feature": "temperature",
+          "contribution": 0.12,
+          "direction": "increases_anomaly"
         }
       ],
       "contributing_factors": [
@@ -741,34 +1111,34 @@
           "name": "Humidity Deviation",
           "category": "atmospheric_parameter",
           "feature": "humidity",
-          "contribution": 0.47,
+          "contribution": 0.45,
           "direction": "increases_anomaly",
-          "observed_value": "98.0%",
+          "observed_value": "77.6%",
           "baseline_value": "45.0%",
-          "deviation": "+53.0%",
-          "description": "Observed 98.0% vs historical nominal baseline 45.0% (Delta: +53.0%)"
+          "deviation": "+32.6%",
+          "description": "Observed 77.6% vs historical nominal baseline 45.0% (Delta: +32.6%)"
         },
         {
           "name": "Pressure Deviation",
           "category": "atmospheric_parameter",
           "feature": "pressure",
-          "contribution": 0.37,
+          "contribution": 0.42,
           "direction": "increases_anomaly",
-          "observed_value": "960.8hPa",
+          "observed_value": "955.2hPa",
           "baseline_value": "840.0hPa",
-          "deviation": "+120.8hPa",
-          "description": "Observed 960.8hPa vs historical nominal baseline 840.0hPa (Delta: +120.8hPa)"
+          "deviation": "+115.2hPa",
+          "description": "Observed 955.2hPa vs historical nominal baseline 840.0hPa (Delta: +115.2hPa)"
         },
         {
           "name": "Temperature Deviation",
           "category": "atmospheric_parameter",
           "feature": "temperature",
-          "contribution": 0.16,
-          "direction": "decreases_anomaly",
-          "observed_value": "10.8\u00b0C",
+          "contribution": 0.12,
+          "direction": "increases_anomaly",
+          "observed_value": "19.6\u00b0C",
           "baseline_value": "18.0\u00b0C",
-          "deviation": "-7.2\u00b0C",
-          "description": "Observed 10.8\u00b0C vs historical nominal baseline 18.0\u00b0C (Delta: -7.2\u00b0C)"
+          "deviation": "+1.6\u00b0C",
+          "description": "Observed 19.6\u00b0C vs historical nominal baseline 18.0\u00b0C (Delta: +1.6\u00b0C)"
         },
         {
           "name": "Spatial Neighbor Correlation",
@@ -808,7 +1178,7 @@
         {
           "step_number": 1,
           "title": "Primary Atmospheric Detection",
-          "evidence": "Significant meteorological variance detected in humidity (98.0%), exceeding baseline statistical thresholds with severity 'high'.",
+          "evidence": "Significant meteorological variance detected in humidity (77.6%), exceeding baseline statistical thresholds with severity 'high'.",
           "status": "flagged"
         },
         {
@@ -865,8 +1235,8 @@
           "station_id": 1,
           "station_name": "Mumbai Colaba (South Coastal Observatory)",
           "distance_km": 19.1,
-          "reading": "97.6%",
-          "expected": "98.0%",
+          "reading": "77.2%",
+          "expected": "77.6%",
           "is_corroborating": true,
           "status": "Corroborated"
         }
@@ -876,24 +1246,24 @@
         "Retain telemetry data in high-confidence meteorological dataset; do NOT filter or down-weight.",
         "Notify regional meteorological watch desk of observed rapid variance in humidity."
       ],
-      "narrative": "A HIGH-severity regional meteorological front was detected at Mumbai Santacruz (Inland Suburban Hub). The primary driver is humidity (47% contribution) with observed value of 98.0%, coherently corroborated across 2 neighboring stations within the spatial network. Station hardware is operating normally; alert reflects genuine localized atmospheric dynamics."
+      "narrative": "A HIGH-severity regional meteorological front was detected at Mumbai Santacruz (Inland Suburban Hub). The primary driver is humidity (45% contribution) with observed value of 77.6%, coherently corroborated across 2 neighboring stations within the spatial network. Station hardware is operating normally; alert reflects genuine localized atmospheric dynamics."
     },
-    "103": {
-      "alert_id": 103,
+    "105": {
+      "alert_id": 105,
       "top_features": [
         {
           "feature": "pressure",
-          "contribution": 0.39,
+          "contribution": 0.43,
           "direction": "increases_anomaly"
         },
         {
           "feature": "humidity",
-          "contribution": 0.34,
-          "direction": "decreases_anomaly"
+          "contribution": 0.36,
+          "direction": "increases_anomaly"
         },
         {
           "feature": "temperature",
-          "contribution": 0.27,
+          "contribution": 0.2,
           "direction": "increases_anomaly"
         }
       ],
@@ -902,34 +1272,34 @@
           "name": "Pressure Deviation",
           "category": "atmospheric_parameter",
           "feature": "pressure",
-          "contribution": 0.39,
+          "contribution": 0.43,
           "direction": "increases_anomaly",
-          "observed_value": "951.9hPa",
+          "observed_value": "953.3hPa",
           "baseline_value": "840.0hPa",
-          "deviation": "+111.9hPa",
-          "description": "Observed 951.9hPa vs historical nominal baseline 840.0hPa (Delta: +111.9hPa)"
+          "deviation": "+113.3hPa",
+          "description": "Observed 953.3hPa vs historical nominal baseline 840.0hPa (Delta: +113.3hPa)"
         },
         {
           "name": "Humidity Deviation",
           "category": "atmospheric_parameter",
           "feature": "humidity",
-          "contribution": 0.34,
-          "direction": "decreases_anomaly",
-          "observed_value": "31.0%",
+          "contribution": 0.36,
+          "direction": "increases_anomaly",
+          "observed_value": "55.0%",
           "baseline_value": "45.0%",
-          "deviation": "-14.0%",
-          "description": "Observed 31.0% vs historical nominal baseline 45.0% (Delta: -14.0%)"
+          "deviation": "+10.0%",
+          "description": "Observed 55.0% vs historical nominal baseline 45.0% (Delta: +10.0%)"
         },
         {
           "name": "Temperature Deviation",
           "category": "atmospheric_parameter",
           "feature": "temperature",
-          "contribution": 0.27,
+          "contribution": 0.2,
           "direction": "increases_anomaly",
-          "observed_value": "34.6\u00b0C",
+          "observed_value": "26.5\u00b0C",
           "baseline_value": "18.0\u00b0C",
-          "deviation": "+16.6\u00b0C",
-          "description": "Observed 34.6\u00b0C vs historical nominal baseline 18.0\u00b0C (Delta: +16.6\u00b0C)"
+          "deviation": "+8.5\u00b0C",
+          "description": "Observed 26.5\u00b0C vs historical nominal baseline 18.0\u00b0C (Delta: +8.5\u00b0C)"
         },
         {
           "name": "Spatial Neighbor Correlation",
@@ -969,7 +1339,7 @@
         {
           "step_number": 1,
           "title": "Sensor Variance Trigger",
-          "evidence": "Anomalous unphysical reading on pressure (951.9hPa) triggered single-station STL residual and statistical Z-score detectors (> 3.2 sigma).",
+          "evidence": "Anomalous unphysical reading on pressure (953.3hPa) triggered single-station STL residual and statistical Z-score detectors (> 3.2 sigma).",
           "status": "flagged"
         },
         {
@@ -1027,7 +1397,7 @@
           "station_name": "Delhi Safdarjung (Central Met Observatory)",
           "distance_km": 10.2,
           "reading": "840.3hPa",
-          "expected": "951.9hPa",
+          "expected": "953.3hPa",
           "is_corroborating": false,
           "status": "Normal (Divergent)"
         }
@@ -1038,60 +1408,60 @@
         "Schedule physical field inspection or transducer replacement if drift exceeds 48 hours.",
         "Temporarily down-weight pressure channel from spatial weather interpolation grid."
       ],
-      "narrative": "Isolated HIGH-severity sensor fault identified at Delhi Palam (Western Plains Station). The anomaly is heavily driven by unphysical behavior in pressure (39% contribution) with observed value of 951.9hPa, which was not corroborated by any neighboring stations in the network cluster. Field calibration or transducer replacement advised."
+      "narrative": "Isolated HIGH-severity sensor fault identified at Delhi Palam (Western Plains Station). The anomaly is heavily driven by unphysical behavior in pressure (43% contribution) with observed value of 953.3hPa, which was not corroborated by any neighboring stations in the network cluster. Field calibration or transducer replacement advised."
     },
-    "104": {
-      "alert_id": 104,
+    "106": {
+      "alert_id": 106,
       "top_features": [
         {
-          "feature": "temperature",
-          "contribution": 0.45,
+          "feature": "pressure",
+          "contribution": 0.43,
           "direction": "increases_anomaly"
         },
         {
-          "feature": "pressure",
-          "contribution": 0.41,
+          "feature": "temperature",
+          "contribution": 0.32,
           "direction": "increases_anomaly"
         },
         {
           "feature": "humidity",
-          "contribution": 0.14,
-          "direction": "decreases_anomaly"
+          "contribution": 0.25,
+          "direction": "increases_anomaly"
         }
       ],
       "contributing_factors": [
         {
-          "name": "Temperature Deviation",
-          "category": "atmospheric_parameter",
-          "feature": "temperature",
-          "contribution": 0.45,
-          "direction": "increases_anomaly",
-          "observed_value": "32.6\u00b0C",
-          "baseline_value": "18.0\u00b0C",
-          "deviation": "+14.6\u00b0C",
-          "description": "Observed 32.6\u00b0C vs historical nominal baseline 18.0\u00b0C (Delta: +14.6\u00b0C)"
-        },
-        {
           "name": "Pressure Deviation",
           "category": "atmospheric_parameter",
           "feature": "pressure",
-          "contribution": 0.41,
+          "contribution": 0.43,
           "direction": "increases_anomaly",
-          "observed_value": "953.1hPa",
+          "observed_value": "946.5hPa",
           "baseline_value": "840.0hPa",
-          "deviation": "+113.1hPa",
-          "description": "Observed 953.1hPa vs historical nominal baseline 840.0hPa (Delta: +113.1hPa)"
+          "deviation": "+106.5hPa",
+          "description": "Observed 946.5hPa vs historical nominal baseline 840.0hPa (Delta: +106.5hPa)"
+        },
+        {
+          "name": "Temperature Deviation",
+          "category": "atmospheric_parameter",
+          "feature": "temperature",
+          "contribution": 0.32,
+          "direction": "increases_anomaly",
+          "observed_value": "18.4\u00b0C",
+          "baseline_value": "18.0\u00b0C",
+          "deviation": "+0.4\u00b0C",
+          "description": "Observed 18.4\u00b0C vs historical nominal baseline 18.0\u00b0C (Delta: +0.4\u00b0C)"
         },
         {
           "name": "Humidity Deviation",
           "category": "atmospheric_parameter",
           "feature": "humidity",
-          "contribution": 0.14,
-          "direction": "decreases_anomaly",
-          "observed_value": "36.3%",
+          "contribution": 0.25,
+          "direction": "increases_anomaly",
+          "observed_value": "78.0%",
           "baseline_value": "45.0%",
-          "deviation": "-8.7%",
-          "description": "Observed 36.3% vs historical nominal baseline 45.0% (Delta: -8.7%)"
+          "deviation": "+33.0%",
+          "description": "Observed 78.0% vs historical nominal baseline 45.0% (Delta: +33.0%)"
         },
         {
           "name": "Spatial Neighbor Correlation",
@@ -1131,7 +1501,7 @@
         {
           "step_number": 1,
           "title": "Sensor Variance Trigger",
-          "evidence": "Anomalous unphysical reading on temperature (32.6\u00b0C) triggered single-station STL residual and statistical Z-score detectors (> 3.2 sigma).",
+          "evidence": "Anomalous unphysical reading on pressure (946.5hPa) triggered single-station STL residual and statistical Z-score detectors (> 3.2 sigma).",
           "status": "flagged"
         },
         {
@@ -1149,35 +1519,35 @@
         {
           "step_number": 4,
           "title": "Ensemble Verdict & Classification",
-          "evidence": "Classified as Isolated Sensor Fault on temperature. Transducer recalibration or hardware probe replacement required.",
+          "evidence": "Classified as Isolated Sensor Fault on pressure. Transducer recalibration or hardware probe replacement required.",
           "status": "verdict"
         }
       ],
       "detector_breakdown": [
         {
           "detector_name": "Statistical STL & Z-Score Filter",
-          "score": 0.84,
+          "score": 0.82,
           "threshold": 0.6,
           "flagged": true,
           "description": "Monitors robust median seasonal-trend decomposition residuals and rolling 3-sigma limits."
         },
         {
           "detector_name": "LSTM Autoencoder Temporal Reconstruction",
-          "score": 0.85,
+          "score": 0.83,
           "threshold": 0.55,
           "flagged": true,
           "description": "Deep sequence model evaluating temporal dynamics and multi-step prediction error."
         },
         {
           "detector_name": "Isolation Forest Multivariate Anomaly",
-          "score": 0.8,
+          "score": 0.78,
           "threshold": 0.5,
           "flagged": true,
           "description": "Non-parametric tree ensemble isolating multivariate out-of-distribution feature spaces."
         },
         {
           "detector_name": "Spatial & Mahalanobis Consistency Engine",
-          "score": 0.95,
+          "score": 0.94,
           "threshold": 0.5,
           "flagged": true,
           "description": "Gaussian kernel spatial interpolation and covariance matrix cross-validation across neighboring stations."
@@ -1188,22 +1558,22 @@
           "station_id": 5,
           "station_name": "Bengaluru Whitefield (Tech Park Station)",
           "distance_km": 22.1,
-          "reading": "18.3\u00b0C",
-          "expected": "32.6\u00b0C",
+          "reading": "840.3hPa",
+          "expected": "946.5hPa",
           "is_corroborating": false,
           "status": "Normal (Divergent)"
         }
       ],
       "recommendations": [
-        "Execute remote offset zero-calibration routine on temperature sensor probe.",
+        "Execute remote offset zero-calibration routine on pressure sensor probe.",
         "Verify aspirator radiation shield fan operation to prevent solar thermal trapping.",
         "Schedule physical field inspection or transducer replacement if drift exceeds 48 hours.",
-        "Temporarily down-weight temperature channel from spatial weather interpolation grid."
+        "Temporarily down-weight pressure channel from spatial weather interpolation grid."
       ],
-      "narrative": "Isolated MEDIUM-severity sensor fault identified at Bengaluru GKVK (Agricultural Campus Lab). The anomaly is heavily driven by unphysical behavior in temperature (45% contribution) with observed value of 32.6\u00b0C, which was not corroborated by any neighboring stations in the network cluster. Field calibration or transducer replacement advised."
+      "narrative": "Isolated MEDIUM-severity sensor fault identified at Bengaluru GKVK (Agricultural Campus Lab). The anomaly is heavily driven by unphysical behavior in pressure (43% contribution) with observed value of 946.5hPa, which was not corroborated by any neighboring stations in the network cluster. Field calibration or transducer replacement advised."
     },
-    "105": {
-      "alert_id": 105,
+    "107": {
+      "alert_id": 107,
       "top_features": [
         {
           "feature": "humidity",
@@ -1218,7 +1588,7 @@
         {
           "feature": "temperature",
           "contribution": 0.11,
-          "direction": "decreases_anomaly"
+          "direction": "increases_anomaly"
         }
       ],
       "contributing_factors": [
@@ -1228,10 +1598,10 @@
           "feature": "humidity",
           "contribution": 0.47,
           "direction": "increases_anomaly",
-          "observed_value": "82.6%",
+          "observed_value": "81.8%",
           "baseline_value": "45.0%",
-          "deviation": "+37.6%",
-          "description": "Observed 82.6% vs historical nominal baseline 45.0% (Delta: +37.6%)"
+          "deviation": "+36.8%",
+          "description": "Observed 81.8% vs historical nominal baseline 45.0% (Delta: +36.8%)"
         },
         {
           "name": "Pressure Deviation",
@@ -1239,32 +1609,32 @@
           "feature": "pressure",
           "contribution": 0.42,
           "direction": "increases_anomaly",
-          "observed_value": "952.2hPa",
+          "observed_value": "954.7hPa",
           "baseline_value": "840.0hPa",
-          "deviation": "+112.2hPa",
-          "description": "Observed 952.2hPa vs historical nominal baseline 840.0hPa (Delta: +112.2hPa)"
+          "deviation": "+114.7hPa",
+          "description": "Observed 954.7hPa vs historical nominal baseline 840.0hPa (Delta: +114.7hPa)"
         },
         {
           "name": "Temperature Deviation",
           "category": "atmospheric_parameter",
           "feature": "temperature",
           "contribution": 0.11,
-          "direction": "decreases_anomaly",
-          "observed_value": "17.9\u00b0C",
+          "direction": "increases_anomaly",
+          "observed_value": "18.4\u00b0C",
           "baseline_value": "18.0\u00b0C",
-          "deviation": "-0.1\u00b0C",
-          "description": "Observed 17.9\u00b0C vs historical nominal baseline 18.0\u00b0C (Delta: -0.1\u00b0C)"
+          "deviation": "+0.4\u00b0C",
+          "description": "Observed 18.4\u00b0C vs historical nominal baseline 18.0\u00b0C (Delta: +0.4\u00b0C)"
         },
         {
           "name": "Spatial Neighbor Correlation",
           "category": "spatial_network",
           "feature": "spatial_cluster",
-          "contribution": 0.42,
-          "direction": "increases_anomaly",
-          "observed_value": "0/2 Agreeing",
+          "contribution": 0.35,
+          "direction": "decreases_anomaly",
+          "observed_value": "2/2 Agreeing",
           "baseline_value": "2/2 Synchronized",
-          "deviation": "-2 Uncorroborated",
-          "description": "Isolated divergence: 0 of 2 nearest stations within 35km radius showed matching trends"
+          "deviation": "-0 Uncorroborated",
+          "description": "Synchronized regional movement confirmed: 2 of 2 nearby stations corroborated the event"
         },
         {
           "name": "Temporal Rate-of-Change",
@@ -1282,66 +1652,66 @@
           "category": "physics_model",
           "feature": "mahalanobis",
           "contribution": 0.28,
-          "direction": "increases_anomaly",
-          "observed_value": "Covariance Breach",
+          "direction": "decreases_anomaly",
+          "observed_value": "Physically Consistent",
           "baseline_value": "Clausius-Clapeyron Bound",
-          "deviation": "3.4 sigma Mahalanobis",
+          "deviation": "0.8 sigma Mahalanobis",
           "description": "Cross-parameter covariance check evaluating temperature-pressure-humidity thermodynamic consistency"
         }
       ],
       "reasoning_chain": [
         {
           "step_number": 1,
-          "title": "Sensor Variance Trigger",
-          "evidence": "Anomalous unphysical reading on humidity (82.6%) triggered single-station STL residual and statistical Z-score detectors (> 3.2 sigma).",
+          "title": "Primary Atmospheric Detection",
+          "evidence": "Significant meteorological variance detected in humidity (81.8%), exceeding baseline statistical thresholds with severity 'high'.",
           "status": "flagged"
         },
         {
           "step_number": 2,
           "title": "Spatial Network Cross-Validation",
-          "evidence": "0 of 2 nearest neighboring stations within 35km corroborated the reading, establishing that the anomaly is strictly isolated to this transducer.",
-          "status": "isolated"
+          "evidence": "2 of 2 neighboring stations within the local radius confirmed coherent synchronized movement, validating a regional wavefront.",
+          "status": "corroborated"
         },
         {
           "step_number": 3,
-          "title": "Multivariate Covariance Violation",
-          "evidence": "Coupled atmospheric channels (pressure and humidity) failed to exhibit corresponding adiabatic thermodynamic shifts, violating physical atmospheric constraints.",
-          "status": "unphysical"
+          "title": "Multivariate Thermodynamic Coherence",
+          "evidence": "Observed barometric pressure drop and relative humidity shifts match standard atmospheric front physics (Clausius-Clapeyron relation).",
+          "status": "validated"
         },
         {
           "step_number": 4,
           "title": "Ensemble Verdict & Classification",
-          "evidence": "Classified as Isolated Sensor Fault on humidity. Transducer recalibration or hardware probe replacement required.",
+          "evidence": "Classified as Genuine Regional Weather Event. Station hardware and telemetry channels are performing within operational specifications.",
           "status": "verdict"
         }
       ],
       "detector_breakdown": [
         {
           "detector_name": "Statistical STL & Z-Score Filter",
-          "score": 0.44,
+          "score": 0.94,
           "threshold": 0.6,
-          "flagged": false,
+          "flagged": true,
           "description": "Monitors robust median seasonal-trend decomposition residuals and rolling 3-sigma limits."
         },
         {
           "detector_name": "LSTM Autoencoder Temporal Reconstruction",
-          "score": 0.97,
+          "score": 0.91,
           "threshold": 0.55,
           "flagged": true,
           "description": "Deep sequence model evaluating temporal dynamics and multi-step prediction error."
         },
         {
           "detector_name": "Isolation Forest Multivariate Anomaly",
-          "score": 0.76,
+          "score": 0.9,
           "threshold": 0.5,
           "flagged": true,
           "description": "Non-parametric tree ensemble isolating multivariate out-of-distribution feature spaces."
         },
         {
           "detector_name": "Spatial & Mahalanobis Consistency Engine",
-          "score": 0.78,
+          "score": 0.28,
           "threshold": 0.5,
-          "flagged": true,
+          "flagged": false,
           "description": "Gaussian kernel spatial interpolation and covariance matrix cross-validation across neighboring stations."
         }
       ],
@@ -1350,37 +1720,36 @@
           "station_id": 8,
           "station_name": "Chennai Meenambakkam (Airport Plains Hub)",
           "distance_km": 12.4,
-          "reading": "45.3%",
-          "expected": "82.6%",
-          "is_corroborating": false,
-          "status": "Normal (Divergent)"
+          "reading": "81.4%",
+          "expected": "81.8%",
+          "is_corroborating": true,
+          "status": "Corroborated"
         }
       ],
       "recommendations": [
-        "Execute remote offset zero-calibration routine on humidity sensor probe.",
-        "Verify aspirator radiation shield fan operation to prevent solar thermal trapping.",
-        "Schedule physical field inspection or transducer replacement if drift exceeds 48 hours.",
-        "Temporarily down-weight humidity channel from spatial weather interpolation grid."
+        "Confirm synoptic radar and satellite imagery for active mesoscale convective system or regional front.",
+        "Retain telemetry data in high-confidence meteorological dataset; do NOT filter or down-weight.",
+        "Notify regional meteorological watch desk of observed rapid variance in humidity."
       ],
-      "narrative": "Isolated HIGH-severity sensor fault identified at Chennai Nungambakkam (Central Coastal Base). The anomaly is heavily driven by unphysical behavior in humidity (47% contribution) with observed value of 82.6%, which was not corroborated by any neighboring stations in the network cluster. Field calibration or transducer replacement advised."
+      "narrative": "A HIGH-severity regional meteorological front was detected at Chennai Nungambakkam (Central Coastal Base). The primary driver is humidity (47% contribution) with observed value of 81.8%, coherently corroborated across 2 neighboring stations within the spatial network. Station hardware is operating normally; alert reflects genuine localized atmospheric dynamics."
     },
-    "106": {
-      "alert_id": 106,
+    "108": {
+      "alert_id": 108,
       "top_features": [
         {
           "feature": "pressure",
-          "contribution": 0.43,
+          "contribution": 0.42,
           "direction": "increases_anomaly"
         },
         {
           "feature": "humidity",
-          "contribution": 0.3,
+          "contribution": 0.35,
           "direction": "increases_anomaly"
         },
         {
           "feature": "temperature",
-          "contribution": 0.27,
-          "direction": "increases_anomaly"
+          "contribution": 0.23,
+          "direction": "decreases_anomaly"
         }
       ],
       "contributing_factors": [
@@ -1388,34 +1757,34 @@
           "name": "Pressure Deviation",
           "category": "atmospheric_parameter",
           "feature": "pressure",
-          "contribution": 0.43,
+          "contribution": 0.42,
           "direction": "increases_anomaly",
-          "observed_value": "956.2hPa",
+          "observed_value": "949.1hPa",
           "baseline_value": "840.0hPa",
-          "deviation": "+116.2hPa",
-          "description": "Observed 956.2hPa vs historical nominal baseline 840.0hPa (Delta: +116.2hPa)"
+          "deviation": "+109.1hPa",
+          "description": "Observed 949.1hPa vs historical nominal baseline 840.0hPa (Delta: +109.1hPa)"
         },
         {
           "name": "Humidity Deviation",
           "category": "atmospheric_parameter",
           "feature": "humidity",
-          "contribution": 0.3,
+          "contribution": 0.35,
           "direction": "increases_anomaly",
-          "observed_value": "66.4%",
+          "observed_value": "83.0%",
           "baseline_value": "45.0%",
-          "deviation": "+21.4%",
-          "description": "Observed 66.4% vs historical nominal baseline 45.0% (Delta: +21.4%)"
+          "deviation": "+38.0%",
+          "description": "Observed 83.0% vs historical nominal baseline 45.0% (Delta: +38.0%)"
         },
         {
           "name": "Temperature Deviation",
           "category": "atmospheric_parameter",
           "feature": "temperature",
-          "contribution": 0.27,
-          "direction": "increases_anomaly",
-          "observed_value": "23.4\u00b0C",
+          "contribution": 0.23,
+          "direction": "decreases_anomaly",
+          "observed_value": "17.8\u00b0C",
           "baseline_value": "18.0\u00b0C",
-          "deviation": "+5.4\u00b0C",
-          "description": "Observed 23.4\u00b0C vs historical nominal baseline 18.0\u00b0C (Delta: +5.4\u00b0C)"
+          "deviation": "-0.2\u00b0C",
+          "description": "Observed 17.8\u00b0C vs historical nominal baseline 18.0\u00b0C (Delta: -0.2\u00b0C)"
         },
         {
           "name": "Spatial Neighbor Correlation",
@@ -1513,7 +1882,7 @@
           "station_name": "Chennai Nungambakkam (Central Coastal Base)",
           "distance_km": 12.4,
           "reading": "840.3hPa",
-          "expected": "956.2hPa",
+          "expected": "949.1hPa",
           "is_corroborating": false,
           "status": "Normal (Divergent)"
         }
@@ -1523,10 +1892,10 @@
         "Verify solar panel charge controller and station backup battery voltage.",
         "Inspect physical transmission antenna cable connections for moisture ingress or wind misalignment."
       ],
-      "narrative": "Communication failure: telemetry packet dropout detected at Chennai Meenambakkam (Airport Plains Hub). Sensor channel pressure ceased continuous transmission (43% contribution). Physical hardware diagnostics and telemetry uplink inspection recommended."
+      "narrative": "Communication failure: telemetry packet dropout detected at Chennai Meenambakkam (Airport Plains Hub). Sensor channel pressure ceased continuous transmission (42% contribution). Physical hardware diagnostics and telemetry uplink inspection recommended."
     },
-    "107": {
-      "alert_id": 107,
+    "109": {
+      "alert_id": 109,
       "top_features": [
         {
           "feature": "humidity",
@@ -1535,13 +1904,13 @@
         },
         {
           "feature": "pressure",
-          "contribution": 0.37,
+          "contribution": 0.42,
           "direction": "increases_anomaly"
         },
         {
           "feature": "temperature",
-          "contribution": 0.16,
-          "direction": "decreases_anomaly"
+          "contribution": 0.11,
+          "direction": "increases_anomaly"
         }
       ],
       "contributing_factors": [
@@ -1551,32 +1920,32 @@
           "feature": "humidity",
           "contribution": 0.47,
           "direction": "increases_anomaly",
-          "observed_value": "98.0%",
+          "observed_value": "82.5%",
           "baseline_value": "45.0%",
-          "deviation": "+53.0%",
-          "description": "Observed 98.0% vs historical nominal baseline 45.0% (Delta: +53.0%)"
+          "deviation": "+37.5%",
+          "description": "Observed 82.5% vs historical nominal baseline 45.0% (Delta: +37.5%)"
         },
         {
           "name": "Pressure Deviation",
           "category": "atmospheric_parameter",
           "feature": "pressure",
-          "contribution": 0.37,
+          "contribution": 0.42,
           "direction": "increases_anomaly",
-          "observed_value": "960.6hPa",
+          "observed_value": "954.5hPa",
           "baseline_value": "840.0hPa",
-          "deviation": "+120.6hPa",
-          "description": "Observed 960.6hPa vs historical nominal baseline 840.0hPa (Delta: +120.6hPa)"
+          "deviation": "+114.5hPa",
+          "description": "Observed 954.5hPa vs historical nominal baseline 840.0hPa (Delta: +114.5hPa)"
         },
         {
           "name": "Temperature Deviation",
           "category": "atmospheric_parameter",
           "feature": "temperature",
-          "contribution": 0.16,
-          "direction": "decreases_anomaly",
-          "observed_value": "10.4\u00b0C",
+          "contribution": 0.11,
+          "direction": "increases_anomaly",
+          "observed_value": "18.2\u00b0C",
           "baseline_value": "18.0\u00b0C",
-          "deviation": "-7.6\u00b0C",
-          "description": "Observed 10.4\u00b0C vs historical nominal baseline 18.0\u00b0C (Delta: -7.6\u00b0C)"
+          "deviation": "+0.2\u00b0C",
+          "description": "Observed 18.2\u00b0C vs historical nominal baseline 18.0\u00b0C (Delta: +0.2\u00b0C)"
         },
         {
           "name": "Spatial Neighbor Correlation",
@@ -1616,168 +1985,7 @@
         {
           "step_number": 1,
           "title": "Primary Atmospheric Detection",
-          "evidence": "Significant meteorological variance detected in humidity (98.0%), exceeding baseline statistical thresholds with severity 'high'.",
-          "status": "flagged"
-        },
-        {
-          "step_number": 2,
-          "title": "Spatial Network Cross-Validation",
-          "evidence": "2 of 2 neighboring stations within the local radius confirmed coherent synchronized movement, validating a regional wavefront.",
-          "status": "corroborated"
-        },
-        {
-          "step_number": 3,
-          "title": "Multivariate Thermodynamic Coherence",
-          "evidence": "Observed barometric pressure drop and relative humidity shifts match standard atmospheric front physics (Clausius-Clapeyron relation).",
-          "status": "validated"
-        },
-        {
-          "step_number": 4,
-          "title": "Ensemble Verdict & Classification",
-          "evidence": "Classified as Genuine Regional Weather Event. Station hardware and telemetry channels are performing within operational specifications.",
-          "status": "verdict"
-        }
-      ],
-      "detector_breakdown": [
-        {
-          "detector_name": "Statistical STL & Z-Score Filter",
-          "score": 0.94,
-          "threshold": 0.6,
-          "flagged": true,
-          "description": "Monitors robust median seasonal-trend decomposition residuals and rolling 3-sigma limits."
-        },
-        {
-          "detector_name": "LSTM Autoencoder Temporal Reconstruction",
-          "score": 0.9,
-          "threshold": 0.55,
-          "flagged": true,
-          "description": "Deep sequence model evaluating temporal dynamics and multi-step prediction error."
-        },
-        {
-          "detector_name": "Isolation Forest Multivariate Anomaly",
-          "score": 0.92,
-          "threshold": 0.5,
-          "flagged": true,
-          "description": "Non-parametric tree ensemble isolating multivariate out-of-distribution feature spaces."
-        },
-        {
-          "detector_name": "Spatial & Mahalanobis Consistency Engine",
-          "score": 0.3,
-          "threshold": 0.5,
-          "flagged": false,
-          "description": "Gaussian kernel spatial interpolation and covariance matrix cross-validation across neighboring stations."
-        }
-      ],
-      "neighbor_corroboration": [
-        {
-          "station_id": 10,
-          "station_name": "Pune Pashan (Atmospheric Science Lab)",
-          "distance_km": 6.5,
-          "reading": "97.6%",
-          "expected": "98.0%",
-          "is_corroborating": true,
-          "status": "Corroborated"
-        }
-      ],
-      "recommendations": [
-        "Confirm synoptic radar and satellite imagery for active mesoscale convective system or regional front.",
-        "Retain telemetry data in high-confidence meteorological dataset; do NOT filter or down-weight.",
-        "Notify regional meteorological watch desk of observed rapid variance in humidity."
-      ],
-      "narrative": "A HIGH-severity regional meteorological front was detected at Pune Shivajinagar (Met Research Center). The primary driver is humidity (47% contribution) with observed value of 98.0%, coherently corroborated across 2 neighboring stations within the spatial network. Station hardware is operating normally; alert reflects genuine localized atmospheric dynamics."
-    },
-    "108": {
-      "alert_id": 108,
-      "top_features": [
-        {
-          "feature": "humidity",
-          "contribution": 0.47,
-          "direction": "increases_anomaly"
-        },
-        {
-          "feature": "pressure",
-          "contribution": 0.37,
-          "direction": "increases_anomaly"
-        },
-        {
-          "feature": "temperature",
-          "contribution": 0.16,
-          "direction": "decreases_anomaly"
-        }
-      ],
-      "contributing_factors": [
-        {
-          "name": "Humidity Deviation",
-          "category": "atmospheric_parameter",
-          "feature": "humidity",
-          "contribution": 0.47,
-          "direction": "increases_anomaly",
-          "observed_value": "98.0%",
-          "baseline_value": "45.0%",
-          "deviation": "+53.0%",
-          "description": "Observed 98.0% vs historical nominal baseline 45.0% (Delta: +53.0%)"
-        },
-        {
-          "name": "Pressure Deviation",
-          "category": "atmospheric_parameter",
-          "feature": "pressure",
-          "contribution": 0.37,
-          "direction": "increases_anomaly",
-          "observed_value": "961.0hPa",
-          "baseline_value": "840.0hPa",
-          "deviation": "+121.0hPa",
-          "description": "Observed 961.0hPa vs historical nominal baseline 840.0hPa (Delta: +121.0hPa)"
-        },
-        {
-          "name": "Temperature Deviation",
-          "category": "atmospheric_parameter",
-          "feature": "temperature",
-          "contribution": 0.16,
-          "direction": "decreases_anomaly",
-          "observed_value": "11.2\u00b0C",
-          "baseline_value": "18.0\u00b0C",
-          "deviation": "-6.8\u00b0C",
-          "description": "Observed 11.2\u00b0C vs historical nominal baseline 18.0\u00b0C (Delta: -6.8\u00b0C)"
-        },
-        {
-          "name": "Spatial Neighbor Correlation",
-          "category": "spatial_network",
-          "feature": "spatial_cluster",
-          "contribution": 0.35,
-          "direction": "decreases_anomaly",
-          "observed_value": "2/2 Agreeing",
-          "baseline_value": "2/2 Synchronized",
-          "deviation": "-0 Uncorroborated",
-          "description": "Synchronized regional movement confirmed: 2 of 2 nearby stations corroborated the event"
-        },
-        {
-          "name": "Temporal Rate-of-Change",
-          "category": "temporal_dynamics",
-          "feature": "derivative",
-          "contribution": 0.32,
-          "direction": "increases_anomaly",
-          "observed_value": "> 3.8 sigma/15min",
-          "baseline_value": "\u00b10.5 sigma/hr",
-          "deviation": "Elevated Gradient",
-          "description": "Instantaneous step-jump in telemetry stream exceeding 4.5 sigma rate-of-change limit"
-        },
-        {
-          "name": "Multivariate Physics Consistency",
-          "category": "physics_model",
-          "feature": "mahalanobis",
-          "contribution": 0.28,
-          "direction": "decreases_anomaly",
-          "observed_value": "Physically Consistent",
-          "baseline_value": "Clausius-Clapeyron Bound",
-          "deviation": "0.8 sigma Mahalanobis",
-          "description": "Cross-parameter covariance check evaluating temperature-pressure-humidity thermodynamic consistency"
-        }
-      ],
-      "reasoning_chain": [
-        {
-          "step_number": 1,
-          "title": "Primary Atmospheric Detection",
-          "evidence": "Significant meteorological variance detected in humidity (98.0%), exceeding baseline statistical thresholds with severity 'high'.",
+          "evidence": "Significant meteorological variance detected in humidity (82.5%), exceeding baseline statistical thresholds with severity 'high'.",
           "status": "flagged"
         },
         {
@@ -1809,7 +2017,168 @@
         },
         {
           "detector_name": "LSTM Autoencoder Temporal Reconstruction",
-          "score": 0.87,
+          "score": 0.88,
+          "threshold": 0.55,
+          "flagged": true,
+          "description": "Deep sequence model evaluating temporal dynamics and multi-step prediction error."
+        },
+        {
+          "detector_name": "Isolation Forest Multivariate Anomaly",
+          "score": 0.91,
+          "threshold": 0.5,
+          "flagged": true,
+          "description": "Non-parametric tree ensemble isolating multivariate out-of-distribution feature spaces."
+        },
+        {
+          "detector_name": "Spatial & Mahalanobis Consistency Engine",
+          "score": 0.36,
+          "threshold": 0.5,
+          "flagged": false,
+          "description": "Gaussian kernel spatial interpolation and covariance matrix cross-validation across neighboring stations."
+        }
+      ],
+      "neighbor_corroboration": [
+        {
+          "station_id": 7,
+          "station_name": "Chennai Nungambakkam (Central Coastal Base)",
+          "distance_km": 12.4,
+          "reading": "82.1%",
+          "expected": "82.5%",
+          "is_corroborating": true,
+          "status": "Corroborated"
+        }
+      ],
+      "recommendations": [
+        "Confirm synoptic radar and satellite imagery for active mesoscale convective system or regional front.",
+        "Retain telemetry data in high-confidence meteorological dataset; do NOT filter or down-weight.",
+        "Notify regional meteorological watch desk of observed rapid variance in humidity."
+      ],
+      "narrative": "A HIGH-severity regional meteorological front was detected at Chennai Meenambakkam (Airport Plains Hub). The primary driver is humidity (47% contribution) with observed value of 82.5%, coherently corroborated across 2 neighboring stations within the spatial network. Station hardware is operating normally; alert reflects genuine localized atmospheric dynamics."
+    },
+    "110": {
+      "alert_id": 110,
+      "top_features": [
+        {
+          "feature": "pressure",
+          "contribution": 0.61,
+          "direction": "increases_anomaly"
+        },
+        {
+          "feature": "humidity",
+          "contribution": 0.2,
+          "direction": "increases_anomaly"
+        },
+        {
+          "feature": "temperature",
+          "contribution": 0.19,
+          "direction": "increases_anomaly"
+        }
+      ],
+      "contributing_factors": [
+        {
+          "name": "Pressure Deviation",
+          "category": "atmospheric_parameter",
+          "feature": "pressure",
+          "contribution": 0.61,
+          "direction": "increases_anomaly",
+          "observed_value": "964.3hPa",
+          "baseline_value": "840.0hPa",
+          "deviation": "+124.3hPa",
+          "description": "Observed 964.3hPa vs historical nominal baseline 840.0hPa (Delta: +124.3hPa)"
+        },
+        {
+          "name": "Humidity Deviation",
+          "category": "atmospheric_parameter",
+          "feature": "humidity",
+          "contribution": 0.2,
+          "direction": "increases_anomaly",
+          "observed_value": "63.5%",
+          "baseline_value": "45.0%",
+          "deviation": "+18.5%",
+          "description": "Observed 63.5% vs historical nominal baseline 45.0% (Delta: +18.5%)"
+        },
+        {
+          "name": "Temperature Deviation",
+          "category": "atmospheric_parameter",
+          "feature": "temperature",
+          "contribution": 0.19,
+          "direction": "increases_anomaly",
+          "observed_value": "25.1\u00b0C",
+          "baseline_value": "18.0\u00b0C",
+          "deviation": "+7.1\u00b0C",
+          "description": "Observed 25.1\u00b0C vs historical nominal baseline 18.0\u00b0C (Delta: +7.1\u00b0C)"
+        },
+        {
+          "name": "Spatial Neighbor Correlation",
+          "category": "spatial_network",
+          "feature": "spatial_cluster",
+          "contribution": 0.35,
+          "direction": "decreases_anomaly",
+          "observed_value": "2/2 Agreeing",
+          "baseline_value": "2/2 Synchronized",
+          "deviation": "-0 Uncorroborated",
+          "description": "Synchronized regional movement confirmed: 2 of 2 nearby stations corroborated the event"
+        },
+        {
+          "name": "Temporal Rate-of-Change",
+          "category": "temporal_dynamics",
+          "feature": "derivative",
+          "contribution": 0.22,
+          "direction": "increases_anomaly",
+          "observed_value": "+1.8 sigma/hr",
+          "baseline_value": "\u00b10.5 sigma/hr",
+          "deviation": "Elevated Gradient",
+          "description": "Progressive baseline ramp exceeding diurnal solar heating curve"
+        },
+        {
+          "name": "Multivariate Physics Consistency",
+          "category": "physics_model",
+          "feature": "mahalanobis",
+          "contribution": 0.28,
+          "direction": "decreases_anomaly",
+          "observed_value": "Physically Consistent",
+          "baseline_value": "Clausius-Clapeyron Bound",
+          "deviation": "0.8 sigma Mahalanobis",
+          "description": "Cross-parameter covariance check evaluating temperature-pressure-humidity thermodynamic consistency"
+        }
+      ],
+      "reasoning_chain": [
+        {
+          "step_number": 1,
+          "title": "Primary Atmospheric Detection",
+          "evidence": "Significant meteorological variance detected in pressure (964.3hPa), exceeding baseline statistical thresholds with severity 'medium'.",
+          "status": "flagged"
+        },
+        {
+          "step_number": 2,
+          "title": "Spatial Network Cross-Validation",
+          "evidence": "2 of 2 neighboring stations within the local radius confirmed coherent synchronized movement, validating a regional wavefront.",
+          "status": "corroborated"
+        },
+        {
+          "step_number": 3,
+          "title": "Multivariate Thermodynamic Coherence",
+          "evidence": "Observed barometric pressure drop and relative humidity shifts match standard atmospheric front physics (Clausius-Clapeyron relation).",
+          "status": "validated"
+        },
+        {
+          "step_number": 4,
+          "title": "Ensemble Verdict & Classification",
+          "evidence": "Classified as Genuine Regional Weather Event. Station hardware and telemetry channels are performing within operational specifications.",
+          "status": "verdict"
+        }
+      ],
+      "detector_breakdown": [
+        {
+          "detector_name": "Statistical STL & Z-Score Filter",
+          "score": 0.93,
+          "threshold": 0.6,
+          "flagged": true,
+          "description": "Monitors robust median seasonal-trend decomposition residuals and rolling 3-sigma limits."
+        },
+        {
+          "detector_name": "LSTM Autoencoder Temporal Reconstruction",
+          "score": 0.9,
           "threshold": 0.55,
           "flagged": true,
           "description": "Deep sequence model evaluating temporal dynamics and multi-step prediction error."
@@ -1823,7 +2192,168 @@
         },
         {
           "detector_name": "Spatial & Mahalanobis Consistency Engine",
-          "score": 0.24,
+          "score": 0.26,
+          "threshold": 0.5,
+          "flagged": false,
+          "description": "Gaussian kernel spatial interpolation and covariance matrix cross-validation across neighboring stations."
+        }
+      ],
+      "neighbor_corroboration": [
+        {
+          "station_id": 10,
+          "station_name": "Pune Pashan (Atmospheric Science Lab)",
+          "distance_km": 6.5,
+          "reading": "963.9hPa",
+          "expected": "964.3hPa",
+          "is_corroborating": true,
+          "status": "Corroborated"
+        }
+      ],
+      "recommendations": [
+        "Confirm synoptic radar and satellite imagery for active mesoscale convective system or regional front.",
+        "Retain telemetry data in high-confidence meteorological dataset; do NOT filter or down-weight.",
+        "Notify regional meteorological watch desk of observed rapid variance in pressure."
+      ],
+      "narrative": "A MEDIUM-severity regional meteorological front was detected at Pune Shivajinagar (Met Research Center). The primary driver is pressure (61% contribution) with observed value of 964.3hPa, coherently corroborated across 2 neighboring stations within the spatial network. Station hardware is operating normally; alert reflects genuine localized atmospheric dynamics."
+    },
+    "111": {
+      "alert_id": 111,
+      "top_features": [
+        {
+          "feature": "pressure",
+          "contribution": 0.61,
+          "direction": "increases_anomaly"
+        },
+        {
+          "feature": "temperature",
+          "contribution": 0.2,
+          "direction": "increases_anomaly"
+        },
+        {
+          "feature": "humidity",
+          "contribution": 0.19,
+          "direction": "increases_anomaly"
+        }
+      ],
+      "contributing_factors": [
+        {
+          "name": "Pressure Deviation",
+          "category": "atmospheric_parameter",
+          "feature": "pressure",
+          "contribution": 0.61,
+          "direction": "increases_anomaly",
+          "observed_value": "967.7hPa",
+          "baseline_value": "840.0hPa",
+          "deviation": "+127.7hPa",
+          "description": "Observed 967.7hPa vs historical nominal baseline 840.0hPa (Delta: +127.7hPa)"
+        },
+        {
+          "name": "Temperature Deviation",
+          "category": "atmospheric_parameter",
+          "feature": "temperature",
+          "contribution": 0.2,
+          "direction": "increases_anomaly",
+          "observed_value": "25.4\u00b0C",
+          "baseline_value": "18.0\u00b0C",
+          "deviation": "+7.4\u00b0C",
+          "description": "Observed 25.4\u00b0C vs historical nominal baseline 18.0\u00b0C (Delta: +7.4\u00b0C)"
+        },
+        {
+          "name": "Humidity Deviation",
+          "category": "atmospheric_parameter",
+          "feature": "humidity",
+          "contribution": 0.19,
+          "direction": "increases_anomaly",
+          "observed_value": "62.5%",
+          "baseline_value": "45.0%",
+          "deviation": "+17.5%",
+          "description": "Observed 62.5% vs historical nominal baseline 45.0% (Delta: +17.5%)"
+        },
+        {
+          "name": "Spatial Neighbor Correlation",
+          "category": "spatial_network",
+          "feature": "spatial_cluster",
+          "contribution": 0.35,
+          "direction": "decreases_anomaly",
+          "observed_value": "2/2 Agreeing",
+          "baseline_value": "2/2 Synchronized",
+          "deviation": "-0 Uncorroborated",
+          "description": "Synchronized regional movement confirmed: 2 of 2 nearby stations corroborated the event"
+        },
+        {
+          "name": "Temporal Rate-of-Change",
+          "category": "temporal_dynamics",
+          "feature": "derivative",
+          "contribution": 0.22,
+          "direction": "increases_anomaly",
+          "observed_value": "+1.8 sigma/hr",
+          "baseline_value": "\u00b10.5 sigma/hr",
+          "deviation": "Elevated Gradient",
+          "description": "Progressive baseline ramp exceeding diurnal solar heating curve"
+        },
+        {
+          "name": "Multivariate Physics Consistency",
+          "category": "physics_model",
+          "feature": "mahalanobis",
+          "contribution": 0.28,
+          "direction": "decreases_anomaly",
+          "observed_value": "Physically Consistent",
+          "baseline_value": "Clausius-Clapeyron Bound",
+          "deviation": "0.8 sigma Mahalanobis",
+          "description": "Cross-parameter covariance check evaluating temperature-pressure-humidity thermodynamic consistency"
+        }
+      ],
+      "reasoning_chain": [
+        {
+          "step_number": 1,
+          "title": "Primary Atmospheric Detection",
+          "evidence": "Significant meteorological variance detected in pressure (967.7hPa), exceeding baseline statistical thresholds with severity 'medium'.",
+          "status": "flagged"
+        },
+        {
+          "step_number": 2,
+          "title": "Spatial Network Cross-Validation",
+          "evidence": "2 of 2 neighboring stations within the local radius confirmed coherent synchronized movement, validating a regional wavefront.",
+          "status": "corroborated"
+        },
+        {
+          "step_number": 3,
+          "title": "Multivariate Thermodynamic Coherence",
+          "evidence": "Observed barometric pressure drop and relative humidity shifts match standard atmospheric front physics (Clausius-Clapeyron relation).",
+          "status": "validated"
+        },
+        {
+          "step_number": 4,
+          "title": "Ensemble Verdict & Classification",
+          "evidence": "Classified as Genuine Regional Weather Event. Station hardware and telemetry channels are performing within operational specifications.",
+          "status": "verdict"
+        }
+      ],
+      "detector_breakdown": [
+        {
+          "detector_name": "Statistical STL & Z-Score Filter",
+          "score": 0.96,
+          "threshold": 0.6,
+          "flagged": true,
+          "description": "Monitors robust median seasonal-trend decomposition residuals and rolling 3-sigma limits."
+        },
+        {
+          "detector_name": "LSTM Autoencoder Temporal Reconstruction",
+          "score": 0.87,
+          "threshold": 0.55,
+          "flagged": true,
+          "description": "Deep sequence model evaluating temporal dynamics and multi-step prediction error."
+        },
+        {
+          "detector_name": "Isolation Forest Multivariate Anomaly",
+          "score": 0.9,
+          "threshold": 0.5,
+          "flagged": true,
+          "description": "Non-parametric tree ensemble isolating multivariate out-of-distribution feature spaces."
+        },
+        {
+          "detector_name": "Spatial & Mahalanobis Consistency Engine",
+          "score": 0.34,
           "threshold": 0.5,
           "flagged": false,
           "description": "Gaussian kernel spatial interpolation and covariance matrix cross-validation across neighboring stations."
@@ -1834,8 +2364,8 @@
           "station_id": 9,
           "station_name": "Pune Shivajinagar (Met Research Center)",
           "distance_km": 6.5,
-          "reading": "97.6%",
-          "expected": "98.0%",
+          "reading": "967.3hPa",
+          "expected": "967.7hPa",
           "is_corroborating": true,
           "status": "Corroborated"
         }
@@ -1843,9 +2373,9 @@
       "recommendations": [
         "Confirm synoptic radar and satellite imagery for active mesoscale convective system or regional front.",
         "Retain telemetry data in high-confidence meteorological dataset; do NOT filter or down-weight.",
-        "Notify regional meteorological watch desk of observed rapid variance in humidity."
+        "Notify regional meteorological watch desk of observed rapid variance in pressure."
       ],
-      "narrative": "A HIGH-severity regional meteorological front was detected at Pune Pashan (Atmospheric Science Lab). The primary driver is humidity (47% contribution) with observed value of 98.0%, coherently corroborated across 2 neighboring stations within the spatial network. Station hardware is operating normally; alert reflects genuine localized atmospheric dynamics."
+      "narrative": "A MEDIUM-severity regional meteorological front was detected at Pune Pashan (Atmospheric Science Lab). The primary driver is pressure (61% contribution) with observed value of 967.7hPa, coherently corroborated across 2 neighboring stations within the spatial network. Station hardware is operating normally; alert reflects genuine localized atmospheric dynamics."
     }
   }
 }

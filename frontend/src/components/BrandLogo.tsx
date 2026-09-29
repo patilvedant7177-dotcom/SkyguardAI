@@ -46,7 +46,7 @@ export const BrandLogo: React.FC<BrandLogoProps> = ({
         >
           {/* Target Background Disc */}
           <circle cx="22" cy="22" r="20" fill="#060c18" stroke="rgba(34, 211, 238, 0.2)" strokeWidth="1" />
-          
+
           {/* Dashed outer radar ring */}
           <circle cx="22" cy="22" r="16" stroke="rgba(34, 211, 238, 0.35)" strokeWidth="1.2" strokeDasharray="3 3" />
 
